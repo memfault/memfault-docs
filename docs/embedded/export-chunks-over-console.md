@@ -1,0 +1,94 @@
+---
+id: export-chunks-over-console
+title: Exporting Chunks Over Console
+sidebar_label: Exporting Data Collected
+---
+
+> :warning: This guide assumes you have already installed the
+> [Memfault CLI tool](/docs/ci/install-memfault-cli).
+
+In the following tutorial we will discuss how to use the Memfault SDK data
+export API to collect "chunks" from a device and then post them to the Memfault
+cloud for analysis.
+
+## Add call to `memfault_data_export_dump_chunks`
+
+The data export module uses the SDK data
+[packetizer APIs](https://mflt.io/data-to-cloud) to read the data which has been
+collected. It then base64 encode it and dump the result to a destination of your
+choosing.
+
+First you will need to find a location in your project to trigger the export
+such as a code path that runs periodically or on-demand via a user triggered
+action such as a CLI command.
+
+```c
+#include "memfault/core/data_export.h"
+
+void some_periodic_task_or_cli_cmd(void) {
+  memfault_data_export_dump_chunks()
+}
+```
+
+## Optional: Override where data is exported to
+
+By default, the data_export module will dump results to the console using the
+`memfault_platform_log` implementation that was added as part of the
+[initial integration](/docs/embedded/introduction#getting-started).
+
+However, the location can be overriden so data can be published elsewhere (i.e
+directly to a file):
+
+```c
+#include "memfault/core/data_export.h"
+
+void memfault_data_export_base64_encoded_chunk(const char *chunk_str) {
+   user_export_write_string_to_file(chunk_str);
+}
+```
+
+## Save extracted data to file
+
+Now that you have wired up the export facilities, generate some Memfault data,
+trigger a data export, and save it to a file.
+
+You should see strings with the format: `MC:BASE64_ENCODED_CHUNK:` in the dump.
+
+> NOTE: It's perfectly fine for other logs to be interleaved with the exported
+> data.
+
+Here's an example of some
+[Precanned Data Payloads](/docs/embedded/test-patterns-for-chunks-endpoint) that
+I've saved to
+[test-pattern-data-export.txt](/downloads/docs/test-patterns-for-chunks-endpoint/test-pattern-data-export.txt)
+from a dump over a console:
+
+```
+[00:00:01] INFO: System Booting!
+[00:00:02] DEBUG: System Initialized
+[00:00:10] INFO: MC:SFQCpwIBAwEHalRFU1RTRVJJQUwKbXRlc3Qtc29mdHdhcmUJajEuMC4wLXRlcw==:
+[00:00:20] DEBUG: Another Log!
+[00:00:30] INFO: MC:gCx0Bm10ZXN0LWhhcmR3YXJlBKEBoXJjaHVua190ZXN0X3N1Y2Nlc3MBMeQ=:
+[00:00:35] DEBUG: Etc ...
+```
+
+## Grab Project API Key from Memfault UI
+
+A Project API key will be needed in order to communicate with Memfault's web
+services. Go to [https://app.memfault.com/](https://app.memfault.com/), navigate
+to the project you want to use and select 'Settings'→'General'. The 'Project API
+Key' listed is what you will want to use.
+
+## Post Data to Memfault Cloud using CLI Tool
+
+Now that you have collected some data, you can post it to the Memfault cloud by
+using the [Memfault CLI tool](/docs/ci/install-memfault-cli).
+
+```bash
+$ memfault --project-key ${YOUR_PROJECT_API_KEY} post-chunk --encoding sdk_data_export test-pattern-data-export.txt
+Found 2 Chunks. Sending Data ...
+Success
+```
+
+At this point you can navigate back to the Memfault UI and view the data that
+has been sent!

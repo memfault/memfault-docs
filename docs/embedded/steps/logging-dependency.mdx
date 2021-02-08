@@ -1,0 +1,66 @@
+The Memfault SDK will (sparingly) emit diagnostic logs to alert of integration configuration problems.
+The logging subsystem can also easily serve as logging infrastructure for your own platform if you do not
+yet have one set up.
+
+Based on your setup, choose one of the options below:
+
+<details>
+  <summary>Platform does logging via Macros</summary>
+
+1. Add `-DMEMFAULT_PLATFORM_HAS_LOG_CONFIG=1` to targets compiler flags
+2. Remap Memfault logging macros to platform logging macros by adding the following
+macros to the `memfault_platform_log_config.h` file created earlier.
+
+```c
+//! @file memfault_platform_log_config.h
+#pragma once
+
+#define MEMFAULT_LOG_DEBUG(fmt, ...) YOUR_PLATFORM_DEBUG_LOG( fmt, ## __VA_ARGS__)
+#define MEMFAULT_LOG_INFO(fmt, ...)  YOUR_PLATFORM_INFO_LOG(  fmt, ## __VA_ARGS__)
+#define MEMFAULT_LOG_WARN(fmt, ...)  YOUR_PLATFORM_WARN_LOG( fmt, ## __VA_ARGS__)
+#define MEMFAULT_LOG_ERROR(fmt, ...) YOUR_PLATFORM_ERROR_LOG( fmt, ## __VA_ARGS__)
+```
+
+</details>
+
+<details>
+  <summary>Platform has no logging or uses printf()</summary>
+
+Implement `memfault_platform_log()` in `third_party/memfault/memfault_port.c`. For example,
+
+```c
+void memfault_platform_log(eMemfaultPlatformLogLevel level, const char *fmt, ...) {
+  va_list args;
+  va_start(args, fmt);
+
+  char log_buf[128];
+  vsnprintf(log_buf, sizeof(log_buf), fmt, args);
+
+  const char *lvl_str;
+  switch (level) {
+    case kMemfaultPlatformLogLevel_Debug:
+      lvl_str = "D";
+      break;
+
+    case kMemfaultPlatformLogLevel_Info:
+      lvl_str = "I";
+      break;
+
+    case kMemfaultPlatformLogLevel_Warning:
+      lvl_str = "W";
+      break;
+
+    case kMemfaultPlatformLogLevel_Error:
+      lvl_str = "E";
+      break;
+
+    default:
+      break;
+  }
+
+  vsnprintf(log_buf, sizeof(log_buf), fmt, args);
+
+  your_platform_printf("[%s] MFLT: %s\n", lvl_str, log_buf);
+}
+```
+</details>

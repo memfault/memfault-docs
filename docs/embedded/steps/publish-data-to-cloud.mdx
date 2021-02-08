@@ -1,0 +1,31 @@
+Extensive details about how data from the Memfault SDK makes it to the cloud
+[can be found here](/docs/embedded/data-from-firmware-to-the-cloud). In short, the Memfault SDK
+packetizes data into "chunks" that must be pushed to the Memfault cloud via the
+[chunk REST endpoint](https://api-docs.memfault.com/?version=latest#66b0e390-2c3e-4c0d-b6c2-836a287b9e5f)
+
+A typical integration looks like this:
+
+```c
+#include "memfault/core/data_packetizer.h"
+// [...]
+
+bool try_send_memfault_data(void) {
+  // buffer to copy chunk data into
+  uint8_t buf[USER_CHUNK_SIZE];
+  size_t buf_len = sizeof(buf);
+
+  bool data_available = memfault_packetizer_get_chunk(buf, &buf_len);
+  if (!data_available ) {
+    return false; // no more data to send
+  }
+
+  // send payload collected to chunks endpoint
+  user_transport_send_chunk_data(buf, buf_len);
+  return true;
+}
+
+void send_memfault_data(void) {
+  // [... user specific logic deciding when & how much data to send
+  while (try_send_memfault_data()) { }
+}
+```

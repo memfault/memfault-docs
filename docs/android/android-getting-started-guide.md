@@ -1,0 +1,306 @@
+---
+id: android-getting-started-guide
+title: Getting Started
+sidebar_label: Getting Started
+---
+
+This tutorial will cover integrating the [Bort SDK](android-bort.md) into a
+system running Android 10.
+
+## Integration Steps
+
+### Clone Bort SDK
+
+Using a [Git](https://git-scm.com/) client, clone the `bort` repository from:
+
+```
+https://github.com/memfault/bort.git
+```
+
+Add this repo to your tree at `vendor/memfault/bort` (i.e. add it to your repo
+manifest).
+
+### Patch the SDK
+
+Apply [AOSP patches](https://github.com/memfault/bort/tree/master/patches) using
+the `bort_cli.py` tool (requires Python 3.6+).
+
+```
+vendor/memfault/bort/bort_cli.py patch-aosp \
+  --android-release 10 \
+  <AOSP_ROOT>
+```
+
+Decide on an application ID for the Bort application. By placing the application
+under your domain, you may later upload it to the Google Play Store if
+necessary. We suggest appending `bort` to your
+[reverse domain name](https://en.wikipedia.org/wiki/Reverse_domain_name_notation).
+For example, `com.mycorp.bort`.
+
+Patch the default application ID with your own:
+
+```
+vendor/memfault/bort/bort_cli.py patch-bort \
+  --bort-app-id <YOUR_BORT_APPLICATION_ID> \
+  <AOSP_ROOT>/vendor/memfault/bort/MemfaultPackages
+```
+
+This command will patch `bort.properties`, setting the `BORT_APPLICATION_ID`
+property to `<YOUR_BORT_APPLICATION_ID>`.
+
+### Add the SDK Components to your build
+
+> NOTE: We recommend placing the `include`s below at the _end_ of the respective
+> `Makefile`s. This is because `include` directives are used to _append_ to
+> variables in the build script; placing them at the end of the file reduces the
+> chances that subsequent lines in the `Makefile` do not redefine those
+> variables and discard the effect of the `include`. If it is not possible to
+> place the `include` at the end of the file, ensure that the respective
+> variables are not redefined (look for the `:=` syntax).
+
+Add this line to your `device.mk` file to get the components included in your
+build; this appends to the `PRODUCT_PACKAGES` variable:
+
+```
+include vendor/memfault/bort/product.mk
+```
+
+Add this line to your `BoardConfig.mk` file to get the sepolicy files picked up
+by the build system; this appends to the `BOARD_SEPOLICY_DIRS` and
+`BOARD_PLAT_PRIVATE_SEPOLICY_DIR` variables:
+
+```
+include vendor/memfault/bort/BoardConfig.mk
+```
+
+### Configure the Bort & UsageReporter apps
+
+**You must set your project API key in the Bort app**. This is set in
+`MemfaultPackages/bort.properties`; the app will not compile without this
+property. We also recommend updating the other properties as necessary, for
+example, updating the SDK levels to match the API level of your OS and updating
+the build tools version to what is available in your environment.
+
+Additional settings can also be configured this file, such as the bug report
+generation (request) interval, in hours; the minimum log level that will be
+logged to LogCat; and the maximum number of times bort will attempt to re-try
+uploading a bug report.
+
+One setting that is worth calling out, is the option to capture "minimal" bug
+reports. If system load or bandwidth are concerns for your deployment, we
+recommend using [minimal mode](android-bort.md#minimal-mode).
+
+You must provide the Android SDK location for gradle. This can either be set
+with the `ANDROID_HOME` env var, or by opening the project with Android Studio
+(e.g. opening the root `build.gradle`) which will auto-generate a
+`local.properties` file with the `sdk.dir` property.
+
+### Create a keystore for the Bort app
+
+**The bort app requires a Java keystore file so that the app can be signed**.
+
+Instructions on how to create a keystore in Android Studio can be found
+[here](https://developer.android.com/studio/publish/app-signing#generate-key).
+If you plan to update the app via the Play Store, you may wish to follow the
+additional instructions on that page.
+
+> _Important Notes_
+>
+> - The key that is used to sign the Bort app must NOT be the platform signing
+>   key, otherwise updates to the Bort app may be rejected by the Play Store.
+> - The key must ONLY be used to sign the Bort app and no other apps. Special
+>   permissions are assigned to Bort based on the signing certificate.
+
+Once you have a keystore, set up a `keystore.properties` file and provide the
+path to it via the `bort.properties` file:
+
+```
+BORT_KEYSTORE_PROPERTIES_PATH=keystore.properties
+```
+
+The `keystore.properties` file must contain these properties:
+
+```
+keyAlias=myKey # e.g. key0
+keyPassword=mySecretKeyPassword
+storeFile=myKeystore.jks
+storePassword=mySecretStorePassword
+```
+
+### Build the Bort APK
+
+The `MemfaultBort` app is built using gradle. Building the release APK will
+automatically invoke a task to copy the resulting APK and place it in the root
+directory where it will be picked up by the AOSP build system.
+
+```
+cd MemfaultPackages && ./gradlew :bort:assembleRelease # Or gradlew :bort:assembleRelease on Windows
+```
+
+This will create a signed `MemfaultBort.apk` and `MemfaultBort.x509.pem` file.
+The `pem` file is a public certificate used by the system to when enforcing the
+SE policy.
+
+### Build the UsageReporter APK
+
+The `MemfaultUsageReporter` app is built using gradle. Building the release APK
+will automatically invoke a task to copy the resulting APK and place it in the
+root directory where it will be picked up by the AOSP build system.
+
+```
+cd MemfaultPackages && ./gradlew :reporter:assembleRelease # Or gradlew :reporter:assembleRelease on Windows
+```
+
+## Validating the SDK Integration
+
+The `bort_cli.py` tool can be used to check for issues with the SDK
+installation. To use it, install a build containing the Bort SDK on a device
+that you wish to validate. Connect that device via ADB (verify via
+`adb devices`) and run the script:
+
+```bash
+./bort_cli.py validate-sdk-integration --bort-app-id your.app.id
+```
+
+If you have multiple devices connected, use the `--device` flag to specify the
+target device. For more information on the different options, run the command
+with the `-h` flag:
+
+```bash
+./bort_cli.py validate-sdk-integration -h
+```
+
+## Enable the SDK
+
+By default, the Bort SDK will only run after being explicitly enabled at
+runtime; this is to ensure no data is collected without user consent.
+
+More information on enabling the SDK can be found in the
+[Enabling the SDK at Runtime](android-bort.md#enabling-the-sdk-at-runtime)
+section of the Bort SDK documentation.
+
+For the purposes of testing the SDK on a development device, the SDK can be
+enabled via ADB using the CLI tool:
+
+```
+./bort_cli.py enable-bort --bort-app-id your.app.id
+```
+
+## Upload a bug report
+
+Once the SDK has been enabled, you can manually trigger a bug report to be
+generated. Once generated, it will be automatically uploaded to Memfault:
+
+```
+./bort_cli.py request-bug-report --bort-app-id your.app.id
+```
+
+More information on triggering a bug report can be found in
+[Triggering A Bug Report Programmatically](android-bort.md#triggering-a-bug-report-programmatically);
+more information on when bug reports are automatically captured can be found in
+[Bug Report Capture Period](android-bort#bug-report-capture-period).
+
+Once the bug report has been generated, uploaded and processed successfully, you
+will be able to find it in Memfault by navigating to the `Fleet > Devices` view
+and finding the device that uploaded the bug report.
+
+If you do not see the bug report, you can check your project's `Queue Status`
+feature in the top right hand side of the `Issues` page. This shows a list of
+bug reports that were recently received and their processing status.
+
+## Troubleshooting
+
+Here are some steps to assist in diagnosing some possible integration failures.
+
+### System components missing during validation
+
+If the validation is failing due to missing system components, verify if the
+components are being built by searching the build artifacts.
+
+```shell script
+$ find $AOSP_ROOT/out/ -iname "MemfaultDumpstateRunner"
+...
+out/target/product/$YOUR_PRODUCT/system/bin/MemfaultDumpstateRunner
+...
+```
+
+If the binary is not being built, then verify the `Makefile` configuration:
+
+- Is the bort `product.mk` file included in your `device.mk` file?
+  - Note that this include appends to the `PRODUCT_PACKAGES` variable: is this
+    variable being redefined elsewhere via an assignment? (`:=`) after including
+    the `product.mk` file?
+- Is the bort `BoardConfig.mk` file being included in your `BoardConfig.mk`
+  file? Similar to `PRODUCT_PACKAGES`, verify that the `BOARD_SEPOLICY_DIRS` and
+  `BOARD_PLAT_PRIVATE_SEPOLICY_DIR` variables are not being over-written. This
+  could be solved by:
+  - Placing this include at the end of the file, or
+  - Ensuring subsequent assignments append to these variables (`+=` not `:=`).
+
+If you have confirmed the binary is being built, the next step is to verify if
+the binary is inside the (system) image as expected. To do this, you can mount
+the system image and search inside it. You should see the following files
+included in the system image:
+
+```shell script
+$ sudo find /path/to/volume/ -iname memfault\*
+/path/to/volume/system/priv-app/MemfaultUsageReporter
+/path/to/volume/system/priv-app/MemfaultUsageReporter/MemfaultUsageReporter.apk
+...
+/path/to/volume/system/priv-app/MemfaultBort
+...
+/path/to/volume/system/priv-app/MemfaultBort/MemfaultBort.apk
+/path/to/volume/system/bin/MemfaultDumpstateRunner
+/path/to/volume/system/bin/MemfaultDumpster
+/path/to/volume/system/etc/init/memfault_dumpster.rc
+/path/to/volume/system/etc/init/memfault_init.rc
+```
+
+If these files are not present, then there may be an issue with your build
+process, you may be inspecting the wrong system image, or the SDK may be
+included in a different image.
+
+### Bug report is generated but fails to upload
+
+If the SDK is enabled, a bug report is generated, but the logcat logs show that
+the upload has failed, then
+[capture](https://developer.android.com/studio/debug/bug-report#bugreportadb)
+and upload a bug report manually over ADB so that we can assist with a detailed
+investigation:
+
+```shell script
+$ adb bugreport upload-failure.zip
+```
+
+Then navigate to `Issues` in Memfault and upload the bug report via the
+`Manual Upload` button in the top right hand side.
+
+### Bug report contains fewer logs than expected
+
+If you are viewing logs from a bug report and the timespan covered by the logcat
+logs or device timeline is less than expected, this may be because:
+
+1. The device recently rebooted and its non-persistent data was wiped.
+2. The system is logging a lot (being very "chatty") and is quickly filling up
+   the buffer, causing older logs to be quickly evicted.
+
+Logcat logs are collected by `dumpstate` with the command:
+
+```text
+logcat -v threadtime -v printable -v uid -d *:v
+```
+
+This means that the bug report will collect whatever logs are available in the
+system buffer. Making the logs less chatty or increasing the size of the log
+buffer are two possible solutions.
+
+Making the logs less chatty is likely to be the
+[more effective solution](https://cs.android.com/android/_/android/platform/system/core/+/01c8eccca3f7c7ed9f08fdc7bb641ab40ac833d1:logd/README.property;l=30-34;drc=7a5cbfc645909a7c7ad6f33a67a34d7a396fb46b).
+However, you can quickly evaluate effect of changing the size of the log buffer
+over `adb` using `logcat -G`
+([docs](https://developer.android.com/studio/command-line/logcat#options)). Note
+that this setting is transient and will be lost when the system reboots. To
+change the log buffer size permanently, use the `persist.logd.size`
+[system property](https://chromium.googlesource.com/aosp/platform/system/core/+/refs/heads/master/logd/README.property#27);
+see also `android_logger.h`
+[source](https://cs.android.com/android/_/android/platform/system/core/+/refs/tags/android-10.0.0_r47:liblog/include/private/android_logger.h;l=143).

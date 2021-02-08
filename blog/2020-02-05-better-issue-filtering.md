@@ -1,0 +1,27 @@
+---
+title: Improved Issue Filtering
+---
+
+## Improved Issue Filtering and Sorting
+
+As Memfault adds support for more types of Traces, we found that we were craving
+the ability to quickly filter by the reason, or the type of Issue. You can now
+find this ability in the new filtering dropdown.
+
+<p align="center">
+  <img width="700" src="/img/blog/2020-02-05-issues-new-filtering.png" alt="issues-new-filtering" />
+</p>
+
+We've also added the ability to sort by more fields in the Issues list. This
+enables teams to quickly learn which issues are the most prevalent and require
+attention.
+
+<!-- truncate -->
+
+<p align="center">
+  <img width="350" src="/img/blog/2020-02-05-issues-new-sorting.png" alt="issues-new-filtering" />
+</p>
+
+## Other Updates
+
+- It is now possible to search by name in the Cohort select drop-down

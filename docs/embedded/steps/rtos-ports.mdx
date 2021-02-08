@@ -1,0 +1,47 @@
+The Memfault SDK includes pre-canned integrations for many RTOS environments.
+Expand the tab for the one applies to your system below in order to pick them up.
+
+<details>
+
+<summary> FreeRTOS Specific Sources </summary>
+
+#### Add FreeRTOS Specific Sources To Compilation
+
+```
+  ${MEMFAULT_SDK_ROOT}/ports/freertos/src/memfault_core_freertos.c
+  ${MEMFAULT_SDK_ROOT}/ports/freertos/memfault_freertos_ram_regions.c
+  ${MEMFAULT_SDK_ROOT}/ports/freertos/memfault_metrics_freertos.c
+  ${MEMFAULT_SDK_ROOT}/ports/freertos/memfault_panics_freertos.c
+```
+
+#### Register Memfault Task Tracing in FreeRTOSConfig.h
+
+```c
+//! @file FreeRTOSConfig.h
+#pragma once
+
+#include "memfault/ports/freertos_trace.h"
+```
+
+> :bulb: While in the file, we recommend using the following settings to catch issues:
+  ```
+  #define configCHECK_FOR_STACK_OVERFLOW 2
+  void vAssertCalled(const char *file, int line);
+  #define configASSERT(x) if ((x) == 0) vAssertCalled( __FILE__, __LINE__ )
+  ```
+
+#### Initialize FreeRTOS Port on Boot
+
+```diff
+#include "memfault/components.h"
++ #include "memfault/ports/freertos.h"
+
+//...
+
+int memfault_platform_boot(void) {
++ memfault_freertos_port_boot();
++
+  memfault_build_info_dump();
+```
+
+</details>

@@ -1,0 +1,50 @@
+Memfault has facilities for capturing a unique identifier automatically as part of the build process.
+This information is used by Memfault's cloud infrastructure to ensure the symbol file uploaded matches
+the data reported in a coredump.
+
+:::note
+A longer discussion about firmware versioning best practices and build identifiers [can be found here](https://interrupt.memfault.com/blog/release-versioning#gnu-build-id).
+:::
+
+Memfault has two ways to add a Build ID to a target. Select the appropriate one below based on your toolchain setup.
+
+<details>
+  <summary>GNU Build ID (Requires Use of GNU GCC Compiler)</summary>
+
+1. Add `-Wl,--build-id` to flags passed to linker via GCC
+2. Add `-DMEMFAULT_USE_GNU_BUILD_ID=1` CFLAG to CC invocation
+3. Add the following snippet to your projects linker script (`.ld` file)
+   where "FLASH" below will match the name of the MEMORY section
+   read-only data and text is placed in.
+
+```
+    .note.gnu.build-id :
+    {
+        __start_gnu_build_id_start = .;
+        KEEP(*(.note.gnu.build-id))
+    } > <YOUR_FLASH_SECTION>
+```
+
+:::info
+Be sure to update `\<YOUR_FLASH_SECTION\>` to match the name of the section `.text` is placed in!
+:::
+
+</details>
+
+<details>
+  <summary>Python Script Run on ELF (Compiler Agnostic)</summary>
+
+
+Update your build system to invoke the `scripts/fw_build_id.py` script on your ELF as part of a post-build step.
+
+For example, using CMake, this can be achieved by adding a custom command to the target:
+
+add_custom_command(TARGET ${YOUR_EXECUTABLE_NAME} POST_BUILD
+  COMMAND python ${MEMFAULT_SDK_ROOT}/scripts/fw_build_id.py ${YOUR_EXECUTABLE_NAME}
+)
+
+:::info
+The script depends on `pyelftools` so make sure you have run `pip install pyelftools` or added to your `requirements.txt`
+:::
+
+</details>

@@ -1,0 +1,19 @@
+Trace events are used for generating alerts in the Memfault UI when unexpected events
+are encountered. Let's start by creating a generic type for critical errors that have been detected.
+
+```c
+--- a/config/memfault_trace_reason_user_config.def
++++ b/config/memfault_trace_reason_user_config.def
+@@ -0,0 +1 @@
++MEMFAULT_TRACE_REASON_DEFINE(critical_error)
+```
+
+### Add a CLI command to generate a Trace Event
+
+```c
+#include "memfault/core/trace_event.h"
+
+void test_trace(void) {
+  MEMFAULT_TRACE_EVENT_WITH_LOG(critical_error,
+    "A test error trace!");
+}

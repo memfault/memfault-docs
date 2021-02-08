@@ -1,0 +1,36 @@
+Prior to having an end-to-end transport in place, Memfault data can be
+exported over any serial connection or via GDB directly.
+
+:::note
+This strategy can also be used even when an end-to-end transport is in place
+for local QA testing or in CI/CD test automation setups.
+:::
+
+#### Add a CLI command to Export Data
+
+```c
+#include "memfault/core/data_export.h"
+
+int export_data(int argc, char *argv[]) {
+  memfault_data_export_dump_chunks();
+}
+```
+
+#### Export Data to Console
+
+```
+shell> reboot
+[00:00:01] INFO: System Booting!
+[00:00:02] INFO: Memfault Build ID: d8d6a047282f025fffa29fa767100f310bc40f80
+shell> trace
+shell> export
+[00:00:10] INFO: MC:SFQCpwIBAwEHalRFU1RTRVJJQUwKbXRlc3Qtc29mdHdhcmUJajEuMC4wLXRlcw==:
+//...
+```
+
+#### Upload data using Memfault CLI tool
+
+Data can be exported locally in two ways:
+
+* [via Console](/docs/embedded/export-chunks-over-console)
+* [via GDB](/docs/embedded/test-data-collection-with-gdb)

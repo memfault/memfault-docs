@@ -1,0 +1,118 @@
+---
+id: arm-mdk-guide
+title: ARM MDK Getting Started Guide
+sidebar_label: ARM MDK Guide
+---
+
+This tutorial will go over integrating the **panics** component of the
+[Memfault Firmware SDK](https://github.com/memfault/memfault-firmware-sdk) into
+a system using ARM Compiler 5 and the MDK Microcontroller Development Kit.
+
+### Clone Memfault SDK
+
+Using a [Git](https://git-scm.com/) client, clone the `memfault-firmware-sdk`
+repository from:
+
+```
+https://github.com/memfault/memfault-firmware-sdk.git
+```
+
+### Add required Memfault SDK include paths to target
+
+![/img/docs/embedded/arm-mdk-include.png](/img/docs/embedded/arm-mdk-includes.png)
+
+### Add required Memfault SDK sources to target
+
+Add the sources at `$MEMFAULT_FIRMWARE_SDK/components/[panics, core, util]/src`
+to your project. For the panics component, you do **not** need to add
+`memfault_fault_handling_xtensa.c`. The directories included should look
+something like:
+
+![/img/docs/embedded/arm-mdk-include.png](/img/docs/embedded/arm-mdk-tree.png)
+
+### Make sure Memfault SDK sources are being compiled in C99 mode
+
+### Implement platform specific storage region for crash data
+
+We typically recommend starting with the RAM based Coredump port. By default
+this will only save the top of the stack at the time of crash but it lets you
+quickly get the system up and running and get a feel for how things work. To do
+this:
+
+1.  Add `ports/panics/src/memfault_platform_ram_backed_coredump.c` to the build
+2.  Mark the section being used a a `UNINIT` region in the scatter file for the
+    target. This will look something like:
+
+    ```
+    NOINIT_IRAM1 0x20010000 UNINIT 0x00000200  { ;no init section
+         *(.noinit*)
+       }
+    ```
+
+Coredump data can also be stored to any other backing storage (eMMc, external
+NOR flash, internal flash, etc) by implementing the required
+[dependencies](https://github.com/memfault/memfault-firmware-sdk/blob/master/components/panics/include/memfault/panics/platform/coredump.h).
+
+### Implement other platform dependencies
+
+In order to save coredumps, you will need to fill in the functions in the block
+below
+
+```c
+#include "memfault/panics/assert.h"
+#include "memfault/core/platform/core.h"
+#include "memfault/core/platform/debug_log.h"
+#include "memfault/core/platform/device_info.h"
+
+void memfault_platform_log(eMemfaultPlatformLogLevel level, const char *fmt, ...) {
+  // Hook up logging implementation
+}
+
+void memfault_platform_get_device_info(sMemfaultDeviceInfo *info) {
+  // platform specific version information
+  *info = (sMemfaultDeviceInfo) {
+    .device_serial = "DEMOSERIAL",
+    .software_type = "nrf-main",
+    .software_version = "1.0.0",
+    .hardware_version = "nrf-proto",
+  };
+}
+
+void memfault_platform_reboot(void) {
+  // Last function called before memfault after a crash
+  // expect the platform to reboot the system
+  __breakpoint(0x1);
+}
+```
+
+### Publish data to the Memfault cloud
+
+Extensive details about how data from the Memfault SDK makes it to the cloud can
+be found [here](data-from-firmware-to-cloud.md). In short, all data is published
+via the same "chunk" REST
+[endpoint](https://api-docs.memfault.com/?version=latest#66b0e390-2c3e-4c0d-b6c2-836a287b9e5f).
+
+```c
+#include "memfault/core/data_packetizer.h"
+// [...]
+
+bool try_send_memfault_data(void) {
+  // buffer to copy chunk data into
+  uint8_t buf[USER_CHUNK_SIZE];
+  size_t buf_len = sizeof(buf);
+
+  bool data_available = memfault_packetizer_get_chunk(buf, &buf_len);
+  if (!data_available ) {
+    return false; // no more data to send
+  }
+
+  // send payload collected to chunks/ endpoint
+  user_transport_send_chunk_data(buf, buf_len);
+  return true;
+}
+
+void send_memfault_data(void) {
+  // [... user specific logic deciding when & how much data to send
+  while (try_send_memfault_data()) { }
+}
+```

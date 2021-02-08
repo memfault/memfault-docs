@@ -1,0 +1,370 @@
+---
+id: nrf-connect-sdk-guide
+title: nRF Connect SDK Integration
+sidebar_label: nRF Connect SDK Guide
+---
+
+In this guide we will walk through the steps for integrating the
+[Memfault Firmware SDK](https://github.com/memfault/memfault-firmware-sdk) into
+a project using the nRF Connect SDK. The integration has been tested against the
+[v1.4.0 nRF Connect SDK](https://github.com/nrfconnect/sdk-nrf/tree/v1.4.0)
+release.
+
+Upon completion of the integration, the following subcomponents will be added to
+your system!
+
+- [Reboot Reason Tracking](/docs/embedded/reboot-reason-tracking)
+
+![](/img/docs/embedded/reboot-reason-chart.png)
+
+- [Error Tracking with Trace Events](/docs/embedded/trace-events)
+
+![](/img/docs/embedded/trace-reason-example.png)
+
+- [RAM-backed stack dump Collection](/docs/embedded/coredumps)
+
+![](/img/docs/embedded/logs-with-coredump.png)
+
+## Integration Steps
+
+> :warning: This tutorial assumes you have a working
+> [nRF Connect SDK Environment](https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrf/getting_started.html#getting-started)
+> and are able to flash a board supported by the SDK (i.e nRF91, nRF53, nRF52,
+> etc)
+
+### Add memfault-firmware-sdk to nrf/west.yml
+
+You will first need to add the memfault-firmware-sdk to your projects manifest.
+By default, for the nRF Connect SDK this is located at `nrf/west.yml`:
+
+```diff
+diff --git a/west.yml b/west.yml
+index 17071f47..84bb97f0 100644
+--- a/west.yml
++++ b/west.yml
+@@ -112,6 +114,10 @@ manifest:
+     - name: Alexa-Gadgets-Embedded-Sample-Code
+       path: modules/alexa-embedded
+       revision: face92d8c62184832793f518bb1f19379538c5c1
+       remote: alexa
++    - name: memfault-firmware-sdk
++      url: https://github.com/memfault/memfault-firmware-sdk
++      path: modules/memfault-firmware-sdk
++      revision: master
+```
+
+> :warning: There's a couple lines in this file that look similar. Make sure you
+> have added this under the "projects:" level
+
+You will then need to run `west update` to clone the memfault-firmware-sdk:
+
+```bash
+$ west update
+# ...
+=== updating memfault-firmware-sdk (modules/memfault-firmware-sdk):
+--- memfault-firmware-sdk: initializing
+Initialized empty Git repository in modules/memfault-firmware-sdk/.git/
+--- memfault-firmware-sdk: fetching, need revision master
+```
+
+### Add Memfault to Project's CMakeLists.txt
+
+Add the following **before the `find_package(...)`** line in your project's
+CMakeLists.txt
+
+```c
+list(APPEND ZEPHYR_EXTRA_MODULES $ENV{ZEPHYR_BASE}/../modules/memfault-firmware-sdk/ports/nrf-connect-sdk)
+# Note: A line like "find_package(Zephyr HINTS $ENV{ZEPHYR_BASE})" should be below
+```
+
+### Update Kconfig selections in prj.con
+
+Add the appropriate options to your systems `prj.conf`:
+
+```
+# project specific configuration settings
+
+CONFIG_MEMFAULT=y
+
+# Add to pick up support for sending Memfault data over HTTP
+CONFIG_MEMFAULT_HTTP_ENABLE=y
+
+# NRF9160 only, uses modem to store root CA's
+CONFIG_MEMFAULT_ROOT_CERT_STORAGE_NRF9160_MODEM=y
+```
+
+### Zephyr Patch (nRF Connect SDK < 1.4 only)
+
+nRF Connect SDK 1.4 and above include a
+[Zephyr patch](https://github.com/zephyrproject-rtos/zephyr/pull/27496/commits/5c1ea3f96b496a82cea89053eb4d2aedef1cde88)
+that enables collection of full register state when a crash takes place.
+
+For older SDK versions, you need to apply the patch yourself. For convenience,
+we have included the patch in the memfault-firmware-sdk:
+
+```bash
+$ cd ${ZEPHYR_BASE}
+$ git apply ${MEMFAULT_FIRMWARE_SDK}/ports/zephyr/v2.x/coredump-support.patch
+```
+
+### Create a Project and Get Project API Key
+
+Go to https://app.memfault.com/ and from the "Select A Project" dropdown, click
+on "Create Project" to setup your first project such as "smart-sink-dev".
+
+Then navigate to "Settings" -> "General", where you can find the "Project API
+Key" which will be used to communicate with Memfault's web services.
+
+### Implement Platform Dependencies
+
+In order to save traces, you will need to implement a dependency function that
+tells memfault version information. You can add this to the `main.c` for the app
+being built or a file of it's own.
+
+```c
+#include "memfault/core/platform/device_info.h"
+
+void memfault_platform_get_device_info(sMemfaultDeviceInfo *info) {
+  // platform specific version information
+  *info = (sMemfaultDeviceInfo) {
+    .device_serial = "DEMOSERIAL,
+    .software_type = "main-mcu-fw",
+    .software_version = "1.0.0",
+    .hardware_version = "pvt",
+  };
+}
+```
+
+### Implement NRF9160 Platform Dependencies
+
+Add the Project API Key and install the Root CA's used by Memfault:
+
+```c
+#include "memfault/http/http_client.h"
+
+sMfltHttpClientConfig g_mflt_http_client_config = {
+  .api_key = "<PROJECT_API_KEY>",
+};
+```
+
+And call `memfault_nrfconnect_port_install_root_certs();` prior to calling
+`lte_lc_init_and_connect()`:
+
+```c
+#include "memfault/nrfconnect_port/http.h"
+
+void main(void) {
+   // ...
+
+   memfault_nrfconnect_port_install_root_certs();
+
+   lte_lc_init_and_connect();
+   // ...
+```
+
+### Create trace reasons definition file
+
+The
+[trace event](https://github.com/memfault/memfault-firmware-sdk/blob/master/components/core/include/memfault/core/trace_event.h)
+module within the SDK makes it easy to track errors in a way that requires less
+storage than full coredump traces and also allows the system to keep running
+after capturing the event. The program counter, return address and a custom
+"reason" are saved.
+
+The list of custom reasons is defined in a separate file that you need to
+create.
+
+The file _must_ be named `memfault_trace_reason_user_config.def` and placed in a
+directory included in your project.
+
+```bash
+$ cd $YOUR_PROJECT_ROOT
+$ mkdir config
+$ touch config/memfault_trace_reason_user_config.def
+```
+
+And then in your project's `CMakeLists.txt` add:
+
+```
+zephyr_include_directories(config)
+```
+
+To start, we recommend adding a couple reasons for error paths in your codebase
+(such as peripheral bus read/write failures, transport errors and unexpected
+timeouts).
+
+Here is what the `memfault_trace_reason_user_config.def` file should look like:
+
+```c
+// your_project/config/memfault_trace_reason_user_config.def
+MEMFAULT_TRACE_REASON_DEFINE(your_custom_error_reason_1)
+// i.e
+MEMFAULT_TRACE_REASON_DEFINE(critical_log)
+MEMFAULT_TRACE_REASON_DEFINE(flash_error)
+// ...
+```
+
+### Generate Some Trace Events
+
+Next, we'll need to use the `MEMFAULT_TRACE_EVENT` macro to capture a trace
+event when an error occurs.
+
+Note that it is perfectly fine to use the same reason in different places.
+Because the program counter and return address are captured in the trace event,
+you will be able to see the two topmost frames (function name, source file and
+line) in Memfault's Issue UI and distinguish between the two.
+
+The nRF Connect SDK port also exposes a `mflt trace` CLI command which can be
+used to generate events for test purposes:
+
+```
+uart:~$ mflt trace
+<dbg> <mflt>: Trace Event Generated!
+```
+
+You can also start to add trace events for error paths you are interested in
+tracking:
+
+```c
+#include "memfault/core/trace_event.h"
+// [ ...]
+void ble_le_process_ll_pkt(...) {
+  // ...
+  if (invalid_msg_id) {
+    MEMFAULT_TRACE_EVENT(bt_invalid_msg_id);
+    // ...
+  }
+  // ..
+}
+```
+
+Log metadata can also be added to a trace event to capture additional info:
+
+```c
+void record_temperature(...) {
+  int rv = spi_flash_erase(...);
+  if (rv != 0) {
+    MEMFAULT_TRACE_EVENT_WITH_LOG(flash_error, "Flash Erase Failure: rv=%d, spi_err=0x%x",
+      spi_bus_get_status());
+  }
+}
+```
+
+### Publish data to the Memfault cloud
+
+#### (nRF9160) HTTPS
+
+When HTTP is available, you can use the Memfault integration to post data from
+the CLI (`mflt post_chunks`) or by adding a periodic task:
+
+```c
+#include "memfault/nrfconnect_port/http.h"
+
+void some_periodic_task(void) {
+  memfault_nrfconnect_port_post_data();
+}
+```
+
+#### Bluetooth
+
+Extensive details about how data from the Memfault SDK makes it to the cloud
+[can be found here](data-from-firmware-to-cloud.md). In short, the Memfault SDK
+packetizes data into "chunks" that must be pushed to the Memfault cloud via the
+[chunk REST endpoint](https://api-docs.memfault.com/?version=latest#66b0e390-2c3e-4c0d-b6c2-836a287b9e5f).
+
+A typical integration looks like this:
+
+```c
+#include "memfault/core/data_packetizer.h"
+// [...]
+
+bool try_send_memfault_data(void) {
+  // buffer to copy chunk data into
+  uint8_t buf[USER_CHUNK_SIZE];
+  size_t buf_len = sizeof(buf);
+
+  bool data_available = memfault_packetizer_get_chunk(buf, &buf_len);
+  if (!data_available ) {
+    return false; // no more data to send
+  }
+
+  // send payload collected to chunks endpoint
+  user_transport_send_chunk_data(buf, buf_len);
+  return true;
+}
+
+void send_memfault_data(void) {
+  // [... user specific logic deciding when & how much data to send
+  while (try_send_memfault_data()) { }
+}
+```
+
+### Force a Crash and Upload to Memfault
+
+Example crashes can be generated using the `mflt` CLI:
+
+```bash
+uart:~$ mflt crash
+# ...
+*** Booting Zephyr OS build v2.4.0-ncs1  ***
+<inf> <mflt>: GNU Build ID: ef460cafbcf67633d470c125a7cc8fd02ed97538
+Memfault Demo App Started!
+uart:~$ mflt get_core
+<inf> <mflt>: Has coredump with size: 3764
+```
+
+On nRF91 you can post directly to the cloud:
+
+```bash
+uart:~$ mflt post_chunks
+<dbg> <mflt>: Response Complete: Parse Status 0 HTTP Status 202!
+<dbg> <mflt>: Body: Accepted
+<dbg> <mflt>: No more data to send
+```
+
+#### Test Tip
+
+Data can also also be dumped out over the CLI using the `mflt export_data` CLI
+command.
+
+```bash
+uart:~$ mflt export_data
+<inf> <mflt>: MC:SFQCpwIBAwEHalRFU1RTRVJJQUwKbXRlc3Qtc29mdHdhcmUJajEuMC4wLXRlcw==:
+<inf> <mflt>: MC:gCx0Bm10ZXN0LWhhcmR3YXJlBKEBoXJjaHVua190ZXN0X3N1Y2Nlc3MBMeQ=:
+```
+
+The CLI output can then be saved to a file and the "chunk" data can be posted to
+the Memfault Cloud using the [Memfault CLI tool](/docs/ci/install-memfault-cli):
+
+```bash
+$ memfault --project-key ${YOUR_PROJECT_API_KEY} post-chunk --encoding sdk_data_export cli-output.txt
+Found 2 Chunks. Sending Data ...
+Success
+```
+
+### Upload Symbol File
+
+At this point you should be able to generate a test trace event and push it to
+the Memfault UI. You can confirm the issue has arrived succesfully by navigating
+to the "Issues" page. Follow the link pointed to below and upload a symbol file.
+
+![](/img/docs/embedded/first-trace.png)
+
+After this step you will see the trace in the list of issues!
+
+> :bulb: You can programatically upload symbol files with the
+> [Memfault CLI tool](/docs/ci/install-memfault-cli).
+
+### Troubleshooting Data Transfer
+
+If you run into any issues with your data transfer implementation, we have tools
+to help!
+
+- A UI you can use to
+  [view the raw "Chunk" data payloads](/docs/embedded/test-patterns-for-chunks-endpoint#troubleshooting)
+  that have arrived for your project.
+- [Precanned Data Payloads](/docs/embedded/test-patterns-for-chunks-endpoint)
+  you can pass through your `user_transport_send_chunk_data()` implementation to
+  test data transfer in isolation.
+- A [GDB Script](/docs/embedded/test-data-collection-with-gdb) which can be
+  installed to send chunks programatically every time a breakpoint is hit.
