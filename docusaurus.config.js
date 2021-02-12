@@ -111,6 +111,7 @@ module.exports = {
             {
                 docs: {
                     sidebarPath: require.resolve("./sidebars.js"),
+                    editUrl: "https://github.com/memfault/memfault-docs/edit/master/",
                 },
                 theme: {
                     customCss: require.resolve("./src/css/custom.css"),
