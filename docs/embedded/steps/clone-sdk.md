@@ -11,6 +11,7 @@ mkdir -p third_party/memfault
 cd third_party/memfault
 touch memfault_platform_port.c
 touch memfault_platform_coredump_regions.c
+touch memfault_platform_config.h
 touch memfault_trace_reason_user_config.def
 touch memfault_metrics_heartbeat_config.def
 touch memfault_platform_log_config.h

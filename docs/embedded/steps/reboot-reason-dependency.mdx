@@ -1,0 +1,25 @@
+Memfault can capture MCU specific information about why a device reset.
+
+```c
+//! @file memfault_platform_port.c
+
+#include "memfault/components.h"
+#include "memfault/ports/reboot_reason.h"
+
+void memfault_reboot_reason_get(sResetBootupInfo *info) {
+  // TODO: read platforms reset reason register, if applicable
+  const uint32_t mcu_reset_reason = 0;
+
+  // TODO: Map MCU reset reason to Memfault define, if applicable
+  eMemfaultRebootReason reset_reason;
+  switch (mcu_reset_reason) {
+    default:
+      reset_reason = kMfltRebootReason_PowerOnReset;
+  }
+
+  *info = (sResetBootupInfo) {
+    .reset_reason_reg = mcu_reset_reason ,
+    .reset_reason = reset_reason,
+  };
+}
+```

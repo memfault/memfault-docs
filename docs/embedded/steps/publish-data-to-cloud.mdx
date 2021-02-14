@@ -3,11 +3,12 @@ Extensive details about how data from the Memfault SDK makes it to the cloud
 packetizes data into "chunks" that must be pushed to the Memfault cloud via the
 [chunk REST endpoint](https://api-docs.memfault.com/?version=latest#66b0e390-2c3e-4c0d-b6c2-836a287b9e5f)
 
-A typical integration looks like this:
+The Memfault SDK exposes an api that packatizes Memfault data into "chunks".
+These "chunks" need to be forwarded to the Memfault Cloud (either directly via HTTPs or indirectly via a
+gateway device such as a computer or mobile application)
 
 ```c
-#include "memfault/core/data_packetizer.h"
-// [...]
+#include "memfault/components.h"
 
 bool try_send_memfault_data(void) {
   // buffer to copy chunk data into

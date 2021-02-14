@@ -1,0 +1,165 @@
+---
+id: xilinx-a53-sdk-guide
+title: Xilinx A53 Standalone SDK Guide
+sidebar_label: Xilinx A53 SDK Guide
+---
+
+This tutorial will go over integrating the
+[Memfault Firmware SDK](https://github.com/memfault/memfault-firmware-sdk) into
+a system using the Xilinx A53 (i.e Zynq UltraScale+) in a baremetal environment.
+
+import CloneSdk from './steps/clone-sdk.md'
+import CorePlatformDependencies from './steps/core-platform-dependencies.mdx'
+import TimerDependencies from './steps/timer-dependencies.mdx'
+import AcrhitectureDependencies from './steps/arch-dependencies.mdx'
+import RebootReasonDependency from './steps/reboot-reason-dependency.mdx'
+import DefineFirstHeartbeat from './steps/define-first-heartbeat.mdx'
+import DefineFirstTraceEvent from './steps/define-first-trace-event.mdx'
+import PostChunksLocally from './steps/post-chunks-locally.mdx'
+import UploadSymbolFile from './steps/upload-symbol-file.mdx'
+import PublishDataToCloud from './steps/publish-data-to-cloud.mdx'
+
+## SDK Integration and Port
+
+### Prepare folder for memfault-firmware-sdk & port
+
+<CloneSdk />
+
+### Add Sources to Build System
+
+Right click on the memfault-firmware-sdk in the project explorer in Vitis, select properties, select "C/C++ Build", check "Exclude resource from build", and select "Apply and Close".
+
+Now expand in the project explorer memfault-firmware-sdk/components and follow the same steps as above to deselect "Exclude resource from build" for the core, metrics, & utils folders.
+
+Next we need to add the required include paths. To do this, right click on the project, select properties, expand "C/C++ Build", and select "Settings". Under ARM v8 gcc compiler, select "Directories" and add the path to the "memfault" folder, the path to "memfault-firmware-sdk/components/include", & the path to "memfault-firmware/ports/include" to the list. When done you should see something like the following in the list:
+
+```
+"${workspace_loc:/${ProjName}/third_party/memfault}"
+"${workspace_loc:/${ProjName}/third_party/memfault/memfault-firmware-sdk/ports/include}"
+"${workspace_loc:/${ProjName}/third_party/memfault/memfault-firmware-sdk/components/include}"
+```
+
+### Implement Core Platform Specific Dependencies
+
+<CorePlatformDependencies />
+
+### Implement Logging Dependency
+
+The Memfault SDK will (sparingly) emit diagnostic logs to alert of integration configuration problems.
+The logging subsystem can also easily serve as logging infrastructure for your own platform if you do not
+yet have one set up.
+
+#### Define in platform config that logs will be overriden at macro level
+
+```c
+//! @file memfault_platform_config.h
+#define MEMFAULT_PLATFORM_HAS_LOG_CONFIG 1
+```
+
+#### Remap Memfault Log Macros to Platform Log Implementation
+
+```c
+//! @file memfault_platform_log_config.h
+#pragma once
+
+#include "xil_printf.h"
+
+#define _XIL_PRINTF(lvl, fmt, ...) \
+	xil_printf("MFLT[" lvl "] " fmt "\r\n", ## __VA_ARGS__ )
+
+#define MEMFAULT_LOG_DEBUG(fmt, ...) _XIL_PRINTF("D", fmt, ## __VA_ARGS__)
+#define MEMFAULT_LOG_INFO(fmt, ...)  _XIL_PRINTF("I",  fmt, ## __VA_ARGS__)
+#define MEMFAULT_LOG_WARN(fmt, ...)  _XIL_PRINTF("W", fmt, ## __VA_ARGS__)
+#define MEMFAULT_LOG_ERROR(fmt, ...) _XIL_PRINTF("E", fmt, ## __VA_ARGS__)
+
+#define MEMFAULT_LOG_RAW(fmt, ...) xil_printf(fmt "\r\n", ## __VA_ARGS__)
+```
+
+### Implement Metric Platform Specific Dependencies
+
+<TimerDependencies />
+
+
+### Implement Acrhitecture Platform Specific Dependencies
+
+<AcrhitectureDependencies />
+
+### Implement Reboot Reason Platform Specific Dependencies
+
+<RebootReasonDependency />
+
+### Confirm Integration Links
+
+At this point your project should compile and be able to boot.
+
+
+## Local Testing
+
+
+
+### Define First Trace Event
+
+<DefineFirstTraceEvent />
+
+### Define First Heartbeat
+
+
+<DefineFirstHeartbeat />
+
+
+### Add Test Commands
+
+
+The Memfault SDK functionality can be easily exercised via CLI test commands.
+
+:::note
+If your platform does not have a CLI, these commands can also be
+wired up to a button press or called from `main()` on bootup from a test image
+:::
+
+```c
+#include "memfault/components.h"
+
+int test_reboot(int argc, char *argv[]) {
+  memfault_reboot_tracking_mark_reset_imminent(kMfltRebootReason_UserReset, NULL);
+  memfault_platform_reboot();
+}
+
+int test_trace(int argc, char *argv[]) {
+  MEMFAULT_TRACE_EVENT_WITH_LOG(critical_error, "A test error trace!");
+  return 0;
+}
+
+int test_heartbeat(int argc, char *argv[]) {
+  memfault_metrics_heartbeat_debug_trigger();
+  return 0;
+}
+
+int export_data(int argc, char *argv[]) {
+  // dump data base64 encoded to the console
+  memfault_data_export_dump_chunks();
+  return 0;
+}
+```
+
+### Post data Locally
+
+<PostChunksLocally />
+
+### Upload Symbol File
+
+<UploadSymbolFile/>
+
+### Next Steps
+
+With a way to test the SDK integration in place, run through all the commands, and confirm you see "traces" and "heartbeats" appear in the Memfault UI.
+
+## End-to-End Data Path
+
+### Push Memfault Data to Gateway using Packetizer API
+
+<PublishDataToCloud/>
+
+### Transmit Data From Gateway to Cloud
+
+Once data has arrived on the Gateway it needs to be POST'd over HTTPS using the networking stack available on the device. Example test payloads and more details about the API itself can be found [here](/docs/embedded/test-patterns-for-chunks-endpoint)

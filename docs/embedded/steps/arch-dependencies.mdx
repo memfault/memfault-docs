@@ -1,0 +1,17 @@
+Memfault has a few architecture specific dependencies that need to be implemented.
+
+```c
+//! @file memfault_platform_port.c
+
+#include "memfault/components.h"
+
+void memfault_platform_halt_if_debugging(void) {
+  // This is called when a crash takes place. Can be left blank or
+  // special action can be taken such as issuing a breakpoint instruction
+}
+
+bool memfault_arch_is_inside_isr(void) {
+   // Only needs to be implemented if Memfault APIs will be called from ISRs
+   return false;
+}
+```

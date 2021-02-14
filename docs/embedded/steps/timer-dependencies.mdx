@@ -1,0 +1,19 @@
+Memfault requires one timer to trigger generation of "heartbeats" and to measure durations. The
+following APIs must be implemented by the platform.
+
+
+```c
+//! @file memfault_platform_port.c
+#include "memfault/components.h"
+
+
+uint64_t memfault_platform_get_time_since_boot_ms(void) {
+  // TODO: Retrieve the uptime from your platform
+  return 0;
+}
+
+bool memfault_platform_metrics_timer_boot(uint32_t period_sec, MemfaultPlatformTimerCallback callback) {
+  // TODO: Implement a timer that will invoke callback() at an interval of period_sec
+  return true;
+}
+```
