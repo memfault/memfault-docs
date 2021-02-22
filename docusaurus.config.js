@@ -28,16 +28,19 @@ module.exports = {
             items: [
                 {
                     to: "docs/platform/memfault-terminology",
+                    activeBasePath: "docs/platform",
                     label: "Platform",
                     position: "left",
                 },
                 {
                     to: "docs/embedded/introduction",
+                    activeBasePath: "docs/embedded",
                     label: "Embedded",
                     position: "left",
                 },
                 {
                     to: "docs/android/introduction",
+                    activeBasePath: "docs/android",
                     label: "Android",
                     position: "left",
                 },
@@ -111,7 +114,8 @@ module.exports = {
             {
                 docs: {
                     sidebarPath: require.resolve("./sidebars.js"),
-                    editUrl: "https://github.com/memfault/memfault-docs/edit/master/",
+                    editUrl:
+                        "https://github.com/memfault/memfault-docs/edit/master/",
                 },
                 theme: {
                     customCss: require.resolve("./src/css/custom.css"),
