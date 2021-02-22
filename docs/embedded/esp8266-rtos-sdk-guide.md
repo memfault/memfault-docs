@@ -1,7 +1,7 @@
 ---
 id: esp8266-rtos-sdk-guide
-title: ESP8266 RTOS SDK Guide
-sidebar_label: ESP8266 RTOS SDK Guide
+title: ESP8266 RTOS Integration Guide
+sidebar_label: ESP8266 RTOS SDK
 ---
 
 ## Overview

@@ -42,11 +42,10 @@ an error, and publish data to the Memfault cloud:
 
 | MCU Architecture |                  Getting Started Guide                   |
 | ---------------- | :------------------------------------------------------: |
-| ARM Cortex-M     |      [ARM GCC Guide](/docs/embedded/arm-gcc-guide)       |
-| ARM Cortex-M     |      [ARM IAR Guide](/docs/embedded/arm-iar-guide)       |
-| ARM Cortex-M     |      [ARM MDK Guide](/docs/embedded/arm-mdk-guide)       |
-| nRF Connect SDK  | [nRF Connect SDK ](/docs/embedded/nrf-connect-sdk-guide) |
-| ESP32            | [Espressif IoT Development](/docs/embedded/esp32-guide)  |
+| ARM Cortex-M    |      [ARM Cortex-M Integration Guide](/docs/embedded/arm-cortex-m-guide)       |
+| nRF Connect SDK  | [nRF Connect SDK Integration Guide](/docs/embedded/nrf-connect-sdk-guide) |
+| ESP32 ESP-IDF           | [ESP32 ESP-IDF Integration Guide](/docs/embedded/esp32-guide)  |
+| ESP8266            | [ESP8266 RTOS Integration Guide](/docs/embedded/esp8266-rtos-sdk-guide)  |
 
 </center>
 

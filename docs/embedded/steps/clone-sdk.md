@@ -27,11 +27,11 @@ project:
 memfault/
 //...
 ├── memfault-firmware-sdk (submodule)
-| #
+| # Files where port to your platform will be implemented
 ├── memfault_platform_port.c
 ├── memfault_platform_coredump_regions.c
 |
-| # Configuration Files
+| # Configuration Headers
 ├── memfault_metrics_heartbeat_config.def
 └── memfault_trace_reason_user_config.def
 └── memfault_platform_log_config.h

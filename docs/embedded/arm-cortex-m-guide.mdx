@@ -1,0 +1,120 @@
+---
+id: arm-cortex-m-guide
+title: ARM Cortex-M Integration Guide
+sidebar_label: ARM Cortex-M
+---
+
+import TryFlow from './steps/try-flow.mdx'
+import CloneSdk from './steps/clone-sdk.md'
+import AddSources from './steps/add-sources.mdx'
+import CorePlatformDependencies from './steps/core-platform-dependencies.mdx'
+import AddBuildId from './steps/add-build-id.mdx'
+import LoggingDependency from './steps/logging-dependency.mdx'
+import RtosPorts from './steps/rtos-ports.mdx'
+import CoredumpDependency from './steps/coredump-dependency.mdx'
+import RegisterAssert from './steps/register-assert.mdx'
+import CreateProjectKey from './steps/create-project-key.mdx'
+import UploadSymbolFile from './steps/upload-symbol-file.mdx'
+import DataTransferTroubleshooting from './steps/data-transfer-troubleshooting.mdx'
+import PostChunksLocally from './steps/post-chunks-locally.mdx'
+import PublishDataToCloud from './steps/publish-data-to-cloud.mdx'
+import DefineFirstTraceEvent from './steps/define-first-trace-event.mdx'
+import DefineFirstHeartbeat from './steps/define-first-heartbeat.mdx'
+import AddCliTestCommands from './steps/add-cli-test-commands.mdx'
+import FwSdkFeatures from './steps/sdk-features.mdx'
+
+## Overview
+
+The following guide will walk you through step-by-step how to integrate and test the Memfault SDK
+for a Cortex-M device using the GNU GCC, Clang, IAR, ARM MDK, or TI ARM Compiler.
+
+<FwSdkFeatures/>
+
+## Pre-Integration
+
+### (Optionally) Collect a coredump capture using GDB
+
+<TryFlow />
+
+## Integration Steps
+
+### Prepare folder for memfault-firmware-sdk & port
+
+<CloneSdk />
+
+### Add Sources to Build System
+
+<AddSources />
+
+### Implement Core Platform Specific Dependencies
+
+<CorePlatformDependencies />
+
+### Add a Unique Identifier to target
+<AddBuildId />
+
+### Implement Logging Dependency
+
+<LoggingDependency />
+
+### Add RTOS Port Files
+
+<RtosPorts />
+
+### Register Assert Handler
+
+<RegisterAssert />
+
+### Implement Coredump Storage Dependency
+
+<CoredumpDependency />
+
+
+### Confirm Integration Links
+
+At this point your project should compile and be able to boot.
+On startup you should see some messaging like:
+
+```
+[I] MFLT: Memfault Build ID: d8d6a047282f025fffa29fa767100f310bc40f80
+```
+
+## Verification & Tuning Steps
+
+With Memfault compiling into your build, it's now time to add some initial instrumentation, and test the integration!
+
+### Define First Trace Event
+
+<DefineFirstTraceEvent />
+
+### Define First Heartbeat
+
+
+<DefineFirstHeartbeat />
+
+### Add Test Commands to CLI
+
+<AddCliTestCommands/>
+
+
+### Post data Locally
+
+<PostChunksLocally />
+
+### Upload Symbol File
+
+<UploadSymbolFile/>
+
+### Troubleshooting Data Transfer
+
+<DataTransferTroubleshooting/>
+
+
+## Data Transport Steps
+
+With data collection verified locally, the final step is to push data automatically to the Memfault
+cloud for analysis.
+
+### Push Data to Cloud over Device Transport
+
+<PublishDataToCloud/>

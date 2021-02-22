@@ -1,7 +1,7 @@
 ---
 id: nrf-connect-sdk-guide
-title: nRF Connect SDK Integration
-sidebar_label: nRF Connect SDK Guide
+title: nRF Connect SDK Integration Guide
+sidebar_label: nRF Connect SDK
 ---
 
 In this guide we will walk through the steps for integrating the

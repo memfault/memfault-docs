@@ -39,9 +39,11 @@ Update your build system to invoke the `scripts/fw_build_id.py` script on your E
 
 For example, using CMake, this can be achieved by adding a custom command to the target:
 
+```bash
 add_custom_command(TARGET ${YOUR_EXECUTABLE_NAME} POST_BUILD
   COMMAND python ${MEMFAULT_SDK_ROOT}/scripts/fw_build_id.py ${YOUR_EXECUTABLE_NAME}
 )
+```
 
 :::info
 The script depends on `pyelftools` so make sure you have run `pip install pyelftools` or added to your `requirements.txt`

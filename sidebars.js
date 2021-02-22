@@ -22,19 +22,17 @@ module.exports = {
             "embedded/introduction",
             {
                 type: "category",
-                label: "Getting Started",
+                label: "Getting Started Guides",
                 items: [
-                    "embedded/arm-gcc-guide",
-                    "embedded/arm-iar-guide",
-                    "embedded/arm-mdk-guide",
-                    "embedded/esp32-guide",
+                    "embedded/arm-cortex-m-guide",
                     "embedded/nrf-connect-sdk-guide",
+                    "embedded/esp32-guide",
                     "embedded/esp8266-rtos-sdk-guide",
                 ],
             },
             {
                 type: "category",
-                label: "Subsystem Integration Guides",
+                label: "Subsystem Guides",
                 items: [
                     /* Order in which subsystems ideally get integrated */
                     "embedded/coredumps",

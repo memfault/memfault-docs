@@ -1,7 +1,7 @@
 ---
 id: esp32-guide
-title: ESP32 Getting Started Guide
-sidebar_label: ESP32 Guide
+title: ESP32 ESP-IDF Integration Guide
+sidebar_label: ESP32 ESP-IDF
 ---
 
 This tutorial will go over integrating the **panics** component of the
