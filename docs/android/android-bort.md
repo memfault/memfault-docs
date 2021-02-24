@@ -22,7 +22,8 @@ The Bort SDK supports two parallel and complementary data collection systems:
 1. [Bug reports](#bug-reports-via-memfaultdumpstaterunner), a diagnostics
    reporting tool built into AOSP.
 2. [Memfault Caliper](#memfault-caliper), a system designed to precisely specify
-   what diagnostics information to collect on the device.
+   what diagnostics information to collect on the device for improved performance
+   and privacy.
 
 Below is a summary of the Bort SDK features and the version of the SDK in which
 they were added.
@@ -33,9 +34,9 @@ they were added.
 | Device History Metrics | 1.0         | 3.0     |
 | Fleet-Wide Metrics     | 3.0         | 3.0     |
 | Reboot Events          | 3.0         | 3.0     |
+| Logs                   | 1.0         | 3.3     |
 | Installed Packages     | 1.0         | Future  |
 | System Properties      | 1.0         | Future  |
-| Logs                   | 1.0         | Future  |
 
 ## Components
 
@@ -50,17 +51,6 @@ involves the following components that work together.
 
 The _Bort_ app is a configurable, updatable app that controls the SDK's behavior
 and contains the SDK's business logic.
-
-<!--- MFLT-2621
-Inside this app, you can apply various configuration options. For example, you
-can specify if each data source:
-
-- requires constraints to be met before running or uploading; for example, being
-  connected to battery power or an unmetered network
-- requires a run-time enablement signal before any diagnosics are collected, for
-  example to signal that an end-user has accepted the terms of service
-- should be collected at a custom interval
---->
 
 When the _Bort_ app has collected diagnostics data, it will enqueue it for
 upload, which will take place when the relevant constraints are met.
@@ -101,12 +91,14 @@ to receive traces and crash data from the operating system.
 Metrics are collected using the
 [Batterystats subsystem](https://cs.android.com/android/platform/superproject/+/master:frameworks/base/core/java/android/os/BatteryStats.java).
 
+Logs are tailed from [logcat](https://developer.android.com/studio/command-line/logcat).
+
 For a summary of _Caliper_'s features, see
-[Feature Release History Caliper](#feature-release-history).
+[Feature Release History](#feature-release-history).
 
 ### Bug Reports via _MemfaultDumpstateRunner_
 
-When a [bug reports](https://developer.android.com/studio/debug/bug-report) is
+When a [bug report](https://developer.android.com/studio/debug/bug-report) is
 requested by the _Bort_ app, the _UsageReporter_ app invokes invokes the
 `MemfaultDumpstateRunner` to capture the bug report.
 
@@ -148,6 +140,32 @@ but through the slightly specialized `memfault_dumpstatez`. See
 
 ## Features and Configuration
 
+The Bort SDK contains an _Over The Air_ settings system so that settings are
+defined on the web in your Memfault project, and the SDK will periodically pull
+the latest settings. This makes it easy to enable or disable different data
+sources, or change configuration options. Settings can be updated through the web UI
+or programmatically via web endpoint -- no need to deploy an app or OS update.
+
+The settings can be found in the `Settings` part of the web UI. SDK settings are
+only visible to and configurable by project administrators.
+
+### Default SDK Settings
+
+As part of the build process, the Bort SDK will fetch the current SDK settings and store
+them as a file called `settings.json`. We recommend storing this file in your version
+control system. The Bort SDK embeds this file as the default SDK settings, used temporarily
+until fresh settings are retrieved from the web.
+
+If, during the build process, the Bort SDK detects the local `settings.json` is stale,
+the build will intentionally fail to alert you that the default settings are out of
+date. To fix this, remove the stale `settings.json` file and re-run the build.
+
+If you wish to disable this check, you can skip this step when building the Bort APK by setting a gradle property:
+
+```
+SKIP_DOWNLOAD_SYSTEM_SETTINGS_JSON=1
+```
+
 ### Bug report capture period
 
 The bort app periodically generates bug reports by scheduling a periodic task to
@@ -176,9 +194,7 @@ If you do not have those constraints and would like to download the bug reports
 from Memfault to look at deeper diagnostics information, we recommend disabling
 minimal mode and capturing "full" bug reports.
 
-To enable "minimal" mode, configure the `BUG_REPORT_MINIMAL_MODE` property in
-`bort.properties` to be `true`. The default is `false` (capture full bug
-reports).
+Enable "minimal" mode via the [SDK settings](#features-and-configuration).
 
 ### Triggering a bug report programmatically
 
