@@ -1,0 +1,6 @@
+# See CODEOWNERS syntax documentation at:
+# https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/about-code-owners#codeowners-syntax
+
+* @chrisc11
+/src/ @memfault/owners-typescript @chrisc11
+/docs/ @memfault/owners-docs
