@@ -81,10 +81,8 @@ property. We also recommend updating the other properties as necessary, for
 example, updating the SDK levels to match the API level of your OS and updating
 the build tools version to what is available in your environment.
 
-Additional settings can also be configured this file, such as the bug report
-generation (request) interval, in hours; the minimum log level that will be
-logged to LogCat; and the maximum number of times bort will attempt to re-try
-uploading a bug report.
+Additional settings can be configured via the Bort SDK over-the-air
+[SDK settings](android-bort.md#features-and-configuration) system.
 
 One setting that is worth calling out, is the option to capture "minimal" bug
 reports. If system load or bandwidth are concerns for your deployment, we
