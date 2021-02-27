@@ -142,7 +142,7 @@ but through the slightly specialized `memfault_dumpstatez`. See
 
 The Bort SDK contains an _Over The Air_ settings system so that settings are
 defined on the web in your Memfault project, and the SDK will periodically pull
-the latest settings. This makes it easy to enable or disable different data
+the latest settings at run-time. This makes it easy to enable or disable different data
 sources, or change configuration options. Settings can be updated through the web UI
 or programmatically via web endpoint -- no need to deploy an app or OS update.
 
