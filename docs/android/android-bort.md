@@ -91,7 +91,7 @@ to receive traces and crash data from the operating system.
 Metrics are collected using the
 [Batterystats subsystem](https://cs.android.com/android/platform/superproject/+/master:frameworks/base/core/java/android/os/BatteryStats.java).
 
-Logs are tailed from [logcat](https://developer.android.com/studio/command-line/logcat).
+Logs are collected from [logcat](https://developer.android.com/studio/command-line/logcat) when issues occur.
 
 For a summary of _Caliper_'s features, see
 [Feature Release History](#feature-release-history).
@@ -149,11 +149,15 @@ or programmatically via a web endpoint -- no need to deploy an app or OS update.
 The settings can be found in the `Settings` part of the web UI. SDK settings are
 only visible to and configurable by project administrators.
 
-### Default SDK Settings
+<p align="center">
+  <img width="800" src="/binary-assets/android-project-web-sdk-settings.gif" />
+</p>
+
+### Fallback SDK Settings
 
 As part of the build process, the Bort SDK will fetch the current SDK settings and store
 them as a file called `settings.json`. We recommend storing this file in your version
-control system. The Bort SDK embeds this file as the default SDK settings, used temporarily
+control system. The Bort SDK embeds this file as fallback SDK settings, used temporarily
 until fresh settings are retrieved from the web, at run-time.
 
 If, during the build process, the Bort SDK detects the local `settings.json` is stale,
@@ -177,7 +181,7 @@ happens, the app will register the periodic task if one is not registered.
 
 There are configuration options to set the period of this task as well as the
 initial delay for when the first bug report is generated (e.g. if you wish to
-wait until more data is available) is described below.
+wait until more data is available). See [SDK settings](#features-and-configuration).
 
 Bug reports can also be triggered programmatically via an `Intent`.
 
