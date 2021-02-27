@@ -154,7 +154,7 @@ only visible to and configurable by project administrators.
 As part of the build process, the Bort SDK will fetch the current SDK settings and store
 them as a file called `settings.json`. We recommend storing this file in your version
 control system. The Bort SDK embeds this file as the default SDK settings, used temporarily
-until fresh settings are retrieved from the web.
+until fresh settings are retrieved from the web, at run-time.
 
 If, during the build process, the Bort SDK detects the local `settings.json` is stale,
 the build will intentionally fail to alert you that the default settings are out of
