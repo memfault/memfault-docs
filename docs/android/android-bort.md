@@ -144,7 +144,7 @@ The Bort SDK contains an _Over The Air_ settings system so that settings are
 defined on the web in your Memfault project, and the SDK will periodically pull
 the latest settings at run-time. This makes it easy to enable or disable different data
 sources, or change configuration options. Settings can be updated through the web UI
-or programmatically via web endpoint -- no need to deploy an app or OS update.
+or programmatically via a web endpoint -- no need to deploy an app or OS update.
 
 The settings can be found in the `Settings` part of the web UI. SDK settings are
 only visible to and configurable by project administrators.
