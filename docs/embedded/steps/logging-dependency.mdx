@@ -26,7 +26,7 @@ macros to the `memfault_platform_log_config.h` file created earlier.
 <details>
   <summary>Platform has no logging or uses printf()</summary>
 
-Implement `memfault_platform_log()` in `third_party/memfault/memfault_port.c`. For example,
+Implement `memfault_platform_log()` in `third_party/memfault/memfault_platform_port.c`. For example,
 
 ```c
 void memfault_platform_log(eMemfaultPlatformLogLevel level, const char *fmt, ...) {
