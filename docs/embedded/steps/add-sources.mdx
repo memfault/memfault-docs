@@ -5,14 +5,21 @@ and follow the steps to add the sources to your target
   <summary>Make</summary>
 
 ```
-MEMFAULT_SDK_ROOT := <YOUR_PROJECT_ROOT>/third_party/memfault
-include ${MEMFAULT_SDK_ROOT}/makefiles/MemfaultWorker.mk
+MEMFAULT_PORT_ROOT := <YOUR_PROJECT_ROOT>/third_party/memfault
+MEMFAULT_SDK_ROOT := $(MEMFAULT_PORT_ROOT)/memfault-firmware-sdk
 
 MEMFAULT_COMPONENTS := core util panics metrics
 include $(MEMFAULT_SDK_ROOT)/makefiles/MemfaultWorker.mk
 
-<YOUR_SRC_FILES> += $(MEMFAULT_COMPONENTS_SRCS)
-<YOUR_INCLUDE_PATHS> += $(MEMFAULT_COMPONENTS_INC_FOLDERS)
+<YOUR_SRC_FILES> += \
+  $(MEMFAULT_COMPONENTS_SRCS) \
+  $(MEMFAULT_PORT_ROOT)/memfault_platform_port.c \
+  $(MEMFAULT_PORT_ROOT)/memfault_platform_coredump_regions.c
+
+<YOUR_INCLUDE_PATHS> += \
+  $(MEMFAULT_COMPONENTS_INC_FOLDERS) \
+  $(MEMFAULT_SDK_ROOT)/ports/include \
+  $(MEMFAULT_PORT_ROOT)
 ```
 
 :::info
@@ -26,14 +33,22 @@ Be sure to update `YOUR_SRC_FILES`, `YOUR_INCLUDE_PATHS`, and
   <summary>CMake</summary>
 
 ```
-set(MEMFAULT_SDK_ROOT <YOUR_PROJECT_ROOT>/third_party/memfault)
+set(MEMFAULT_PORT_ROOT <YOUR_PROJECT_ROOT>/third_party/memfault)
+set(MEMFAULT_SDK_ROOT ${MEMFAULT_PORT_ROOT}/memfault-firmware-sdk)
+
 list(APPEND MEMFAULT_COMPONENTS core util panics metrics)
 include(${MEMFAULT_SDK_ROOT}/cmake/Memfault.cmake)
 memfault_library(${MEMFAULT_SDK_ROOT} MEMFAULT_COMPONENTS
  MEMFAULT_COMPONENTS_SRCS MEMFAULT_COMPONENTS_INC_FOLDERS)
 
-# ${MEMFAULT_COMPONENTS_SRCS} contains the sources
-# needed for the library and ${MEMFAULT_COMPONENTS_INC_FOLDERS} contains the include paths
+# Add the following to your target sources:
+#   ${MEMFAULT_COMPONENTS_SRCS}
+#   ${MEMFAULT_PORT_ROOT}/memfault_platform_port.c
+#   ${MEMFAULT_PORT_ROOT}/memfault_platform_coredump_regions.c
+#
+# Add the following to your target includes
+#   ${MEMFAULT_COMPONENTS_INC_FOLDERS}
+#   ${MEMFAULT_PORT_ROOT}
 ```
 
 :::info
@@ -49,5 +64,7 @@ and `${MEMFAULT_COMPONENTS_INC_FOLDERS}` to your target includes accordingly
 1. add `$MEMFAULT_FIRMWARE_SDK/components/include` to the include paths for your project
 2. add `$MEMFAULT_FIRMWARE_SDK/ports/include` to the include paths for your project
 3. add the sources under `$MEMFAULT_FIRMWARE_SDK/components/[core, util, panics, metrics]/src/**/*.c` to your project
+4. add `third_party/memfault/memfault_platform_port.c` & `third_party/memfault/memfault_platform_coredump_regions.c` sources to project
+5. add `third_party/memfault/` to the include paths for your project
 
 </details>

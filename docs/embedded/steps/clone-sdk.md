@@ -15,6 +15,7 @@ touch memfault_platform_config.h
 touch memfault_trace_reason_user_config.def
 touch memfault_metrics_heartbeat_config.def
 touch memfault_platform_log_config.h
+touch memfault_platform_config.h
 
 # Add memfault repo as submodule, subtree, or copy in as source directly
 git submodule add https://github.com/memfault/memfault-firmware-sdk.git memfault-firmware-sdk
@@ -35,4 +36,5 @@ memfault/
 ├── memfault_metrics_heartbeat_config.def
 └── memfault_trace_reason_user_config.def
 └── memfault_platform_log_config.h
+└── memfault_platform_config.h
 ```

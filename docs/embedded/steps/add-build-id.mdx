@@ -12,7 +12,7 @@ Memfault has two ways to add a Build ID to a target. Select the appropriate one 
   <summary>GNU Build ID (Requires Use of GNU GCC Compiler)</summary>
 
 1. Add `-Wl,--build-id` to flags passed to linker via GCC
-2. Add `-DMEMFAULT_USE_GNU_BUILD_ID=1` CFLAG to CC invocation
+2. Add `#define MEMFAULT_USE_GNU_BUILD_ID 1` to `third_party/memfault/memfault_platform_config.h`
 3. Add the following snippet to your projects linker script (`.ld` file)
    where "FLASH" below will match the name of the MEMORY section
    read-only data and text is placed in.
