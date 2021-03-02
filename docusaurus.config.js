@@ -126,4 +126,14 @@ module.exports = {
             async: true,
         },
     ],
+    plugins: [
+        [
+            "@docusaurus/plugin-content-blog",
+            {
+                id: "embed",
+                routeBasePath: "embed",
+                path: "./embed",
+            },
+        ],
+    ],
 };

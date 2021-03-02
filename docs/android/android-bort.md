@@ -13,7 +13,7 @@ This document provides a detailed reference of the SDK, how it works, and how to
 configure it.
 
 For a detailed guide on how to integrate the Bort SDK into your devices, see the
-[Getting Started](android/android-getting-started-guide.md) guide.
+[Getting Started](android/android-getting-started-guide.mdx) guide.
 
 ## Feature Release History
 

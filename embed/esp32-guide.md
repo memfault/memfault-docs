@@ -1,0 +1,5 @@
+import Docs from '../docs/embedded/esp32-guide.mdx'
+
+# ESP32 ESP-IDF Integration Guide
+
+<Docs />

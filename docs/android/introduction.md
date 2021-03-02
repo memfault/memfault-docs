@@ -54,7 +54,7 @@ _Caliper_ system, or bug reports, or both, depending on how the _Bort_
 application is configured.
 
 For a detailed integration guide, see the
-[Getting Started Guide](android-getting-started-guide.md).
+[Getting Started Guide](android-getting-started-guide.mdx).
 
 To symbolicate native and ANR traces, as well as deobfuscate android traces,
 Memfault provides a CLI tool that can be integrated into your build system to

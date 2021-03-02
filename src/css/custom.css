@@ -59,11 +59,17 @@ section.features_src-pages- {
 .embed-mode .navbar,
 .embed-mode .footer,
 .embed-mode .pagination-nav,
-.embed-mode [class^="docSidebarContainer"] {
+.embed-mode article header,
+.embed-mode .hash-link,
+.embed-mode .container > .row > .col {
     display: none;
 }
 
-.embed-mode main .container {
+.embed-mode .container > .row > main.col {
+    display: block;
+}
+
+.embed-mode .container {
     margin: 0;
     max-width: 100%;
 }
