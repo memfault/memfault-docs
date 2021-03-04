@@ -82,9 +82,11 @@ property.
 We also recommend updating the other properties as necessary, for
 example, updating the SDK levels to match the API level of your OS and updating
 the build tools version to what is available in your environment.
-Note that **updating the target SDK version may be required to pass
-[CTS](https://source.android.com/compatibility/cts)**. This can be
-done by changing the `TARGET_SDK_VERSION` property in
+
+If your devices will have [Google Mobile Services (GMS)](https://www.android.com/intl/en_ca/gms/)
+and must run the [Compatibility Test Suite (CTS)](https://source.android.com/compatibility/cts),
+you may need to **update the Bort target SDK version** to match the API level of your OS.
+This can be done by updating the `TARGET_SDK_VERSION` property in
 `MemfaultPackages/bort.properties`.
 
 Additional settings can be configured via the Bort SDK over-the-air
