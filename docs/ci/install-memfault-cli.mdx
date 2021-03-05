@@ -52,6 +52,59 @@ Commands:
   upload-symbols              Upload symbols for a Firmware or Android...
 ```
 
+### Authentication
+
+There are four different ways to authenticate using the Memfault CLI.
+
+1. With a user email and password
+1. With a user email and user API key
+2. With a Memfault Project key
+3. With an Organization Auth token
+
+Not all commands will work with every authentication method. Below shows which commands
+require which forms of authentication.
+
+| Command                    | Email + Password   | Email + API key    | Organization Token   | Project Key |
+|----------------------------|:------------------:|:------------------:|:--------------------:|:-------------:|
+| post-chunk                 |                    |                    |                     |      ✅      |
+| upload-android-app-symbols |         ✅          |         ✅        |          ✅          |             |
+| upload-bugreport           |         ✅          |         ✅        |          ✅          |      ✅      |
+| upload-coredump            |         ✅          |         ✅        |          ✅          |      ✅      |
+| upload-ota-symbols         |         ✅          |         ✅        |          ✅          |             |
+| upload-symbols             |         ✅          |         ✅        |          ✅          |             |
+
+#### Using Email and Password or User API Key
+
+To use email and password authentication, pass `--email` and `--password` after the `memfault` command.
+
+```
+$ memfault --email ${YOUR_EMAIL} --password ${USER_PASSWORD} ...
+```
+
+or
+
+```
+$ memfault --email ${YOUR_EMAIL} --password ${YOUR_USER_API_KEY} ...
+```
+
+#### Using Organization Auth Token
+
+To use an Organization auth token, pass `--password` with the contents of your Organization Auth token after the `memfault` command.
+
+```
+$ memfault --password ${ORGANIZATION_AUTH_TOKEN} ...
+```
+
+
+#### Using Memfault Project Key
+
+To use a Memfault Project key, pass `--project-key` after the `memfault` command.
+
+```
+$ memfault --project-key ${ORGANIZATION_AUTH_TOKEN} ...
+```
+
+
 ### Example Usage: Uploading Firmware Symbols
 
 <AuthTokenRequiredCallout />
