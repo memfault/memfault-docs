@@ -8,23 +8,16 @@ local QA testing or in CI/CD test automation setups.
 
 :::
 
-#### Add a CLI command to Export Data
-
-```c
-#include "memfault/core/data_export.h"
-
-int export_data(int argc, char *argv[]) {
-  memfault_data_export_dump_chunks();
-}
-```
-
 #### Export Data to Console
+
+To test it out, call the `test_export` command added to your CLI above:
 
 ```
 shell> reboot
 [00:00:01] INFO: System Booting!
 [00:00:02] INFO: Memfault Build ID: d8d6a047282f025fffa29fa767100f310bc40f80
 shell> trace
+# CLI command making a call to `memfault_data_export_dump_chunks`
 shell> export
 [00:00:10] INFO: MC:SFQCpwIBAwEHalRFU1RTRVJJQUwKbXRlc3Qtc29mdHdhcmUJajEuMC4wLXRlcw==:
 //...

@@ -1,5 +1,4 @@
-Heartbeat metrics allow you to easily monitor a system for marginality issues
-and to ensure things are running as expected.
+Heartbeat metrics allow you to easily monitor your platform and confirm it is operating as expected.
 
 <details>
 
@@ -34,8 +33,7 @@ Best Practices around each metric type that we recommend:
 
 ```c
 //! @file memfault_metrics_heartbeat_config.def
-MEMFAULT_METRICS_KEY_DEFINE(MainTaskWakeups,
-   kMemfaultMetricType_Unsigned)
+MEMFAULT_METRICS_KEY_DEFINE(MainTaskWakeups, kMemfaultMetricType_Unsigned)
 ```
 
 #### Instrument Code to Update Heartbeat

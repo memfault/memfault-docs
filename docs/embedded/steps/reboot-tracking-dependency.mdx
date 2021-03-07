@@ -11,57 +11,13 @@ Add the following file to your build system:
   ${MEMFAULT_SDK_ROOT}/ports/nrf5_sdk/memfault_platform_metrics.c
 ```
 
-Add call to `memfault_platform_reboot_tracking_boot()` from
-`memfault_platform_boot()`
-
-```diff
-//! @file memfault_platform_port.c
-
-int memfault_platform_boot(void) {
-+ memfault_platform_reboot_tracking_boot();
-+
-  memfault_build_info_dump();
-}
-```
-
 </details>
 
 <details>
 
-<summary> Template </summary>
+<summary> Other </summary>
 
-#### Allocate noinit region
-
-A region of RAM that does not get initialized across resets needs to be
-allocated for saving information about resets that are about to take place.
-
-```diff
-//! @file memfault_platform_port.c
-
-+ MEMFAULT_PUT_IN_SECTION(".noinit")
-+ static uint8_t s_reboot_tracking[MEMFAULT_REBOOT_TRACKING_REGION_SIZE];
-```
-
-:::note
-
-You will need to update your linker script for the variable to be in noinit RAM.
-
-:::
-
-#### Collect reboot info
-
-```diff
-//! @file memfault_platform_port.c
-
-int memfault_platform_boot(void) {
-+  sResetBootupInfo reset_info = { 0 };
-+  memfault_reboot_reason_get(&reset_info);
-+  memfault_reboot_tracking_boot(s_reboot_tracking, &reset_info);
-  memfault_build_info_dump();
-}
-```
-
-#### Add `memfault_reboot_reason_get()`
+#### Implement `memfault_reboot_reason_get()`
 
 <details>
 
@@ -147,5 +103,30 @@ void memfault_reboot_reason_get(sResetBootupInfo *info) {
 ```
 
 </details>
+
+#### Allocate noinit region & Collect Reboot Info
+
+Add the following to your `memfault_platform_port.c`
+
+```c
+//! @file memfault_platform_port.c
+
+MEMFAULT_PUT_IN_SECTION(".noinit.mflt_reboot_tracking")
+static uint8_t s_reboot_tracking[MEMFAULT_REBOOT_TRACKING_REGION_SIZE];
+
+void memfault_platform_reboot_tracking_boot(void) {
+  sResetBootupInfo reset_info = { 0 };
+  memfault_reboot_reason_get(&reset_info);
+  memfault_reboot_tracking_boot(s_reboot_tracking, &reset_info);
+}
+```
+
+:::note
+
+It's expected that `s_reboot_tracking` is placed in "noinit" RAM. That is,
+a region of RAM not initialized on bootup or used by your bootloaders. This
+can be achieved by adding a "noinit" section to your linker script.
+
+:::
 
 </details>

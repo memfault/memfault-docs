@@ -29,16 +29,14 @@ Add the following file to your build system:
 
 <summary> Template </summary>
 
-```
+```c
 //! @file memfault_platform_port.c
 
 bool memfault_platform_metrics_timer_boot(uint32_t period_sec, MemfaultPlatformTimerCallback callback) {
   // Schedule a timer to invoke callback() repeatedly after period_sec
   return true;
 }
-```
 
-```
 uint64_t memfault_platform_get_time_since_boot_ms(void) {
   // Return time since boot in ms, this is used for relative timings.
   return 0;

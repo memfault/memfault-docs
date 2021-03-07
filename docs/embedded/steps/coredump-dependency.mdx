@@ -2,127 +2,126 @@ When the system faults or asserts crash information can be recorded and sent to
 Memfault after the device reboots. In order for this information to be saved, it
 must be persisted to a storage area that persists across a device reset.
 
-#### Specify RAM regions to capture in Coredump
-
-When a coredump takes place, you can control the exact memory regions that are
-captured for analysis, `s_coredump_regions`. We recommend collecting the active
-stack at a minimum.
-
-```c
-//! @file memfault_port_coredump_regions.c
-
-#include "memfault/components.h"
-
-//! holds the RAM regions to collect in a coredump
-static sMfltCoredumpRegion s_coredump_regions[1];
-
-//! Truncates the region if it's outside the bounds of RAM
-size_t memfault_platform_sanitize_address_range(void *start_addr, size_t desired_size) {
-  // TODO: Populate with actual boundaries of RAM for target MCU
-  const uint32_t ram_start = 0x00000000;
-  const uint32_t ram_end = 0xFFFFFFFF;
-
-  if ((uint32_t)start_addr >= ram_start && (uint32_t)start_addr < ram_end) {
-    return MEMFAULT_MIN(desired_size, ram_end - (uint32_t)start_addr);
-  }
-  return 0;
-}
-
-//! The RAM regions to collect in a coredump capture
-const sMfltCoredumpRegion *memfault_platform_coredump_get_regions(
-    const sCoredumpCrashInfo *crash_info, size_t *num_regions) {
-  int region_idx = 0;
-
-  // first, capture the stack that was active at the time of crash
-  const size_t active_stack_size_to_collect = 512;
-  s_coredump_regions[region_idx++] = MEMFAULT_COREDUMP_MEMORY_REGION_INIT(
-      crash_info->stack_address,
-      memfault_platform_sanitize_address_range(crash_info->stack_address,
-                                               active_stack_size_to_collect));
-
-  *num_regions = region_idx;
-  return &s_coredump_regions[0];
-}
-```
-
 #### Implement Coredump Storage Area
 
 Coredumps can be saved in a `.noinit` region of SRAM, internal flash, external
 flash, or even streamed out over a peripheral to another MCU when a coredump
 takes place.
 
-Reference ports can be found below:
-
-:::note
-
-Make sure you have added the `*_coredump_storage.c` port selected to your build
-system.
-
-:::
+Available options can be found below:
 
 <details>
   <summary>RAM Backed Coredump Storage</summary>
 
-```c
-//! @file memfault_port_coredump_storage.c
+Add the following file to your build system:
 
-//! Must be added to linker scripts noinit region
-MEMFAULT_PUT_IN_SECTION(".noinit") MEMFAULT_ALIGNED(8)
-static uint8_t s_ram_backed_coredump_region[MEMFAULT_RAM_BACKED_COREDUMP_SIZE];
-
-void memfault_platform_coredump_storage_get_info(sMfltCoredumpStorageInfo *info) {
-  *info = (sMfltCoredumpStorageInfo) {
-    .size = sizeof(s_ram_backed_coredump_region),
-  };
-}
-
-bool memfault_platform_coredump_storage_read(uint32_t offset, void *data,
-                                             size_t read_len) {
-  if ((offset + read_len) > sizeof(s_ram_backed_coredump_region)) {
-    return false;
-  }
-
-  const uint8_t *read_ptr = &s_ram_backed_coredump_region[offset];
-  memcpy(data, read_ptr, read_len);
-  return true;
-}
-
-
-bool memfault_platform_coredump_storage_erase(uint32_t offset, size_t erase_size) {
-  if ((offset + erase_size) > sizeof(s_ram_backed_coredump_region)) {
-    return false;
-  }
-
-  uint8_t *erase_ptr = &s_ram_backed_coredump_region[offset];
-  memset(erase_ptr, 0x0, erase_size);
-  return true;
-}
-
-bool memfault_platform_coredump_storage_write(uint32_t offset, const void *data,
-                                              size_t data_len) {
-  if ((offset + data_len) > sizeof(s_ram_backed_coredump_region)) {
-    return false;
-  }
-
-  uint8_t *write_ptr = &s_ram_backed_coredump_region[offset];
-  memcpy(write_ptr, data, data_len);
-  return true;
-}
-
-void memfault_platform_coredump_storage_clear(void) {
-  const uint8_t clear_byte = 0x0;
-  memfault_platform_coredump_storage_write(0, &clear_byte, sizeof(clear_byte));
-}
 ```
+  ${MEMFAULT_SDK_ROOT}/ports/panics/src/memfault_platform_ram_backed_coredump.c
+```
+
+:::note
+
+The RAM region is placed in a special section ".noinit.mflt_coredump" which needs to be placed
+in a noinit memory region. This can be achieved by adding a "noinit" section to your linker script.
+
+For example, for GNU GCC, you can add the following to your `.ld` file:
+
+```
+ .noinit (NOLOAD): { KEEP(*(*.noinit*)) } >RAM
+```
+
+:::
+
 
 </details>
 
 <details>
+  <summary>EFM/EFR Internal Flash (Using Gecko SDK)</summary>
 
-<summary>Template For Custom Port</summary>
+Add the following file to your build system:
+
+```
+  ${MEMFAULT_SDK_ROOT}/ports/emlib/msc_coredump_storage.c
+```
+
+Follow instructions in [msc_coredump_storage.c](https://github.com/memfault/memfault-firmware-sdk/blob/master/ports/emlib/msc_coredump_storage.c#L9) to configure.
+
+</details>
+
+<details>
+  <summary>STM32F4 internal flash using STM32CubeF4</summary>
+
+Add the following file to your build system:
+
+```
+  ${MEMFAULT_SDK_ROOT}/ports/stm32cube/f4/flash_coredump_storage.c
+```
+
+Follow instructions in [flash_coredump_storage.c](https://github.com/memfault/memfault-firmware-sdk/blob/master/ports/stm32cube/f4/flash_coredump_storage.c#L9) to configure.
+
+</details>
+
+<details>
+  <summary>STM32L4 internal flash using STM32CubeL4</summary>
+
+Add the following file to your build system:
+
+```
+  ${MEMFAULT_SDK_ROOT}/ports/stm32cube/l4/flash_coredump_storage.c
+```
+
+Follow instructions in [flash_coredump_storage.c](https://github.com/memfault/memfault-firmware-sdk/blob/master/ports/stm32cube/l4/flash_coredump_storage.c#L9) to configure.
+
+</details>
+
+<details>
+  <summary>STM32WB internal flash using STM32CubeWB</summary>
+
+Add the following file to your build system:
+
+```
+  ${MEMFAULT_SDK_ROOT}/ports/stm32cube/wb/flash_coredump_storage.c
+```
+
+Follow instructions in [flash_coredump_storage.c](https://github.com/memfault/memfault-firmware-sdk/blob/master/ports/stm32cube/wb/flash_coredump_storage.c#L9) to configure.
+
+</details>
+
+<details>
+  <summary>nRF5xx internal flash using nRF5 SDK</summary>
+
+Add the following file to your build system:
+
+```
+  ${MEMFAULT_SDK_ROOT}/ports/nrf5_sdk/nrf5_coredump_storage.c
+```
+
+Follow instructions in [nrf5_coredump_storage.c](https://github.com/memfault/memfault-firmware-sdk/blob/master/ports/nrf5_sdk/nrf5_coredump_storage.c#L9) to configure.
+
+</details>
+
+<details>
+  <summary>NXP S32 SDK</summary>
+
+Add the following file to your build system:
+
+```
+  ${MEMFAULT_SDK_ROOT}/ports/s32sdk/ftfc_flash_coredump_storage.c
+```
+
+
+Follow instructions in [ftfc_flash_coredump_storage.c](https://github.com/memfault/memfault-firmware-sdk/blob/master/ports/s32sdk/ftfc_flash_coredump_storage.c#L9) to configure.
+
+</details>
+
+
+
+<details>
+
+<summary>Custom Port Template</summary>
 
 ```c
-//! @file memfault_port_coredump_storage.c
+//! @file memfault_platform_port.c
 
 void memfault_platform_coredump_storage_get_info(sMfltCoredumpStorageInfo *info) {
   *info = (sMfltCoredumpStorageInfo) {
