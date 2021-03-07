@@ -1,0 +1,149 @@
+Memfault has a module for tracking and reporting what resets are taking place on your platform.
+
+<details>
+
+<summary> nRF5 SDK </summary>
+
+Add the following file to your build system:
+
+```
+  ${MEMFAULT_SDK_ROOT}/ports/nrf5_sdk/memfault_platform_metrics.c
+```
+
+Add call to `memfault_platform_reboot_tracking_boot()` from `memfault_platform_boot()`
+
+```diff
+//! @file memfault_platform_port.c
+
+int memfault_platform_boot(void) {
++ memfault_platform_reboot_tracking_boot();
++
+  memfault_build_info_dump();
+}
+```
+
+</details>
+
+<details>
+
+<summary> Template </summary>
+
+#### Allocate noinit region
+
+A region of RAM that does not get initialized across resets needs to be allocated for saving
+information about resets that are about to take place.
+
+
+```diff
+//! @file memfault_platform_port.c
+
++ MEMFAULT_PUT_IN_SECTION(".noinit")
++ static uint8_t s_reboot_tracking[MEMFAULT_REBOOT_TRACKING_REGION_SIZE];
+```
+
+:::note
+You will need to update your linker script for the variable to be in noinit RAM.
+:::
+
+#### Collect reboot info
+
+```diff
+//! @file memfault_platform_port.c
+
+int memfault_platform_boot(void) {
++  sResetBootupInfo reset_info = { 0 };
++  memfault_reboot_reason_get(&reset_info);
++  memfault_reboot_tracking_boot(s_reboot_tracking, &reset_info);
+  memfault_build_info_dump();
+}
+```
+
+
+#### Add `memfault_reboot_reason_get()`
+
+<details>
+
+<summary> EFM/EFR (Gecko SDK) </summary>
+
+Add the following file to your build system:
+
+```
+  ${MEMFAULT_SDK_ROOT}/ports/emlib/rmu_reboot_tracking.c
+```
+
+</details>
+
+<details>
+
+<summary> STM32CubeF4 </summary>
+
+Add the following file to your build system:
+
+```
+  ${MEMFAULT_SDK_ROOT}/ports/stm32cube/f4/rcc_reboot_tracking.c
+```
+
+</details>
+
+<details>
+
+<summary> STM32CubeL4 </summary>
+
+Add the following file to your build system:
+
+```
+  ${MEMFAULT_SDK_ROOT}/ports/stm32cube/l4/rcc_reboot_tracking.c
+```
+
+</details>
+
+<details>
+
+<summary> STM32CubeWB </summary>
+
+Add the following file to your build system:
+
+```
+  ${MEMFAULT_SDK_ROOT}/ports/stm32cube/wb/rcc_reboot_tracking.c
+```
+
+</details>
+
+<details>
+
+<summary> NXP S32 SDK </summary>
+
+Add the following file to your build system:
+
+```
+  ${MEMFAULT_SDK_ROOT}/ports/s32sdk/rcm_reboot_tracking.c
+```
+
+</details>
+
+<details>
+
+<summary> Other </summary>
+
+Implement the following function for your MCU. The ports listed above serve as a good reference.
+
+
+```c
+//! @file memfault_platform_port.c
+
+void memfault_reboot_reason_get(sResetBootupInfo *info) {
+  const uint32_t reset_cause = 0; // TODO: Populate with MCU reset reason
+  eMemfaultRebootReason reset_reason = kMfltRebootReason_Unknown;
+
+  // TODO: Convert MCU specific reboot reason to memfault enum
+
+  *info = (sResetBootupInfo) {
+    .reset_reason_reg = reset_cause,
+    .reset_reason = reset_reason,
+  };
+}
+```
+
+</details>
+
+</details>

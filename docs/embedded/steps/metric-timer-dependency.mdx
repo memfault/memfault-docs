@@ -1,0 +1,47 @@
+The memfault metric subsystem requires a repeating timer in order to collect "heartbeats" and a time since boot
+
+<details>
+
+<summary> FreeRTOS </summary>
+
+Add the following file to your build system:
+
+```
+  ${MEMFAULT_SDK_ROOT}/ports/freertos/memfault_metrics_freertos.c
+```
+
+</details>
+
+<details>
+
+<summary> nRF5 SDK </summary>
+
+Add the following file to your build system:
+
+```
+  ${MEMFAULT_SDK_ROOT}/ports/nrf5_sdk/memfault_platform_metrics.c
+```
+
+</details>
+
+<details>
+
+<summary> Template </summary>
+
+```
+//! @file memfault_platform_port.c
+
+bool memfault_platform_metrics_timer_boot(uint32_t period_sec, MemfaultPlatformTimerCallback callback) {
+  // Schedule a timer to invoke callback() repeatedly after period_sec
+  return true;
+}
+```
+
+```
+uint64_t memfault_platform_get_time_since_boot_ms(void) {
+  // Return time since boot in ms, this is used for relative timings.
+  return 0;
+}
+```
+
+</details>

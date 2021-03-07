@@ -22,6 +22,8 @@ import DefineFirstTraceEvent from './steps/define-first-trace-event.mdx'
 import DefineFirstHeartbeat from './steps/define-first-heartbeat.mdx'
 import AddCliTestCommands from './steps/add-cli-test-commands.mdx'
 import FwSdkFeatures from './steps/sdk-features.mdx'
+import MetricTimerDependency from './steps/metric-timer-dependency.mdx'
+import RebootTrackingDependency from './steps/reboot-tracking-dependency.mdx'
 
 ## Overview
 
@@ -46,18 +48,24 @@ for a Cortex-M device using the GNU GCC, Clang, IAR, ARM MDK, or TI ARM Compiler
 
 <AddSources />
 
-### Implement Core Platform Specific Dependencies
+### Core Dependencies
 
 <CorePlatformDependencies />
 
-### Add a Unique Identifier to target
-<AddBuildId />
+### Reboot Tracking Dependencies
 
-### Implement Logging Dependency
+<RebootTrackingDependency />
+
+### Logging Dependency
 
 <LoggingDependency />
 
-### Add RTOS Port Files
+
+### Timer Dependencies
+
+<MetricTimerDependency />
+
+### RTOS Port Files
 
 <RtosPorts />
 
@@ -68,6 +76,9 @@ for a Cortex-M device using the GNU GCC, Clang, IAR, ARM MDK, or TI ARM Compiler
 ### Implement Coredump Storage Dependency
 
 <CoredumpDependency />
+
+### Add a Unique Identifier to target
+<AddBuildId />
 
 
 ### Confirm Integration Links
