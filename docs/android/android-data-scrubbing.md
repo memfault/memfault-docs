@@ -4,8 +4,9 @@ title: Android Data Scrubbing
 sidebar_label: Data Scrubbing
 ---
 
-Memfault provides configurable, server-side scrubbing of Android data. To
-configure data scrubbing, navigate to **Settings** and **Data Scrubbing**.
+Memfault provides configurable, on-device & server-side scrubbing of Android
+data. To configure data scrubbing, navigate to **Settings** and **Data
+Scrubbing**.
 
 <p align="center">
   <img width="800" src="/binary-assets/android-data-scrubbing.png" />
@@ -24,7 +25,7 @@ applications that match one or more _Allowed Patterns_.
 
 For example, the _Allowed Pattern_:
 
-- `com.memfault.*` would allow logs from applications whos ID started with
+- `com.memfault.*` would allow logs from applications whose ID started with
   `com.memfault.`
 - `*` would match all application IDs and let all log lines pass.
 
@@ -58,3 +59,12 @@ If text scrubbing is enabled, a string that appears to be sensitive will be
 replaced with a hash of that string, rendering it obfuscated. Since it is
 replaced with a stable hash, you will still be able to see if the same string
 appears multiple times in the logs.
+
+## Server-side vs On-device scrubbing
+
+Uploaded bug reports are _always_ scrubbed server-side, filtering traces and
+scrubbing logs based on the configured rules described above.
+
+The same rules are fetched by the Bort SDK (v3.4.0 or newer) and used to filter
+Caliper traces and scrubs logs on-device. The data scrubbing rules are fetched
+by Bort periodically (by default, once every 24h).
