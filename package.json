@@ -7,7 +7,10 @@
         "build": "docusaurus build",
         "swizzle": "docusaurus swizzle",
         "deploy": "docusaurus deploy",
-        "serve": "docusaurus serve"
+        "serve": "docusaurus serve",
+        "lint:prettier:base": "prettier '**/*.{js,jsx,ts,tsx,md}'",
+        "lint:prettier:fix": "yarn lint:prettier:base --write",
+        "lint:prettier": "yarn lint:prettier:base --check"
     },
     "dependencies": {
         "@docusaurus/core": "2.0.0-alpha.70",
@@ -32,6 +35,7 @@
         ]
     },
     "devDependencies": {
-        "netlify-cli": "^2.30.0"
+        "netlify-cli": "^2.30.0",
+        "prettier": "^2.2.1"
     }
 }
