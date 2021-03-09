@@ -74,12 +74,14 @@ Otherwise, you can wrap a preexisting implementation with a call to
   } while (0)
 ```
 
-> :warning: By default, only logs greater than the Debug level will be saved but
-> you can change the level either by calling
-> [`memfault_log_set_min_save_level()`](https://github.com/memfault/memfault-firmware-sdk/blob/master/components/core/include/memfault/core/log.h#L45-L48)
-> or by using the
-> [`MEMFAULT_RAM_LOGGER_DEFAULT_MIN_LOG_LEVEL`](https://github.com/memfault/memfault-firmware-sdk/blob/master/components/core/src/memfault_log.c#L25-L27)
-> compile time define.
+:::caution
+By default, only logs greater than the Debug level will be saved but
+you can change the level either by calling
+[`memfault_log_set_min_save_level()`](https://github.com/memfault/memfault-firmware-sdk/blob/master/components/core/include/memfault/core/log.h#L45-L48)
+or by using the
+[`MEMFAULT_RAM_LOGGER_DEFAULT_MIN_LOG_LEVEL`](https://github.com/memfault/memfault-firmware-sdk/blob/master/components/core/src/memfault_log.c#L25-L27)
+compile time define.
+:::
 
 ### 3. [Optional] Flush Logs to Different Mediums
 
@@ -128,10 +130,12 @@ void memfault_log_handle_saved_callback(void) {
 }
 ```
 
-> NOTE: If the RAM buffer fills, the oldest logs will be overwritten. Any time
-> this happens when you next call `memfault_log_read()`, a log such as "... 5
-> messages dropped ...", will be emitted indicating how many messages were
-> dropped.
+:::note
+If the RAM buffer fills, the oldest logs will be overwritten. Any time
+this happens when you next call `memfault_log_read()`, a log such as "... 5
+messages dropped ...", will be emitted indicating how many messages were
+dropped.
+:::
 
 ### 4. Thread Safety (if applicable)
 
@@ -157,12 +161,16 @@ void memfault_unlock(void) {
 
 ### 5. [Optional] Collect Logs as Part of Coredump
 
-> :warning: This step assumes you have integrated
-> [coredump collection](/docs/embedded/coredumps) in your project.
+:::caution
+This step assumes you have integrated
+[coredump collection](/docs/embedded/coredumps) in your project.
+:::
 
-> :bulb: If you are already collecting all of your `bss` RAM region in a
-> coredump, logs will automatically be recovered and displayed in the Memfault
-> UI alongside a crash and you can skip this step.
+:::tip
+If you are already collecting all of your `bss` RAM region in a
+coredump, logs will automatically be recovered and displayed in the Memfault
+UI alongside a crash and you can skip this step.
+:::
 
 If you are only collecting select RAM regions, collection of the regions needed
 to decode logs can be automatically collected by setting the compile time define

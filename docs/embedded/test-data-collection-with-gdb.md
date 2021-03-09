@@ -23,8 +23,10 @@ working prior to implementing the
 - You need to compile your firmware with debug symbol information (i.e `-g`
   CFLAG)
 
-> Even if you are using other compilers such as ARMCC or IAR, you can load the
-> ELF (.out, .elf) generated and debug it in GDB as well.
+:::note
+Even if you are using other compilers such as ARMCC or IAR, you can load the
+ELF (.out, .elf) generated and debug it in GDB as well.
+:::
 
 ## Loading the Memfault GDB Commands
 
@@ -65,9 +67,11 @@ void my_project_send_chunk_data(...any args..., void *buf, size_t buf_len) {
 }
 ```
 
-> Check out
-> [`memfault_demo_drain_chunk_data()`](https://github.com/memfault/memfault-firmware-sdk/blob/master/components/demo/src/memfault_demo_cli_print_chunk.c#L139)
-> in the SDK for a full working example.
+:::note
+Check out
+[`memfault_demo_drain_chunk_data()`](https://github.com/memfault/memfault-firmware-sdk/blob/master/components/demo/src/memfault_demo_cli_print_chunk.c#L139)
+in the SDK for a full working example.
+:::
 
 Once you have this in place, installing the handler to automatically post chunks
 is as easy as:

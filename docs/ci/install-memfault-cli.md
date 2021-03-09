@@ -17,9 +17,11 @@ The Memfault CLI tool is written in Python and published publicly in the
 
 To install it, make sure you have a recent version of Python 3.x installed.
 
-> Tip: use a
-> [virtualenv](https://packaging.python.org/tutorials/installing-packages/#creating-virtual-environments)
-> to avoid conflicts with dependencies of other projects that use Python.
+:::tip
+Use a
+[virtualenv](https://packaging.python.org/tutorials/installing-packages/#creating-virtual-environments)
+to avoid conflicts with dependencies of other projects that use Python.
+:::
 
 Then run `pip3 install memfault-cli` to install it.
 
@@ -48,9 +50,11 @@ Commands:
 
 ### Example Usage: Uploading Firmware Symbols
 
-> :warning: Uploading symbols requires your "User API Key". To locate the token
-> navigate to the "Settings" -> "General" page in the Memfault UI and copy/paste
-> the token in the "User API Key" section.
+:::caution
+Uploading symbols requires your "User API Key". To locate the token
+navigate to the "Settings" -> "General" page in the Memfault UI and copy/paste
+the token in the "User API Key" section.
+:::
 
 ```bash
 $ memfault --email ${YOUR_EMAIL} --password ${YOUR_USER_API_KEY} \

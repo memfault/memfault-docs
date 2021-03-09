@@ -50,13 +50,15 @@ property to `<YOUR_BORT_APPLICATION_ID>`.
 
 ### Add the SDK Components to your build
 
-> NOTE: We recommend placing the `include`s below at the _end_ of the respective
-> `Makefile`s. This is because `include` directives are used to _append_ to
-> variables in the build script; placing them at the end of the file reduces the
-> chances that subsequent lines in the `Makefile` do not redefine those
-> variables and discard the effect of the `include`. If it is not possible to
-> place the `include` at the end of the file, ensure that the respective
-> variables are not redefined (look for the `:=` syntax).
+:::note
+We recommend placing the `include`s below at the _end_ of the respective
+`Makefile`s. This is because `include` directives are used to _append_ to
+variables in the build script; placing them at the end of the file reduces the
+chances that subsequent lines in the `Makefile` do not redefine those
+variables and discard the effect of the `include`. If it is not possible to
+place the `include` at the end of the file, ensure that the respective
+variables are not redefined (look for the `:=` syntax).
+:::
 
 Add this line to your `device.mk` file to get the components included in your
 build; this appends to the `PRODUCT_PACKAGES` variable:
@@ -110,12 +112,12 @@ Instructions on how to create a keystore in Android Studio can be found
 If you plan to update the app via the Play Store, you may wish to follow the
 additional instructions on that page.
 
-> _Important Notes_
->
-> - The key that is used to sign the Bort app must NOT be the platform signing
->   key, otherwise updates to the Bort app may be rejected by the Play Store.
-> - The key must ONLY be used to sign the Bort app and no other apps. Special
->   permissions are assigned to Bort based on the signing certificate.
+:::caution
+- The key that is used to sign the Bort app must NOT be the platform signing
+  key, otherwise updates to the Bort app may be rejected by the Play Store.
+- The key must ONLY be used to sign the Bort app and no other apps. Special
+  permissions are assigned to Bort based on the signing certificate.
+:::
 
 Once you have a keystore, set up a `keystore.properties` file and provide the
 path to it via the `bort.properties` file:

@@ -195,8 +195,10 @@ python2 java-event-log-tags.py \
   /path/to/app/EventLog.logtags
 ```
 
-> NOTE 1: as of March 2020, the script was not yet Python 3.x compatible and
-> required Python 2.x to run.
+:::note
+As of March 2020, the script was not yet Python 3.x compatible and
+required Python 2.x to run.
+::::
 
 We recommend running the script as part of your app's Gradle build.
 

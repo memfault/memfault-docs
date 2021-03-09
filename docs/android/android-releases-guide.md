@@ -192,9 +192,11 @@ INFO: You can view in the UI here:
 
 Now let's deploy the release to the `default` cohort.
 
-> Note: Any new device seen that has not explicitly been assigned to a custom
-> cohort will be part of this cohort. To pre-create devices assigned to a
-> specific cohort check out our [api-docs](https://api-docs.memfault.com/).
+:::note
+Any new device seen that has not explicitly been assigned to a custom
+cohort will be part of this cohort. To pre-create devices assigned to a
+specific cohort check out our [api-docs](https://api-docs.memfault.com/).
+:::
 
 In the UI navigate to "Fleet" -> "Cohorts". Click on the picker under next to
 the `default` cohort under "Target Release", select the Release to deploy and

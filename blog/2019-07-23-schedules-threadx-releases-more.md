@@ -12,7 +12,9 @@ Cohort Settings card.
 
 ![/img/blog/2019-07-23-update-schedules.png](/img/blog/2019-07-23-update-schedules.png)
 
-NOTE: Times are in **UTC**
+:::note
+Times are in **UTC**.
+:::
 
 ## ThreadX and Zephyr RTOS Support
 

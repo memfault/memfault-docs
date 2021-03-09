@@ -58,13 +58,18 @@ like this:
 $ gdb --se /path/to/symbols.elf --core /path/to/coredump.elf
 ```
 
-> If your version of GDB does not have support for core files, you will see a
-> message saying
-> `"/path/to/coredump.elf": no core file handler recognizes format` when
-> attempting to load the file. Memfault provides GDB binaries that do have
-> support for core files. See
-> [section at the bottom](#installing-multi-architecture-gdb-with-conda) for
-> installation instructions.
+:::note
+If your version of GDB does not have support for core files, you will see this
+message when attempting to load the file:
+
+```
+"/path/to/coredump.elf": no core file handler recognizes format
+```
+
+Memfault provides GDB binaries that do have support for core files. See
+[section at the bottom](#installing-multi-architecture-gdb-with-conda) for
+installation instructions.
+:::
 
 In case GDB is already running, it's also possible to load core & (additional)
 symbol files using GDB commands:
@@ -88,10 +93,8 @@ Local core dump file:
 # Installing multi-architecture GDB with Conda
 
 Memfault publishes GDB binaries using the [Conda](https://conda.io/) package
-management system.
-
-If you do not have a Conda installer set up, check out [these installation
-instructions](https://docs.conda.io/en/latest/miniconda.html.
+management system. If you do not have a Conda installer set up, check out
+[these installation instructions](https://docs.conda.io/en/latest/miniconda.html).
 
 ## environment.yml
 
@@ -116,9 +119,11 @@ file:
 $ conda env create -f environment.yml
 ```
 
-> Note: by default, "memfault-multi-arch-gdb" is used as the name for the
-> environment. You can override this by passing `-n <NAME>` to the "create"
-> command.
+:::note
+By default, "memfault-multi-arch-gdb" is used as the name for the
+environment. You can override this by passing `-n <NAME>` to the "create"
+command.
+:::
 
 ## Activate the Conda environment
 

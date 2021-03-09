@@ -13,9 +13,11 @@ configure data scrubbing, navigate to **Settings** and **Data Scrubbing**.
 
 ## Allowed Application IDs
 
-> Memfault will start filtering by _Allowed Patterns_ when the first _Allowed
-> Pattern_ rule is added, so it is important to add a comprehensive set of
-> _Allowed Patterns_.
+:::note
+Memfault will start filtering by _Allowed Patterns_ when the first _Allowed
+Pattern_ rule is added, so it is important to add a comprehensive set of
+_Allowed Patterns_.
+:::
 
 The first processing step applied is to include log lines _only_ from
 applications that match one or more _Allowed Patterns_.
@@ -44,8 +46,10 @@ com.android.*
 
 ## Text Scrubbing
 
-> Text scrubbing rules will only be applied if one or more _Allowed Pattern_
-> have been added.
+:::note
+Text scrubbing rules will only be applied if one or more _Allowed Pattern_
+have been added.
+:::
 
 Memfault can also perform additional scrubbing of logs that may appear to
 contain sensitive information, such as email addresses or credentials.

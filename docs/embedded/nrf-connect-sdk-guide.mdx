@@ -27,10 +27,12 @@ your system!
 
 ## Integration Steps
 
-> :warning: This tutorial assumes you have a working
-> [nRF Connect SDK Environment](https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrf/getting_started.html#getting-started)
-> and are able to flash a board supported by the SDK (i.e nRF91, nRF53, nRF52,
-> etc)
+:::caution 
+This tutorial assumes you have a working
+[nRF Connect SDK Environment](https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrf/getting_started.html#getting-started)
+and are able to flash a board supported by the SDK (i.e nRF91, nRF53, nRF52,
+etc)
+:::
 
 ### Add memfault-firmware-sdk to nrf/west.yml
 
@@ -53,8 +55,10 @@ index 17071f47..84bb97f0 100644
 +      revision: master
 ```
 
-> :warning: There's a couple lines in this file that look similar. Make sure you
-> have added this under the "projects:" level
+:::caution
+There's a couple lines in this file that look similar. Make sure you
+have added this under the "projects:" level.
+:::
 
 You will then need to run `west update` to clone the memfault-firmware-sdk:
 
@@ -352,8 +356,10 @@ to the "Issues" page. Follow the link pointed to below and upload a symbol file.
 
 After this step you will see the trace in the list of issues!
 
-> :bulb: You can programatically upload symbol files with the
-> [Memfault CLI tool](/docs/ci/install-memfault-cli).
+:::tip
+You can programatically upload symbol files with the
+[Memfault CLI tool](/docs/ci/install-memfault-cli).
+:::
 
 ### Troubleshooting Data Transfer
 

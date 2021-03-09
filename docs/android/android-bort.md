@@ -71,10 +71,12 @@ two systems, described in detail below.
 
 ### Memfault _Caliper_
 
-> First released in Bort 3.0, the _Caliper_ system supports trace, per device
-> and fleet wide metrics collection via the Android _batterystats_ subsystem.
-> Additional data sources, such as logs and system properties, are in
-> development.
+:::note
+First released in Bort 3.0, the _Caliper_ system supports trace, per device
+and fleet wide metrics collection via the Android _batterystats_ subsystem.
+Additional data sources, such as logs and system properties, are in
+development.
+:::
 
 Memfault's _Caliper_ system can be used to precisely specify what diagnostics
 information to collect on the device. We recommend using this system because it

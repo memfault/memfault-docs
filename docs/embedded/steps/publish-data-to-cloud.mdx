@@ -3,11 +3,11 @@ Extensive details about how data from the Memfault SDK makes it to the cloud
 packetizes data into "chunks" that must be pushed to the Memfault cloud via the
 [chunk REST endpoint](https://api-docs.memfault.com/?version=latest#66b0e390-2c3e-4c0d-b6c2-836a287b9e5f).
 
-The Memfault SDK exposes an api that packatizes Memfault data into "chunks".
+The Memfault SDK exposes an API that packetizes Memfault data into "chunks".
 These "chunks" need to be forwarded to the Memfault Cloud (either directly via HTTPs or indirectly via a
 gateway device such as a computer or mobile application)
 
-:::info
+:::tip
 If you cannot post data directly using HTTP, no problem at all. In fact, that is one of the most common configurations.
 In these setups, data can be proxied from the MCU to a device which can perform a HTTP request over transports such as UART, BLE, COAP, LoRa, Zigbee, etc).
 The size of a "chunk" is fully configurable by you can be tuned to best match your transport requirements. All message

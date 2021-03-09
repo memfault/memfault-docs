@@ -10,9 +10,11 @@ a system that is using the
 [GNU ARM Embedded Toolchain](https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm/downloads)
 (GCC) compiler.
 
-> Prerequisite: This guide assumes you have already completed the minimal
-> integration of the Memfault SDK. If you have not, check out the
-> [getting started section](/docs/embedded/introduction#getting-started).
+:::note Prerequisite
+This guide assumes you have already completed the minimal
+integration of the Memfault SDK. If you have not, check out the
+[getting started section](/docs/embedded/introduction#getting-started).
+:::
 
 ## Integration Steps
 

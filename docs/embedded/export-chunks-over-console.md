@@ -4,8 +4,10 @@ title: Exporting Chunks Over Console
 sidebar_label: Exporting Data Collected
 ---
 
-> :warning: This guide assumes you have already installed the
-> [Memfault CLI tool](/docs/ci/install-memfault-cli).
+:::caution
+This guide assumes you have already installed the
+[Memfault CLI tool](/docs/ci/install-memfault-cli).
+:::
 
 In the following tutorial we will discuss how to use the Memfault SDK data
 export API to collect "chunks" from a device and then post them to the Memfault
@@ -54,8 +56,9 @@ trigger a data export, and save it to a file.
 
 You should see strings with the format: `MC:BASE64_ENCODED_CHUNK:` in the dump.
 
-> NOTE: It's perfectly fine for other logs to be interleaved with the exported
-> data.
+:::note
+It's perfectly fine for other logs to be interleaved with the exported data.
+:::
 
 Here's an example of some
 [Precanned Data Payloads](/docs/embedded/test-patterns-for-chunks-endpoint) that

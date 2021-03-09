@@ -33,9 +33,11 @@ your system!
 
 ## Integration Steps
 
-> :warning: This tutorial assumes you have a working
-> [ESP8266 RTOS SDK environment](https://docs.espressif.com/projects/esp8266-rtos-sdk/en/latest/get-started/index.html)
-> and are able to flash a board supported by the SDK.
+:::caution
+This tutorial assumes you have a working
+[ESP8266 RTOS SDK environment](https://docs.espressif.com/projects/esp8266-rtos-sdk/en/latest/get-started/index.html)
+and are able to flash a board supported by the SDK.
+:::
 
 ### Add memfault-firmware-sdk and prepare port
 
@@ -154,7 +156,9 @@ In order to save traces, you will need to implement a dependency function that
 tells memfault version information. You can copy the following template into the
 `memfault_port.c` file created in the first step:
 
-> :warning: Be sure to fill in the appropriate
+:::caution
+Be sure to fill in the appropriate.
+:::
 
 ```c
 //! @file components/memfault_port/memfault_port.c
@@ -231,8 +235,10 @@ void your_background_task(void) {
 }
 ```
 
-> :bulb: For testing, you can also force a post immediately by using the
-> `mflt post_chunks` CLI command
+:::tip
+For testing, you can also force a post immediately by using the
+`mflt post_chunks` CLI command
+:::
 
 ### Force a Crash and Upload to Memfault
 
@@ -291,8 +297,10 @@ to the "Issues" page. Follow the link pointed to below and upload a symbol file.
 
 After this step you will see the trace in the list of issues!
 
-> :bulb: You can programatically upload symbol files with the
-> [Memfault CLI tool](/docs/ci/install-memfault-cli).
+:::tip
+You can programatically upload symbol files with the
+[Memfault CLI tool](/docs/ci/install-memfault-cli).
+:::
 
 ### Troubleshooting Data Transfer
 

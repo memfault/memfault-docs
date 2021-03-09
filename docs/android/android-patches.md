@@ -12,9 +12,11 @@ lacking the information to symbolicate the native stack frames in the trace.
 More specifically, so called "GNU Build ID"s are absent from ANR traces for
 ART/Java processes.
 
-> Side note: Traces from
-> [Tombstones/crash dumps](https://source.android.com/devices/tech/debug) have
-> been including the "GNU Build ID" as of Android 10.
+:::note
+Traces from
+[Tombstones/crash dumps](https://source.android.com/devices/tech/debug) have
+been including the "GNU Build ID" as of Android 10.
+:::
 
 To solve this, we have prepared a patch that modifies the ART code such that the
 ANR traces include the GNU Build IDs in exactly the same way as they already get

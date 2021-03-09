@@ -34,9 +34,11 @@ needed for your project.
 We have step-by-step guides which cover how to add the SDK to a project, capture
 an error, and publish data to the Memfault cloud:
 
-> :warning: The following guides assume you already have a Memfault Account. If
-> you don't yet have one, you can
-> [create one here](https://memfault.typeform.com/to/zHsZBg?plan=starter).
+:::caution
+The following guides assume you already have a Memfault Account. If
+you don't yet have one, you can
+[create one here](https://memfault.typeform.com/to/zHsZBg?plan=starter).
+:::
 
 <center>
 

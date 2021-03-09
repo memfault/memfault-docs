@@ -15,11 +15,13 @@ a system that is using the
 Trace events make it easy to track the frequency at which unexpected errors are
 occurring on a running system.
 
-> NOTE: Since all the data collected by the Memfault SDK is passed opaquely up
-> to the Memfault cloud, after following this initial guide to send trace events
-> no further changes will be needed on the transport side to send any of the
-> other types of data which can be collected by the SDK (such as coredumps and
-> metrics).
+:::note
+Since all the data collected by the Memfault SDK is passed opaquely up
+to the Memfault cloud, after following this initial guide to send trace events
+no further changes will be needed on the transport side to send any of the
+other types of data which can be collected by the SDK (such as coredumps and
+metrics).
+:::
 
 Here's an example where Trace Events are captured for Bluetooth protocol CRC
 errors and invalid message IDs:
@@ -106,9 +108,11 @@ user-defined "error reason". The list of custom reasons is defined in a separate
 configuration file named `memfault_trace_reason_user_config.def` which you need
 to create.
 
-> :warning: The `memfault_trace_reason_user_config.def` file will get
-> `#include`-ed, so make sure the directory in which you create the file is part
-> of the header search paths
+:::caution
+The `memfault_trace_reason_user_config.def` file will get
+`#include`-ed, so make sure the directory in which you create the file is part
+of the header search paths.
+:::
 
 To start, we recommend adding a "test" trace error reason you can easily trigger
 (i.e via a CLI command) and a couple for error paths in your codebase (such as
@@ -275,8 +279,10 @@ to the "Issues" page. Follow the link pointed to below and upload a symbol file.
 
 After this step you will see the trace in the list of issues!
 
-> :bulb: You can programatically upload symbol files with the
-> [Memfault CLI tool](/docs/ci/install-memfault-cli).
+:::tip
+You can programatically upload symbol files with the
+[Memfault CLI tool](/docs/ci/install-memfault-cli).
+:::
 
 ### Troubleshooting Data Transfer
 

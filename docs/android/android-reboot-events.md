@@ -4,10 +4,12 @@ title: Android Reboot Events
 sidebar_label: Reboot Events
 ---
 
-> Prerequisite: For best results with this feature, we recommend using at least
-> the 3.0 version of the [Bort SDK](/docs/android/android-bort). Check out the
-> [getting started guide](/docs/android/android-getting-started-guide) for
-> details on integrating the latest version.
+:::note Prerequisite
+For best results with this feature, we recommend using at least
+the 3.0 version of the [Bort SDK](/docs/android/android-bort). Check out the
+[getting started guide](/docs/android/android-getting-started-guide) for
+details on integrating the latest version.
+:::
 
 The Memfault Bort SDK can track when your device reboots and upload an event
 when this occurs, allowing you to visualize unexpected spikes in device resets

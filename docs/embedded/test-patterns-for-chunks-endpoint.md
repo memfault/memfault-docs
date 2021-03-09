@@ -115,8 +115,10 @@ Content-Length: <chunk 2 of 2 binary data length in bytes>
 --77AC153B-FCD2-4224-A8F8-1788947663A0--
 ```
 
-> NOTE: The `curl` commands inserts an additional `Content-Disposition` header
-> with each part. These headers are not necessary and will get ignored.
+:::note
+The `curl` commands inserts an additional `Content-Disposition` header
+with each part. These headers are not necessary and will get ignored.
+:::
 
 ### Verifying arrival of the test events
 
