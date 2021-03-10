@@ -1,7 +1,7 @@
 ---
 title: Status Updates
-
 ---
+
 ## Coredump Processing Status
 
 Easily know which coredumps were recently uploaded, if they experienced any

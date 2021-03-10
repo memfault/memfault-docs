@@ -3,7 +3,7 @@ id: arm-gcc-guide-coredumps
 title: ARM GCC Getting Started Guide
 sidebar_label: ARM GCC Guide
 ---
- 
+
 This tutorial will go over integrating the **panics** component of the
 [Memfault Firmware SDK](https://github.com/memfault/memfault-firmware-sdk) into
 a system that is using the

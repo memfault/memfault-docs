@@ -42,12 +42,12 @@ you don't yet have one, you can
 
 <center>
 
-| MCU Architecture |                  Getting Started Guide                   |
-| ---------------- | :------------------------------------------------------: |
-| ARM Cortex-M    |      [ARM Cortex-M Integration Guide](/docs/embedded/arm-cortex-m-guide)       |
+| MCU Architecture |                           Getting Started Guide                           |
+| ---------------- | :-----------------------------------------------------------------------: |
+| ARM Cortex-M     |    [ARM Cortex-M Integration Guide](/docs/embedded/arm-cortex-m-guide)    |
 | nRF Connect SDK  | [nRF Connect SDK Integration Guide](/docs/embedded/nrf-connect-sdk-guide) |
-| ESP32 ESP-IDF           | [ESP32 ESP-IDF Integration Guide](/docs/embedded/esp32-guide)  |
-| ESP8266            | [ESP8266 RTOS Integration Guide](/docs/embedded/esp8266-rtos-sdk-guide)  |
+| ESP32 ESP-IDF    |       [ESP32 ESP-IDF Integration Guide](/docs/embedded/esp32-guide)       |
+| ESP8266          |  [ESP8266 RTOS Integration Guide](/docs/embedded/esp8266-rtos-sdk-guide)  |
 
 </center>
 
