@@ -66,8 +66,7 @@ $ memfault --email ${YOUR_EMAIL} --password ${YOUR_USER_API_KEY} \
    build/symbols.elf
 ```
 
-#### Tip
-
+:::note Tip
 If you are going to be working with the same project you can add standard
 arguments as environment variables to your shell init file or via the command
 line:
@@ -92,3 +91,4 @@ INFO: build/stm32-fw.bin: uploaded!
 INFO: You can view in the UI here:
     <Link to Symbols in UI>
 ```
+:::

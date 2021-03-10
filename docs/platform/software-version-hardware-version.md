@@ -19,10 +19,8 @@ On Android, Memfault uses the `ro.product.board` system property as the device's
 hardware version by default. From the
 [Android product documentation](https://source.android.com/setup/develop/new-device#build-layers):
 
-:::note
-The board/device layer represents \[...\] the bare schematics of a product.
-These include the peripherals on the board and their configuration.
-:::
+> The board/device layer represents \[...\] the bare schematics of a product.
+> These include the peripherals on the board and their configuration.
 
 ## Software Type
 
