@@ -1,3 +1,5 @@
+[![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/memfault/memfault-docs)
+
 # Memfault Docusaurus
 
 _Docs are auto-deployed when you commit to master (merge a PR!)_ If the deploy fails, netlify will roll back to the previous version
