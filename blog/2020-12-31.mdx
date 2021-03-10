@@ -1,0 +1,74 @@
+---
+title: December Updates
+---
+
+## Memfault's Android SDK hits v3.0!
+
+Memfault's [Bort SDK](https://github.com/memfault/bort) v3.0 has been released,
+which includes Memfault Caliper.
+
+<p align="center">
+  <img width="600" src="/img/blog/2020-12-31-android-bort-architecture.svg" />
+</p>
+The Caliper system supports trace collection from various subsystems, as well as
+per device and fleet-wide metrics collection via the Android batterystats subsystem.
+Additional data sources, such as logs and system properties, are in development and
+are coming soon!
+
+Memfault's Caliper is designed to have minimal effects on runtime performance,
+as well as consume less bandwidth and storage than sending bug reports.
+
+To compare and contrast how Bug Reports and Memfault Caliper differ, please
+refer to the [Bort SDK Reference docs page](https://mflt.io/android-bort-sdk).
+
+<!-- truncate -->
+
+## Real-Time
+
+- Developers can now attach logs to Trace Events. This feature now allows you to
+  attach error codes, messages, and helpful debugging information to our already
+  optimized Trace Event format.
+  <p align="center">
+    <img width="600" src="/img/blog/2020-12-31-trace-event-logs.gif" />
+  </p>
+- The Metric Browser has gained the ability for normalize along the time axis.
+  This is especially helpful devices devices that attach wall-time to heartbeat
+  events.
+  <p align="center">
+    <img width="600" src="/img/blog/2020-12-31-x-axis-normalization.gif" />
+  </p>
+- The Zephyr port will now capture the backtrace of all threads.
+- Built-in OTA support added for the ESP-IDF.
+- Support added capturing monitoring data for the ESP-8266.
+- Support added for nRF Connect SDK v1.4.0.
+- For more details on the changes to the Firmware SDK that didn't make the
+  changelog, check out the
+  [Memfault Firmware SDK changelog](https://github.com/memfault/memfault-firmware-sdk/blob/master/CHANGES.md).
+
+## Android
+
+- Memfault now collects and presents
+  [Boot Reasons](https://source.android.com/devices/bootloader/boot-reason),
+  shown by device and aggregated by project in the Overview page. This helps
+  teams quickly gain awareness of issues causing devices to reboot in the field.
+  NOTE: Works best on Memfault Android (Bort) SDK 3.0
+  <p align="center">
+    <img width="600" src="/img/blog/2020-12-31-android-reboot-reasons.png" />
+  </p>
+  To see it in action, navigate to Project → Overview and scroll down until you see
+  the graphs! Also can be seen as a "swimlane" on Fleet → Device → &lt;click on a
+  device&gt; → "Timeline"
+- You can now download any sections of a Bug Report on-the-fly! Previously,
+  Memfault would only extract a few relevant sections, but now, users can view
+  and download any section of the Bug Report.
+  <p align="center">
+    <img width="600" src="/img/blog/2020-12-31-android-jit-download.png" />
+  </p>
+  To download Bug Report sections for yourself, you'll find them under the <b>
+    Artifacts
+  </b> tab.
+- "Denial" Issues are no longer shown by default. To view them, use the
+  filtering options.
+- For more details on the changes to the Android Bort SDK that didn't make the
+  changelog, check out the
+  [Memfault Bort SDK changelog](https://github.com/memfault/bort/blob/master/CHANGELOG.md).

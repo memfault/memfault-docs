@@ -1,0 +1,98 @@
+---
+title: November Updates
+---
+
+## Logging Improvements
+
+- Power up your log searching capabilities with filtering by log level, tags,
+  regular expressions. This helps you find offending log lines faster than ever.
+  Works for both Android and Real-Time products.
+
+  <p align="center">
+    <img
+      width="600"
+      src="/img/blog/2020-11-30-log-filtering.gif"
+      alt="log-filtering"
+    />
+  </p>
+
+<!-- truncate -->
+
+- Memfault now keeps track of which project members have viewed an Issue,
+  allowing you to quickly check if and when your co-workers last looked at an
+  issue. This helps to ensure that every is on the same page and no
+  investigative work is duplicated.
+
+  <p align="center">
+    <img
+      width="300"
+      src="/img/blog/2020-11-30-issue-views.png"
+      alt="issue-views"
+    />
+  </p>
+
+- Users can now manually refresh dashboard charts.
+- Many UI improvements throughout the product.
+
+## Real-Time
+
+- Memfault now shows the last known reset for a given Device in the metrics
+  browser.
+
+  <p align="center">
+    <img
+      width="600"
+      src="/img/blog/2020-11-30-last-reboot.png"
+      alt="last-reboot"
+    />
+  </p>
+
+- Filtering Events by type, device, software, and date has been added!
+
+  <p align="center">
+    <img
+      width="600"
+      src="/img/blog/2020-11-30-filtering-events.png"
+      alt="filtering-events"
+    />
+  </p>
+
+- The [Memfault firmware SDK](https://github.com/memfault/memfault-firmware-sdk)
+  integration with the ESP32 & ESP-IDF has been greatly improved. More details
+  in the changelog linked below.
+- For more details on the changes to the Firmware SDK that didn't make the
+  changelog, check out the
+  [Memfault Firmware SDK changelog](https://github.com/memfault/memfault-firmware-sdk/blob/master/CHANGES.md).
+
+## Android
+
+- Add the ability to view all Bug Reports for a given Device. To navigate to
+  this page, click on a Device under Fleet and click the "All" button in the Bug
+  Report panel.
+
+  <p align="center">
+    <img
+      width="600"
+      src="/img/blog/2020-11-30-all-bugreports.png"
+      alt="all-bugreports"
+    />
+  </p>
+
+- Android software versioning has been improved and is now configurable
+  per-project. Please refer to the
+  [Android software versions docs](https://mflt.io/android-software-versions)
+  for more information.
+
+  <p align="center">
+    <img
+      width="600"
+      src="/img/blog/2020-11-30-android-version-settings.png"
+      alt="android-version-settings"
+    />
+  </p>
+
+- Improve reliability of parsing Bug Reports, tombstones, logs, ANR's, Java
+  exceptions, and other Android data.
+- For more details on the changes to the Android Bort SDK that didn't make the
+  changelog, check out the
+  [Memfault Bort SDK changelog](https://github.com/memfault/bort/blob/master/CHANGELOG.md).

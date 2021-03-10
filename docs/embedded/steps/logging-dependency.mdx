@@ -9,7 +9,7 @@ Based on your setup, choose one of the options below:
 
 1. Add `#define MEMFAULT_PLATFORM_HAS_LOG_CONFIG 1` to `third_party/memfault/memfault_platform_config.h`
 2. Remap Memfault logging macros to platform logging macros by adding the following
-macros to the `memfault_platform_log_config.h` file created earlier.
+   macros to the `memfault_platform_log_config.h` file created earlier.
 
 ```c
 //! @file memfault_platform_log_config.h
@@ -63,4 +63,5 @@ void memfault_platform_log(eMemfaultPlatformLogLevel level, const char *fmt, ...
   your_platform_printf("[%s] MFLT: %s\n", lvl_str, log_buf);
 }
 ```
+
 </details>

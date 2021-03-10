@@ -4,16 +4,16 @@ title: Embedded Integration Guide
 sidebar_label: Embedded Integration Guide
 ---
 
-import TryFlow from './steps/try-flow.mdx'
-import CloneSdk from './steps/clone-sdk.md'
-import AddSources from './steps/add-sources.mdx'
-import CorePlatformDependencies from './steps/core-platform-dependencies.mdx'
-import AddBuildId from './steps/add-build-id.mdx'
-import LoggingDependency from './steps/logging-dependency.mdx'
-import RtosPorts from './steps/rtos-ports.mdx'
-import CoredumpDependency from './steps/coredump-dependency.mdx'
-import RegisterAssert from './steps/register-assert.mdx'
-import PostChunksLocally from './steps/post-chunks-locally.mdx'
+import TryFlow from "./steps/try-flow.mdx";
+import CloneSdk from "./steps/clone-sdk.mdx";
+import AddSources from "./steps/add-sources.mdx";
+import CorePlatformDependencies from "./steps/core-platform-dependencies.mdx";
+import AddBuildId from "./steps/add-build-id.mdx";
+import LoggingDependency from "./steps/logging-dependency.mdx";
+import RtosPorts from "./steps/rtos-ports.mdx";
+import CoredumpDependency from "./steps/coredump-dependency.mdx";
+import RegisterAssert from "./steps/register-assert.mdx";
+import PostChunksLocally from "./steps/post-chunks-locally.mdx";
 
 ### [Optional] Collect a coredump capture using GDB
 
@@ -32,6 +32,7 @@ import PostChunksLocally from './steps/post-chunks-locally.mdx'
 <CorePlatformDependencies />
 
 ### Add a Unique Identifier to target
+
 <AddBuildId />
 
 ### Implement Logging Dependency
@@ -50,7 +51,6 @@ import PostChunksLocally from './steps/post-chunks-locally.mdx'
 
 <CoredumpDependency />
 
-
 ### Confirm Integration Links
 
 At this point your project should compile and be able to boot.
@@ -59,5 +59,3 @@ On startup you should see some messaging like:
 ```
 [I] MFLT: Memfault Build ID: d8d6a047282f025fffa29fa767100f310bc40f80
 ```
-
-

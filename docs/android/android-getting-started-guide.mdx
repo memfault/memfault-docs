@@ -4,7 +4,7 @@ title: Getting Started
 sidebar_label: Getting Started
 ---
 
-This tutorial will cover integrating the [Bort SDK](android-bort.md) into a
+This tutorial will cover integrating the [Bort SDK](android-bort.mdx) into a
 system running Android 10.
 
 ## Integration Steps
@@ -92,11 +92,11 @@ This can be done by updating the `TARGET_SDK_VERSION` property in
 `MemfaultPackages/bort.properties`.
 
 Additional settings can be configured via the Bort SDK over-the-air
-[SDK settings](android-bort.md#features-and-configuration) system.
+[SDK settings](android-bort.mdx#features-and-configuration) system.
 
 One setting that is worth calling out, is the option to capture "minimal" bug
 reports. If system load or bandwidth are concerns for your deployment, we
-recommend using [minimal mode](android-bort.md#minimal-mode).
+recommend using [minimal mode](android-bort.mdx#minimal-mode).
 
 You must provide the Android SDK location for gradle. This can either be set
 with the `ANDROID_HOME` env var, or by opening the project with Android Studio
@@ -113,10 +113,12 @@ If you plan to update the app via the Play Store, you may wish to follow the
 additional instructions on that page.
 
 :::caution
+
 - The key that is used to sign the Bort app must NOT be the platform signing
   key, otherwise updates to the Bort app may be rejected by the Play Store.
 - The key must ONLY be used to sign the Bort app and no other apps. Special
   permissions are assigned to Bort based on the signing certificate.
+
 :::
 
 Once you have a keystore, set up a `keystore.properties` file and provide the
@@ -184,7 +186,7 @@ By default, the Bort SDK will only run after being explicitly enabled at
 runtime; this is to ensure no data is collected without user consent.
 
 More information on enabling the SDK can be found in the
-[Enabling the SDK at Runtime](android-bort.md#enabling-the-sdk-at-runtime)
+[Enabling the SDK at Runtime](android-bort.mdx#enabling-the-sdk-at-runtime)
 section of the Bort SDK documentation.
 
 For the purposes of testing the SDK on a development device, the SDK can be

@@ -1,0 +1,49 @@
+---
+title: April Updates
+---
+
+Memfault Changelog for April
+
+:::note
+The changelog is now separated into 3 sections: Embedded, Android, and General.
+:::
+
+## Embedded
+
+- Add support for showing logs in the Issue detail view if the device is compiled and uses the Memfault Logging SDK.
+  <p align="center">
+    <img
+      width="400"
+      src="/img/blog/2020-04-20-device-logs.png"
+      alt="device-logs"
+    />
+  </p>
+- Add support for deleting a symbol file for a Software Version from the UI
+- Show Device reboots in the Device detail view
+- Improve Trace de-duplication when a Device crashes from within an ISR
+
+<!-- truncate -->
+
+## Android
+
+- In the Timeline view, Memfault shows the "Foreground Activity" at any given time
+  <p align="center">
+    <img
+      width="400"
+      src="/img/blog/2020-04-20-foreground-activity.png"
+      alt="foreground-activity"
+    />
+  </p>
+- Improve Logcat log parsing when a custom format is specified
+- Improve Java exception parsing
+- Improve support for Kernel Oops
+- Improve the zoom feature of the Timeline viewer
+
+## General
+
+- Allow cross-region S3 uploads to speed up initial uploads. If this is a requirement, please contact us
+- Performance improvements when sorting on the Issues view
+
+## Firmware SDK Changes
+
+Check out the [Memfault Firmware SDK changelog](https://github.com/memfault/memfault-firmware-sdk/blob/master/CHANGES.md) for further changes.

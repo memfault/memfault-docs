@@ -16,13 +16,13 @@ int test_reboot(int argc, char *argv[]) {
 // This writes test patterns over the platform coredump region
 // And prints info if it fails.
 int test_coredump_storage(int argc, char *argv[]) {
-  
+
   // Note: Coredump saving runs from an ISR prior to reboot so should
   // be safe to call with interrupts disabled.
   your_platform_disable_interrupts();
   memfault_coredump_storage_debug_test_begin();
   your_platform_enable_interrupts();
-  
+
   memfault_coredump_storage_debug_test_finish();
   return 0;
 }

@@ -1,0 +1,49 @@
+---
+title: January Updates
+---
+
+## Issue Merging
+
+Make your Issue list more organized and concise with the new Issue merging feature! Users can now merge Issues together by clicking the Merge button on the detail page of an Issue and then selecting which Issue to be its parent.
+
+<p align="center">
+  <img width="600" src="/img/blog/2021-01-31-issue-merging.gif" />
+</p>
+This workflow is especially useful when there are multiple Issues stemming from the
+same root cause, such as a stack overflow that presents itself with different backtraces.
+
+This feature is available for both Android and Real-Time products.
+
+<!-- truncate -->
+
+## New Bulk Device Import
+
+Large numbers of devices can now be provisioned and added to cohorts at once via CSV upload.
+
+<p align="center">
+  <img width="600" src="/img/blog/2021-01-31-device-csv-upload.gif" />
+</p>
+
+## Real-Time
+
+- You can now download a Coredump as an .elf file, which can then be loaded into GDB as long as your version of GDB is compiled with core dump support. For more information, [reference the docs](https://mflt.io/coredump-elf-with-gdb).
+
+<p align="center">
+  <img width="600" src="/img/blog/2021-01-31-download-coredump.png" />
+</p>
+
+- Full support for the ESP8266 (Tensilica Xtensa LX106) MCU architecture was added! A step-by-step integration guide can be found [here](https://mflt.io/esp8266-tutorial)
+- Add a convenience header to the SDK which allows users to include a single header, `#include "memfault/components.h"`.
+- In cases where a device generates both a Trace Event and a Coredump, the chances of receiving two emails and two new Issues is reduced. They should be de-duplicated.
+- Fix an issue with compatibility around FreeRTOS, the FPU, and the IAR compiler.
+- Improved support for STM32L4 and STM32F4 MCU's, NXP's MCU's, Silicon Lab's MCU's, and others.
+- Improved support for the Mbed, nRF Connect SDK, Zephyr RTOS's.
+- For more details on the changes to the Firmware SDK that didn't make the
+  changelog, check out the
+  [Memfault Firmware SDK changelog](https://github.com/memfault/memfault-firmware-sdk/blob/master/CHANGES.md).
+
+## Android
+
+- For more details on the changes to the Android Bort SDK that didn't make the
+  changelog, check out the
+  [Memfault Bort SDK changelog](https://github.com/memfault/bort/blob/master/CHANGELOG.md).

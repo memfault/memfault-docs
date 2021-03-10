@@ -1,0 +1,152 @@
+---
+id: test-patterns-for-chunks-endpoint
+title: Test Patterns for Chunks Endpoint
+sidebar_label: Chunks Endpoint Test
+---
+
+Background: For more information about the Memfault Data pipeline in general see
+[this tutorial](data-from-firmware-to-cloud.mdx).
+
+In the following tutorial we will provide several test patterns which can be
+used to check that the data pipeline is hooked up correctly without needing to
+integrate any parts of the Memfault Firmware SDK.
+
+## Posting a Chunk
+
+In this article we will explore sending a heartbeat event for a device with
+serial number `TESTSERIAL`.
+
+Normally, the
+[Memfault Firmware SDK](https://github.com/memfault/memfault-firmware-sdk) would
+produce events (and other kinds of data) and packetize the data into one or more
+"chunks". Each chunk needs to be uploaded the chunks HTTP endpoint.
+
+Below we will list some example calls to the
+[chunks endpoint](https://mflt.io/chunks-api) as a [curl](https://curl.haxx.se)
+command but they can be converted to whatever format is easiest for the your
+setup.
+
+We also provide an iOS library,
+[MemfaultCloud](https://github.com/memfault/memfault-ios-cloud#uploading-chunks),
+to facilitate posting chunks to Memfault from an iOS app.
+
+#### Project Key
+
+A Project API key will be needed in order to communicate with Memfault's web
+services. Go to [https://app.memfault.com/](https://app.memfault.com/), navigate
+to the project you want to use and select 'Settings'→'General'. The 'Project API
+Key' listed is what you will want to use.
+
+Note you will have to replace `<YOUR_PROJECT_KEY>` with the one you grabbed in
+the setup instructions above for the commands below to work.
+
+### Event message encoded in a single chunk
+
+Download the
+[single chunk test payload](/downloads/docs/test-patterns-for-chunks-endpoint/chunk_v2_single_chunk_msg.bin)
+and save it in your working directory. This file contains the data of a single
+chunk, containing the complete test event.
+
+Run this `curl` command to post the chunk:
+
+```bash
+# Chunk 1/1
+curl -v -X POST https://chunks.memfault.com/api/v0/chunks/TESTSERIAL \
+ -H 'Memfault-Project-Key: <YOUR_PROJECT_KEY>' \
+ -H 'Content-Type: application/octet-stream' \
+ --data-binary "@chunk_v2_single_chunk_msg.bin"
+```
+
+The HTTP request that `curl` sent, looks more or less like this:
+
+```http request
+POST /api/v0/chunks/TESTSERIAL HTTP/1.1
+Host: chunks.memfault.com
+Memfault-Project-Key: <YOUR_PROJECT_KEY>
+Content-Type: application/octet-stream
+Content-Length: <length of binary chunk data in bytes>
+
+<binary chunk data here>
+```
+
+### Same event message encoded in two chunks
+
+In this example, we batch-upload 2 chunks in a single HTTP request.
+
+This achieves better throughput compared to uploading them in separate requests
+(Note: it's not allowed to parallelize uploads of chunks from the _same_
+device).
+
+Download
+[chunk test payload part 1 of 2](/downloads/docs/test-patterns-for-chunks-endpoint/chunk_v2_chunk_msg_pt1_of_2.bin)
+and
+[chunk test payload part 2 of 2](/downloads/docs/test-patterns-for-chunks-endpoint/chunk_v2_chunk_msg_pt2_of_2.bin)
+and save them in your working directory.
+
+Run this `curl` command to post both chunks in one request:
+
+```bash
+# Event message spanning across two individual chunks
+# Note: Event will appear in UI once both chunks have arrived
+
+curl -v -X POST https://chunks.memfault.com/api/v0/chunks/TESTSERIAL \
+ -H 'Memfault-Project-Key: <YOUR_PROJECT_KEY>' \
+ -H 'Content-Type: multipart/mixed' \
+ --form 'file=@chunk_v2_chunk_msg_pt1_of_2.bin;headers="Content-Length: 46"' \
+ --form 'file=@chunk_v2_chunk_msg_pt2_of_2.bin;headers="Content-Length: 44"'
+```
+
+The HTTP request that `curl` sent, looks more or less like this:
+
+```http request
+POST /api/v0/chunks/TESTSERIAL HTTP/1.1
+Host: chunks.memfault.com
+Memfault-Project-Key: <YOUR_PROJECT_KEY>
+Content-Length: <total length>
+Content-Type: multipart/mixed; boundary=77AC153B-FCD2-4224-A8F8-1788947663A0
+--77AC153B-FCD2-4224-A8F8-1788947663A0
+Content-Length: <chunk 1 of 2 binary data length in bytes>
+
+<chunk 1 of 2 binary data>
+--77AC153B-FCD2-4224-A8F8-1788947663A0
+Content-Length: <chunk 2 of 2 binary data length in bytes>
+
+<chunk 2 of 2 binary data>
+--77AC153B-FCD2-4224-A8F8-1788947663A0--
+```
+
+:::note
+The `curl` commands inserts an additional `Content-Disposition` header
+with each part. These headers are not necessary and will get ignored.
+:::
+
+### Verifying arrival of the test events
+
+Upon success you will be able to see the event contained inside the chunk(s) by
+going to [https://app.memfault.com/](https://app.memfault.com/) and selecting
+'Event'. It will look like this:
+
+![/img/docs/embedded/chunks-all-events.png](/img/docs/embedded/chunks-all-events.png)
+
+### Troubleshooting
+
+When a request to the chunks HTTP endpoint is responded to with `202 Accepted`,
+it means the posted chunks have been enqueued for processing. It is possible for
+failures to occur later on in the post-processing phase. To troubleshoot these
+failures, the "Chunks Debug Log" can be used.
+
+This view lists recently received chunks and any associated post-processing
+errors:
+
+![/img/docs/embedded/chunks-all-events.png](/img/docs/embedded/chunks-debug-log.png)
+
+You can reach this view by going to
+[https://app.memfault.com/](https://app.memfault.com/) and selecting 'Chunk
+Debug' from the menu. If this option is missing in your project, please contact
+us to get it enabled.
+
+### Further Reading
+
+We recommend taking a look at the detailed documentation of the chunks endpoint
+refer to the [chunks endpoint API documentation](https://mflt.io/chunks-api) to
+learn more about the semantics of the API, the error codes, etc.

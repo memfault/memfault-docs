@@ -33,7 +33,6 @@ int memfault_platform_boot(void) {
 A region of RAM that does not get initialized across resets needs to be allocated for saving
 information about resets that are about to take place.
 
-
 ```diff
 //! @file memfault_platform_port.c
 
@@ -57,7 +56,6 @@ int memfault_platform_boot(void) {
   memfault_build_info_dump();
 }
 ```
-
 
 #### Add `memfault_reboot_reason_get()`
 
@@ -126,7 +124,6 @@ Add the following file to your build system:
 <summary> Other </summary>
 
 Implement the following function for your MCU. The ports listed above serve as a good reference.
-
 
 ```c
 //! @file memfault_platform_port.c
