@@ -1,6 +1,6 @@
 overrides:
   - files: "*.mdx"
     options:
-      proseWrap: preserve
+      proseWrap: always
   - files: "*.css"
     tabWidth: 4

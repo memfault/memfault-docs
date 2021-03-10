@@ -1,4 +1,5 @@
-Memfault has a module for tracking and reporting what resets are taking place on your platform.
+Memfault has a module for tracking and reporting what resets are taking place on
+your platform.
 
 <details>
 
@@ -10,7 +11,8 @@ Add the following file to your build system:
   ${MEMFAULT_SDK_ROOT}/ports/nrf5_sdk/memfault_platform_metrics.c
 ```
 
-Add call to `memfault_platform_reboot_tracking_boot()` from `memfault_platform_boot()`
+Add call to `memfault_platform_reboot_tracking_boot()` from
+`memfault_platform_boot()`
 
 ```diff
 //! @file memfault_platform_port.c
@@ -30,8 +32,8 @@ int memfault_platform_boot(void) {
 
 #### Allocate noinit region
 
-A region of RAM that does not get initialized across resets needs to be allocated for saving
-information about resets that are about to take place.
+A region of RAM that does not get initialized across resets needs to be
+allocated for saving information about resets that are about to take place.
 
 ```diff
 //! @file memfault_platform_port.c
@@ -41,7 +43,9 @@ information about resets that are about to take place.
 ```
 
 :::note
+
 You will need to update your linker script for the variable to be in noinit RAM.
+
 :::
 
 #### Collect reboot info
@@ -123,7 +127,8 @@ Add the following file to your build system:
 
 <summary> Other </summary>
 
-Implement the following function for your MCU. The ports listed above serve as a good reference.
+Implement the following function for your MCU. The ports listed above serve as a
+good reference.
 
 ```c
 //! @file memfault_platform_port.c

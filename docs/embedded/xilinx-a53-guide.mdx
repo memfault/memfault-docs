@@ -27,11 +27,20 @@ import PublishDataToCloud from "./steps/publish-data-to-cloud.mdx";
 
 ### Add Sources to Build System
 
-Right click on the memfault-firmware-sdk in the project explorer in Vitis, select properties, select "C/C++ Build", check "Exclude resource from build", and select "Apply and Close".
+Right click on the memfault-firmware-sdk in the project explorer in Vitis,
+select properties, select "C/C++ Build", check "Exclude resource from build",
+and select "Apply and Close".
 
-Now expand in the project explorer memfault-firmware-sdk/components and follow the same steps as above to deselect "Exclude resource from build" for the core, metrics, & utils folders.
+Now expand in the project explorer memfault-firmware-sdk/components and follow
+the same steps as above to deselect "Exclude resource from build" for the core,
+metrics, & utils folders.
 
-Next we need to add the required include paths. To do this, right click on the project, select properties, expand "C/C++ Build", and select "Settings". Under ARM v8 gcc compiler, select "Directories" and add the path to the "memfault" folder, the path to "memfault-firmware-sdk/components/include", & the path to "memfault-firmware/ports/include" to the list. When done you should see something like the following in the list:
+Next we need to add the required include paths. To do this, right click on the
+project, select properties, expand "C/C++ Build", and select "Settings". Under
+ARM v8 gcc compiler, select "Directories" and add the path to the "memfault"
+folder, the path to "memfault-firmware-sdk/components/include", & the path to
+"memfault-firmware/ports/include" to the list. When done you should see
+something like the following in the list:
 
 ```
 "${workspace_loc:/${ProjName}/third_party/memfault}"
@@ -45,9 +54,9 @@ Next we need to add the required include paths. To do this, right click on the p
 
 ### Implement Logging Dependency
 
-The Memfault SDK will (sparingly) emit diagnostic logs to alert of integration configuration problems.
-The logging subsystem can also easily serve as logging infrastructure for your own platform if you do not
-yet have one set up.
+The Memfault SDK will (sparingly) emit diagnostic logs to alert of integration
+configuration problems. The logging subsystem can also easily serve as logging
+infrastructure for your own platform if you do not yet have one set up.
 
 #### Define in platform config that logs will be overriden at macro level
 
@@ -106,8 +115,10 @@ At this point your project should compile and be able to boot.
 The Memfault SDK functionality can be easily exercised via CLI test commands.
 
 :::note
-If your platform does not have a CLI, these commands can also be
-wired up to a button press or called from `main()` on bootup from a test image
+
+If your platform does not have a CLI, these commands can also be wired up to a
+button press or called from `main()` on bootup from a test image
+
 :::
 
 ```c
@@ -145,7 +156,8 @@ int export_data(int argc, char *argv[]) {
 
 ### Next Steps
 
-With a way to test the SDK integration in place, run through all the commands, and confirm you see "traces" and "heartbeats" appear in the Memfault UI.
+With a way to test the SDK integration in place, run through all the commands,
+and confirm you see "traces" and "heartbeats" appear in the Memfault UI.
 
 ## End-to-End Data Path
 
@@ -155,4 +167,7 @@ With a way to test the SDK integration in place, run through all the commands, a
 
 ### Transmit Data From Gateway to Cloud
 
-Once data has arrived on the Gateway it needs to be POST'd over HTTPS using the networking stack available on the device. Example test payloads and more details about the API itself can be found [here](/docs/embedded/test-patterns-for-chunks-endpoint)
+Once data has arrived on the Gateway it needs to be POST'd over HTTPS using the
+networking stack available on the device. Example test payloads and more details
+about the API itself can be found
+[here](/docs/embedded/test-patterns-for-chunks-endpoint)

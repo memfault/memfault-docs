@@ -212,11 +212,13 @@ reads to coredump storage could be achieved.
 #### Example Code
 
 :::note
-In order to operate in asychronous operation mode, RLE data source
-compression must be disabled. This is because RLE Compression requires several
-passes over the underlying data. The feature can be disabled by either
-removing `memfault_data_source_rle.c` from your build system or by adding the
-define `MEMFAULT_DATA_SOURCE_RLE_ENABLED=0` to your compilation flags.
+
+In order to operate in asychronous operation mode, RLE data source compression
+must be disabled. This is because RLE Compression requires several passes over
+the underlying data. The feature can be disabled by either removing
+`memfault_data_source_rle.c` from your build system or by adding the define
+`MEMFAULT_DATA_SOURCE_RLE_ENABLED=0` to your compilation flags.
+
 :::
 
 ```c

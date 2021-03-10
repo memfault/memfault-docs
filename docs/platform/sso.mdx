@@ -11,9 +11,11 @@ of your organization to log in using your organization's third-party
 authentication provider.
 
 :::note
-SSO on can be set up for organization on a per-request basis. We currently
-don't support automatic or autonomous provisioning of SSO for organizations.
+
+SSO on can be set up for organization on a per-request basis. We currently don't
+support automatic or autonomous provisioning of SSO for organizations.
 [Let us know](mailto:hello@memfault.com) if you'd like us to set you up.
+
 :::
 
 Supported providers include:
@@ -29,18 +31,21 @@ Memfault additionally supports logging in with SAML.
 
 ## Getting Started
 
-Please [contact us](mailto:hello@memfault.com) to enable Single Sign On for your organization.
+Please [contact us](mailto:hello@memfault.com) to enable Single Sign On for your
+organization.
 
 ## Invite New Users
 
-Members with an `@your-domain.com` email address will need an invitation to
-your organization. Without one, they will be able to log in but they won't be
-members of your organization, and will not have access to your organization's
-projects.
+Members with an `@your-domain.com` email address will need an invitation to your
+organization. Without one, they will be able to log in but they won't be members
+of your organization, and will not have access to your organization's projects.
 
 <InviteNewUsers />
 
-External users will still be able to log in to Memfault with their email address (even if it's not in `@your-domain.com`). If you'd like to restrict access to members with a `@your-domain.com` email address, [please contact us](mailto:hello@memfault.com).
+External users will still be able to log in to Memfault with their email address
+(even if it's not in `@your-domain.com`). If you'd like to restrict access to
+members with a `@your-domain.com` email address,
+[please contact us](mailto:hello@memfault.com).
 
 ## Authenticating With SSO
 
@@ -65,8 +70,8 @@ redirected back to the app automatically.
 #### Other Providers & SAML
 
 To log in with other providers and SAML, click on the **Log in with SAML SSO**
-link, and you'll be prompted to enter your email address. Make sure to enter
-the email address provided by your organization.
+link, and you'll be prompted to enter your email address. Make sure to enter the
+email address provided by your organization.
 
 <p align="center">
   <img
@@ -83,6 +88,13 @@ automatically.
 
 Find out more about API Keys [here](api-keys).
 
-Organization-scoped and Project Keys will continue to work as usual if your organization has SSO enabled.
+Organization-scoped and Project Keys will continue to work as usual if your
+organization has SSO enabled.
 
-However, [User API keys](api-keys#user-api-keys) are going to be rejected for SSO-enabled organizations if you haven't used that organization's SSO provider in more than two weeks. Note that the key will continue to work for a User's own resources or when accessing other organizations they have access to. To reenable access to an SSO-enabled organization's resources with your User API key, log in to that organization [using the application](#logging-into-the-app), with the SSO provider of the organization.
+However, [User API keys](api-keys#user-api-keys) are going to be rejected for
+SSO-enabled organizations if you haven't used that organization's SSO provider
+in more than two weeks. Note that the key will continue to work for a User's own
+resources or when accessing other organizations they have access to. To reenable
+access to an SSO-enabled organization's resources with your User API key, log in
+to that organization [using the application](#logging-into-the-app), with the
+SSO provider of the organization.

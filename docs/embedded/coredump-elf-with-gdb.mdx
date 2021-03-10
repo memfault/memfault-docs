@@ -59,6 +59,7 @@ $ gdb --se /path/to/symbols.elf --core /path/to/coredump.elf
 ```
 
 :::note
+
 If your version of GDB does not have support for core files, you will see this
 message when attempting to load the file:
 
@@ -69,6 +70,7 @@ message when attempting to load the file:
 Memfault provides GDB binaries that do have support for core files. See
 [section at the bottom](#installing-multi-architecture-gdb-with-conda) for
 installation instructions.
+
 :::
 
 In case GDB is already running, it's also possible to load core & (additional)
@@ -120,9 +122,10 @@ $ conda env create -f environment.yml
 ```
 
 :::note
-By default, "memfault-multi-arch-gdb" is used as the name for the
-environment. You can override this by passing `-n <NAME>` to the "create"
-command.
+
+By default, "memfault-multi-arch-gdb" is used as the name for the environment.
+You can override this by passing `-n <NAME>` to the "create" command.
+
 :::
 
 ## Activate the Conda environment

@@ -5,17 +5,26 @@ and to ensure things are running as expected.
 
 <summary>Typical Heartbeat Examples</summary>
 
-- investigate problems that didn't cause a reboot (bad connectivity, network or sensor error rates) and marginality that crops up in a fleet
-- providing leading indicators of problems (rapid battery drain, drop in activity, etc)
+- investigate problems that didn't cause a reboot (bad connectivity, network or
+  sensor error rates) and marginality that crops up in a fleet
+- providing leading indicators of problems (rapid battery drain, drop in
+  activity, etc)
 - compare trends across releases (improved connectivity, data efficiency etc)
 
 Best Practices around each metric type that we recommend:
 
-- Timers - These are used to track time spent in particular states and can be used for debugging connectivity, battery life, and performance issues.
-- Counters - Track counts of a particular event class taking place. Suggested use cases are:
-  - Operations your system are performing (number of events serviced by a task, bytes sent over network, bytes written to flash). Alerts can be configured to identify devices operating outside normal thresholds.
-  - Counts of events for events that should never happen (i2c bus write error count, flash write error). You can alert if any of these situations are seen.
-- Gauges - These are values sampled at the end of each heartbeat interval. Common items include
+- Timers - These are used to track time spent in particular states and can be
+  used for debugging connectivity, battery life, and performance issues.
+- Counters - Track counts of a particular event class taking place. Suggested
+  use cases are:
+  - Operations your system are performing (number of events serviced by a task,
+    bytes sent over network, bytes written to flash). Alerts can be configured
+    to identify devices operating outside normal thresholds.
+  - Counts of events for events that should never happen (i2c bus write error
+    count, flash write error). You can alert if any of these situations are
+    seen.
+- Gauges - These are values sampled at the end of each heartbeat interval.
+  Common items include
   - Battery Metrics (Drop over an hour, current percent)
   - Heap utilization / stack high watermark
 

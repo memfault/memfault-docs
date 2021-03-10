@@ -1,6 +1,7 @@
-Open the `memfault_platform_port.c` file created in `third_party/memfault/memfault_platform_port.c`.
-This will be the file we implement the platform dependencies required by the SDK.
-You can copy the template below into your project and fill in accordingly.
+Open the `memfault_platform_port.c` file created in
+`third_party/memfault/memfault_platform_port.c`. This will be the file we
+implement the platform dependencies required by the SDK. You can copy the
+template below into your project and fill in accordingly.
 
 ```c
 //! @file memfault_platform_port.c
@@ -79,8 +80,8 @@ int memfault_platform_boot(void) {
 
 #### Initialize Memfault Subsystem On Bootup
 
-From your main routine, add a call to `memfault_platform_boot()` prior
-to the startup of an RTOS or baremetal while loop.
+From your main routine, add a call to `memfault_platform_boot()` prior to the
+startup of an RTOS or baremetal while loop.
 
 ```c
 #include "memfault/components.h"

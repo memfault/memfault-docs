@@ -1,11 +1,12 @@
-When the system faults or asserts crash information can be recorded
-and sent to Memfault after the device reboots. In order for this information to be saved,
-it must be persisted to a storage area that persists across a device reset.
+When the system faults or asserts crash information can be recorded and sent to
+Memfault after the device reboots. In order for this information to be saved, it
+must be persisted to a storage area that persists across a device reset.
 
 #### Specify RAM regions to capture in Coredump
 
-When a coredump takes place, you can control the exact memory regions that are captured for analysis, `s_coredump_regions`.
-We recommend collecting the active stack at a minimum.
+When a coredump takes place, you can control the exact memory regions that are
+captured for analysis, `s_coredump_regions`. We recommend collecting the active
+stack at a minimum.
 
 ```c
 //! @file memfault_port_coredump_regions.c
@@ -46,13 +47,17 @@ const sMfltCoredumpRegion *memfault_platform_coredump_get_regions(
 
 #### Implement Coredump Storage Area
 
-Coredumps can be saved in a `.noinit` region of SRAM, internal flash, external flash,
-or even streamed out over a peripheral to another MCU when a coredump takes place.
+Coredumps can be saved in a `.noinit` region of SRAM, internal flash, external
+flash, or even streamed out over a peripheral to another MCU when a coredump
+takes place.
 
 Reference ports can be found below:
 
 :::note
-Make sure you have added the `*_coredump_storage.c` port selected to your build system.
+
+Make sure you have added the `*_coredump_storage.c` port selected to your build
+system.
+
 :::
 
 <details>

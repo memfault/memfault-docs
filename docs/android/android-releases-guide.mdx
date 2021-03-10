@@ -70,7 +70,8 @@ change._
   uniquely identified by its "software_version".
 
 For more information, see our
-[Software Version](platform/software-version-hardware-version.mdx) documentation.
+[Software Version](platform/software-version-hardware-version.mdx)
+documentation.
 
 ### Identifying Firmware Binaries
 
@@ -114,11 +115,10 @@ organization and project in the Memfault UI:
 
 ### Project Key
 
-This is a token that is used when pushing data between a device and the
-Memfault cloud. We will be using this to query for OTA Payloads in this
-tutorial. To locate this token you will also want to navigate to the "Settings"
--> "General" page in the Memfault UI and copy/paste the token in the "Project Key"
-section.
+This is a token that is used when pushing data between a device and the Memfault
+cloud. We will be using this to query for OTA Payloads in this tutorial. To
+locate this token you will also want to navigate to the "Settings" -> "General"
+page in the Memfault UI and copy/paste the token in the "Project Key" section.
 
 ## Managing Your First Release
 
@@ -161,6 +161,7 @@ INFO: You can view in the UI here:
 ```
 
 :::note Tip
+
 If you are going to be working with the same project you can add standard
 arguments as environment variables to your shell init file or via the command
 line:
@@ -194,9 +195,11 @@ INFO: You can view in the UI here:
 Now let's deploy the release to the `default` cohort.
 
 :::note
-Any new device seen that has not explicitly been assigned to a custom
-cohort will be part of this cohort. To pre-create devices assigned to a
-specific cohort check out our [api-docs](https://api-docs.memfault.com/).
+
+Any new device seen that has not explicitly been assigned to a custom cohort
+will be part of this cohort. To pre-create devices assigned to a specific cohort
+check out our [api-docs](https://api-docs.memfault.com/).
+
 :::
 
 In the UI navigate to "Fleet" -> "Cohorts". Click on the picker under next to

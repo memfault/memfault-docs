@@ -1,5 +1,5 @@
-Based on the build system you are using, expand the appropriate tab below
-and follow the steps to add the sources to your target
+Based on the build system you are using, expand the appropriate tab below and
+follow the steps to add the sources to your target
 
 <details>
   <summary>Make</summary>
@@ -23,8 +23,10 @@ include $(MEMFAULT_SDK_ROOT)/makefiles/MemfaultWorker.mk
 ```
 
 :::info
+
 Be sure to update `YOUR_SRC_FILES`, `YOUR_INCLUDE_PATHS`, and
 `YOUR_PROJECT_ROOT` accordingly for your system above!
+
 :::
 
 </details>
@@ -52,8 +54,11 @@ memfault_library(${MEMFAULT_SDK_ROOT} MEMFAULT_COMPONENTS
 ```
 
 :::info
-Be sure to update `YOUR_PROJECT_ROOT`, add `${MEMFAULT_COMPONENTS_SRCS}` to your target sources
-and `${MEMFAULT_COMPONENTS_INC_FOLDERS}` to your target includes accordingly
+
+Be sure to update `YOUR_PROJECT_ROOT`, add `${MEMFAULT_COMPONENTS_SRCS}` to your
+target sources and `${MEMFAULT_COMPONENTS_INC_FOLDERS}` to your target includes
+accordingly
+
 :::
 
 </details>
@@ -61,10 +66,16 @@ and `${MEMFAULT_COMPONENTS_INC_FOLDERS}` to your target includes accordingly
 <details>
   <summary>Other</summary>
 
-1. add `$MEMFAULT_FIRMWARE_SDK/components/include` to the include paths for your project
-2. add `$MEMFAULT_FIRMWARE_SDK/ports/include` to the include paths for your project
-3. add the sources under `$MEMFAULT_FIRMWARE_SDK/components/[core, util, panics, metrics]/src/**/*.c` to your project
-4. add `third_party/memfault/memfault_platform_port.c` & `third_party/memfault/memfault_platform_coredump_regions.c` sources to project
+1. add `$MEMFAULT_FIRMWARE_SDK/components/include` to the include paths for your
+   project
+2. add `$MEMFAULT_FIRMWARE_SDK/ports/include` to the include paths for your
+   project
+3. add the sources under
+   `$MEMFAULT_FIRMWARE_SDK/components/[core, util, panics, metrics]/src/**/*.c`
+   to your project
+4. add `third_party/memfault/memfault_platform_port.c` &
+   `third_party/memfault/memfault_platform_coredump_regions.c` sources to
+   project
 5. add `third_party/memfault/` to the include paths for your project
 
 </details>

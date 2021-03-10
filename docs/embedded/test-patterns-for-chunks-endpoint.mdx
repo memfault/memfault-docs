@@ -32,10 +32,10 @@ to facilitate posting chunks to Memfault from an iOS app.
 
 #### Project Key
 
-A key will be needed in order to communicate with Memfault's web
-services. Go to [https://app.memfault.com/](https://app.memfault.com/), navigate
-to the project you want to use and select 'Settings'→'General'. The 'Project
-Key' listed is what you will want to use.
+A key will be needed in order to communicate with Memfault's web services. Go to
+[https://app.memfault.com/](https://app.memfault.com/), navigate to the project
+you want to use and select 'Settings'→'General'. The 'Project Key' listed is
+what you will want to use.
 
 Note you will have to replace `<YOUR_PROJECT_KEY>` with the one you grabbed in
 the setup instructions above for the commands below to work.
@@ -116,8 +116,10 @@ Content-Length: <chunk 2 of 2 binary data length in bytes>
 ```
 
 :::note
-The `curl` commands inserts an additional `Content-Disposition` header
-with each part. These headers are not necessary and will get ignored.
+
+The `curl` commands inserts an additional `Content-Disposition` header with each
+part. These headers are not necessary and will get ignored.
+
 :::
 
 ### Verifying arrival of the test events

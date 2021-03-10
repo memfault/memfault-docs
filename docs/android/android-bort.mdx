@@ -22,8 +22,8 @@ The Bort SDK supports two parallel and complementary data collection systems:
 1. [Bug reports](#bug-reports-via-memfaultdumpstaterunner), a diagnostics
    reporting tool built into AOSP.
 2. [Memfault Caliper](#memfault-caliper), a system designed to precisely specify
-   what diagnostics information to collect on the device for improved performance
-   and privacy.
+   what diagnostics information to collect on the device for improved
+   performance and privacy.
 
 Below is a summary of the Bort SDK features and the version of the SDK in which
 they were added.
@@ -72,9 +72,11 @@ two systems, described in detail below.
 ### Memfault _Caliper_
 
 :::note
-First released in Bort 3.0, the _Caliper_ system supports trace; per device
-and fleet wide metrics collection via the Android _batterystats_ subsystem;
-and log collection via logcat.
+
+First released in Bort 3.0, the _Caliper_ system supports trace; per device and
+fleet wide metrics collection via the Android _batterystats_ subsystem; and log
+collection via logcat.
+
 :::
 
 Memfault's _Caliper_ system can be used to precisely specify what diagnostics
@@ -92,7 +94,9 @@ to receive traces and crash data from the operating system.
 Metrics are collected using the
 [Batterystats subsystem](https://cs.android.com/android/platform/superproject/+/master:frameworks/base/core/java/android/os/BatteryStats.java).
 
-Logs are collected from [logcat](https://developer.android.com/studio/command-line/logcat) when issues occur.
+Logs are collected from
+[logcat](https://developer.android.com/studio/command-line/logcat) when issues
+occur.
 
 For a summary of _Caliper_'s features, see
 [Feature Release History](#feature-release-history).
@@ -143,9 +147,10 @@ but through the slightly specialized `memfault_dumpstatez`. See
 
 The Bort SDK contains an _Over The Air_ settings system so that settings are
 defined on the web in your Memfault project, and the SDK will periodically pull
-the latest settings at run-time. This makes it easy to enable or disable different data
-sources, or change configuration options. Settings can be updated through the web UI
-or programmatically via a web endpoint -- no need to deploy an app or OS update.
+the latest settings at run-time. This makes it easy to enable or disable
+different data sources, or change configuration options. Settings can be updated
+through the web UI or programmatically via a web endpoint -- no need to deploy
+an app or OS update.
 
 The settings can be found in the `Settings` part of the web UI. SDK settings are
 only visible to and configurable by project administrators.
@@ -156,16 +161,19 @@ only visible to and configurable by project administrators.
 
 ### Fallback SDK Settings
 
-As part of the build process, the Bort SDK will fetch the current SDK settings and store
-them as a file called `settings.json`. We recommend storing this file in your version
-control system. The Bort SDK embeds this file as fallback SDK settings, used temporarily
-until fresh settings are retrieved from the web, at run-time.
+As part of the build process, the Bort SDK will fetch the current SDK settings
+and store them as a file called `settings.json`. We recommend storing this file
+in your version control system. The Bort SDK embeds this file as fallback SDK
+settings, used temporarily until fresh settings are retrieved from the web, at
+run-time.
 
-If, during the build process, the Bort SDK detects the local `settings.json` is stale,
-the build will intentionally fail to alert you that the default settings are out of
-date. To fix this, remove the stale `settings.json` file and re-run the build.
+If, during the build process, the Bort SDK detects the local `settings.json` is
+stale, the build will intentionally fail to alert you that the default settings
+are out of date. To fix this, remove the stale `settings.json` file and re-run
+the build.
 
-If you wish to disable this check, you can skip this step when building the Bort APK by setting a gradle property:
+If you wish to disable this check, you can skip this step when building the Bort
+APK by setting a gradle property:
 
 ```
 SKIP_DOWNLOAD_SYSTEM_SETTINGS_JSON=1
@@ -182,7 +190,8 @@ happens, the app will register the periodic task if one is not registered.
 
 There are configuration options to set the period of this task as well as the
 initial delay for when the first bug report is generated (e.g. if you wish to
-wait until more data is available). See [SDK settings](#features-and-configuration).
+wait until more data is available). See
+[SDK settings](#features-and-configuration).
 
 Bug reports can also be triggered programmatically via an `Intent`.
 
