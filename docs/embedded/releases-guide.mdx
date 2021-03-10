@@ -118,13 +118,13 @@ organization and project in the Memfault UI:
 1. Make sure that you've selected the right project on the top-left
 2. Click on "Settings" and then "General Settings"
 
-### Project API Key
+### Project Key
 
-This is the API token that is used when pushing data between a device and the
+This is a token that is used when pushing data between a device and the
 Memfault cloud. We will be using this to query for OTA Payloads in this
 tutorial. To locate this token you will also want to navigate to the "Settings"
--> "General" page in the Memfault UI and copy/paste the token in the "Project
-API Key" section.
+-> "General" page in the Memfault UI and copy/paste the token in the "Project Key"
+section.
 
 ## Managing Your First Release
 
@@ -238,7 +238,7 @@ as a text response.
 $ export MEMFAULT_LATEST_URL_API_ROUTE=https://device.memfault.com/api/v0/releases/latest/url
 $ curl -i -X GET \
 "${MEMFAULT_LATEST_URL_API_ROUTE}?device_serial=DEMOSERIAL&hardware_version=mp&software_type=stm32-fw&current_version=0.0.1" \
-  --header "Memfault-Project-Key: ${YOUR_PROJECT_API_KEY}"
+  --header "Memfault-Project-Key: ${YOUR_PROJECT_KEY}"
 
 
 HTTP/1.1 200 OK
@@ -261,7 +261,7 @@ value for `current_version`:
 ```bash
 $ curl -i -X GET  \
   "${MEMFAULT_LATEST_URL_API_ROUTE}?device_serial=DEMOSERIAL&hardware_version=mp&software_type=stm32-fw&current_version=0.0.1" \
-  --header "Memfault-Project-Key: ${YOUR_PROJECT_API_KEY}"
+  --header "Memfault-Project-Key: ${YOUR_PROJECT_KEY}"
 
 HTTP/1.1 204 NO CONTENT
 memfault-reason: latest
@@ -278,7 +278,7 @@ information about the release will be returned in a JSON blob:
 $ export MEMFAULT_LATEST_API_ROUTE=https://device.memfault.com/api/v0/releases/latest
 $ curl -i -X GET  \
   "${MEMFAULT_LATEST_API_ROUTE}?device_serial=DEMOSERIAL&hardware_version=mp&software_type=stm32-fw&current_version=0.0.1" \
-  --header "Memfault-Project-Key: ${YOUR_PROJECT_API_KEY}"
+  --header "Memfault-Project-Key: ${YOUR_PROJECT_KEY}"
 
 HTTP/1.1 200 OK
 

@@ -66,16 +66,16 @@ $ memfault upload-ota-payload --help
     The command can operate on binary data encoded in the following formats:
 
     1. Hex String:
-      memfault --project-key ${YOUR_PROJECT_API_KEY} post-chunk --encoding hex 0802a702010301076a5445535453455249414c0a6d746573742d736f667477617265096a312e302e302d74657374066d746573742d686172647761726504a101a1726368756e6b5f746573745f737563636573730131e4
+      memfault --project-key ${YOUR_PROJECT_KEY} post-chunk --encoding hex 0802a702010301076a5445535453455249414c0a6d746573742d736f667477617265096a312e302e302d74657374066d746573742d686172647761726504a101a1726368756e6b5f746573745f737563636573730131e4
 
     2. Base64 Encoded String
-      memfault --project-key ${YOUR_PROJECT_API_KEY} post-chunk --encoding base64 CAKnAgEDAQdqVEVTVFNFUklBTAptdGVzdC1zb2Z0d2FyZQlqMS4wLjAtdGVzdAZtdGVzdC1oYXJkd2FyZQShAaFyY2h1bmtfdGVzdF9zdWNjZXNzATHk
+      memfault --project-key ${YOUR_PROJECT_KEY} post-chunk --encoding base64 CAKnAgEDAQdqVEVTVFNFUklBTAptdGVzdC1zb2Z0d2FyZQlqMS4wLjAtdGVzdAZtdGVzdC1oYXJkd2FyZQShAaFyY2h1bmtfdGVzdF9zdWNjZXNzATHk
 
     3. Binary File
-      memfault --project-key ${YOUR_PROJECT_API_KEY} post-chunk --encoding bin chunk_v2_single_chunk_msg.bin
+      memfault --project-key ${YOUR_PROJECT_KEY} post-chunk --encoding bin chunk_v2_single_chunk_msg.bin
 
     4. memfault-firmware-sdk data export
-      memfault --project-key ${YOUR_PROJECT_API_KEY} post-chunk --encoding sdk_data_export data_export.txt
+      memfault --project-key ${YOUR_PROJECT_KEY} post-chunk --encoding sdk_data_export data_export.txt
   ```
 
 - For more details on the changes to the Firmware SDK that didn't make the

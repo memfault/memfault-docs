@@ -140,15 +140,15 @@ index c06835b2..681db825 100644
     @echo "App built but not signed. Signing step via espsecure.py:"
 ```
 
-### Create a Project and Get Project API Key
+### Create a Project and Get Project Key
 
 Go to https://app.memfault.com/ and from the "Select A Project" dropdown, click
 on "Create Project" to setup your first project such as "smart-sink-dev".
 
-Then navigate to "Settings" -> "General", where you can find the "Project API
+Then navigate to "Settings" -> "General", where you can find the "Project
 Key" which will be used to communicate with Memfault's web services.
 
-Copy the "Project API Key" for use in the next step.
+Copy the "Project Key" for use in the next step.
 
 ### Implement Platform Dependencies
 
@@ -170,7 +170,7 @@ Be sure to fill in the appropriate.
 #include "memfault/esp8266_port/core.h"
 
 sMfltHttpClientConfig g_mflt_http_client_config = {
-  .api_key = "YOUR_PROJECT_API_KEY",
+  .api_key = "YOUR_PROJECT_KEY",
 };
 
 static char s_fw_version[32];
@@ -282,7 +282,7 @@ The CLI output can then be saved to a file and the "chunk" data can be posted to
 the Memfault Cloud using the [Memfault CLI tool](/docs/ci/install-memfault-cli):
 
 ```bash
-$ memfault --project-key ${YOUR_PROJECT_API_KEY} post-chunk --encoding sdk_data_export cli-output.txt
+$ memfault --project-key ${YOUR_PROJECT_KEY} post-chunk --encoding sdk_data_export cli-output.txt
 Found 2 Chunks. Sending Data ...
 Success
 ```

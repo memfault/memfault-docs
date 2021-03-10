@@ -75,11 +75,11 @@ from a dump over a console:
 [00:00:35] DEBUG: Etc ...
 ```
 
-## Grab Project API Key from Memfault UI
+## Grab Project Key from Memfault UI
 
-A Project API key will be needed in order to communicate with Memfault's web
+A Project key will be needed in order to communicate with Memfault's web
 services. Go to [https://app.memfault.com/](https://app.memfault.com/), navigate
-to the project you want to use and select 'Settings'→'General'. The 'Project API
+to the project you want to use and select 'Settings'→'General'. The 'Project
 Key' listed is what you will want to use.
 
 ## Post Data to Memfault Cloud using CLI Tool
@@ -88,7 +88,7 @@ Now that you have collected some data, you can post it to the Memfault cloud by
 using the [Memfault CLI tool](/docs/ci/install-memfault-cli).
 
 ```bash
-$ memfault --project-key ${YOUR_PROJECT_API_KEY} post-chunk --encoding sdk_data_export test-pattern-data-export.txt
+$ memfault --project-key ${YOUR_PROJECT_KEY} post-chunk --encoding sdk_data_export test-pattern-data-export.txt
 Found 2 Chunks. Sending Data ...
 Success
 ```
