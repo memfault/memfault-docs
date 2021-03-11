@@ -1,64 +1,69 @@
 backend:
-  name: github
-  repo: memfault/memfault-docs
+  name: "github"
+  repo: "memfault/memfault-docs"
 
 # If you want to use NetlifyCMS locally, comment out the backend above and
 # instead use the following lines while running `npx netlify-cms-proxy-server`:
 #
 # local_backend: true
 # backend:
-#   name: git-gateway
+#   name: "git-gateway"
 
 media_folder: "static/binary-assets"
 public_folder: "/binary-assets"
 
-x-default: &default
-  format: yaml-frontmatter
-  extension: mdx
+x-default-fields: &default_fields
+  - &title_field
+    name: "title"
+    label: "Title"
+    widget: "string"
+  - &id_field
+    name: "id"
+    label: "ID"
+    widget: "string"
+    required: false
+    hint: "Defaults to the root-relative path."
+  - &body_field
+    name: "body"
+    label: "Body"
+    widget: "markdown"
+
+x-default-collection: &default_collection
+  format: "yaml-frontmatter"
+  extension: "mdx"
   create: true
   editor:
     preview: false
-  fields:
-    - name: title
-      label: Title
-      widget: string
-    - name: body
-      label: Body
-      widget: markdown
-    - name: id
-      label: ID
-      widget: string
-      required: false
-      hint: Defaults to the root-relative path.
-    - name: sidebar_label
-      label: Sidebar Label
-      widget: string
-      required: false
-      hint: Defaults to the Title.
+  fields: *default_fields
 
 collections:
-  - name: changelog
-    label: Changelog
+  - <<: *default_collection
+    name: "blog"
+    label: "Changelogs"
+    label_singular: "Changelog"
     folder: "blog"
-    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
-    <<: *default
-  - name: platform
-    label: Platform
-    folder: "docs/platform"
-    <<: *default
-  - name: embedded
-    label: Embedded
-    folder: "docs/embedded"
-    <<: *default
-  - name: android
-    label: Android
-    folder: "docs/android"
-    <<: *default
-  - name: ci
-    label: CI
-    folder: "docs/ci"
-    <<: *default
-  - name: troubleshooting
-    label: Troubleshooting
-    folder: "docs/troubleshooting"
-    <<: *default
+    slug: "{{date}}-{{slug}}"
+  - <<: *default_collection
+    name: "docs"
+    label: "Docs"
+    label_singular: "Doc"
+    folder: "docs"
+    path: "{{menu}}/{{slug}}"
+    fields:
+      - name: "menu"
+        label: "Menu"
+        widget: "select"
+        options:
+          - "embedded"
+          - "android"
+          - "platform"
+          - "ci"
+          - "troubleshooting"
+      - *title_field
+      - name: "sidebar_label"
+        label: "Sidebar Label"
+        widget: "string"
+        required: false
+        hint: "Defaults to the Title."
+      - *id_field
+      - *body_field
