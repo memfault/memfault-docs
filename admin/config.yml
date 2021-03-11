@@ -1,0 +1,64 @@
+backend:
+  name: github
+  repo: memfault/memfault-docs
+
+# If you want to use NetlifyCMS locally, comment out the backend above and
+# instead use the following lines while running `npx netlify-cms-proxy-server`:
+#
+# local_backend: true
+# backend:
+#   name: git-gateway
+
+media_folder: "static/binary-assets"
+public_folder: "/binary-assets"
+
+x-default: &default
+  format: yaml-frontmatter
+  extension: mdx
+  create: true
+  editor:
+    preview: false
+  fields:
+    - name: title
+      label: Title
+      widget: string
+    - name: body
+      label: Body
+      widget: markdown
+    - name: id
+      label: ID
+      widget: string
+      required: false
+      hint: Defaults to the root-relative path.
+    - name: sidebar_label
+      label: Sidebar Label
+      widget: string
+      required: false
+      hint: Defaults to the Title.
+
+collections:
+  - name: changelog
+    label: Changelog
+    folder: "blog"
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    <<: *default
+  - name: platform
+    label: Platform
+    folder: "docs/platform"
+    <<: *default
+  - name: embedded
+    label: Embedded
+    folder: "docs/embedded"
+    <<: *default
+  - name: android
+    label: Android
+    folder: "docs/android"
+    <<: *default
+  - name: ci
+    label: CI
+    folder: "docs/ci"
+    <<: *default
+  - name: troubleshooting
+    label: Troubleshooting
+    folder: "docs/troubleshooting"
+    <<: *default
