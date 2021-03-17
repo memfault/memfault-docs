@@ -15,6 +15,7 @@ module.exports = {
             "embedded/uploading-software-versions",
             "platform/jira-integration",
             "platform/fleet-wide-metrics",
+            "platform/user-management",
             /* "platform/bulk-device-upload", */
             /* Mentions features to be released: "platform/sso", */
             /* Mentions features to be released: "platform/api-keys", */
