@@ -16,9 +16,9 @@ module.exports = {
             "platform/jira-integration",
             "platform/fleet-wide-metrics",
             "platform/user-management",
+            "platform/organization-auth-tokens",
             /* "platform/bulk-device-upload", */
             /* Mentions features to be released: "platform/sso", */
-            /* Mentions features to be released: "platform/api-keys", */
             /* Draft: "platform/releasing-firmware", */
             /* Note: releasing-firmware is linked from centegix impl readme */
         ],
@@ -82,6 +82,7 @@ module.exports = {
             "android/android-data-scrubbing",
         ],
         "Automation, CI & CD": [
+            "ci/authentication",
             "ci/install-memfault-cli",
             "ci/add-device-to-cohort-api",
             /* Note: Out of date so hiding for the moment */

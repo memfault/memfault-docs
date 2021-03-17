@@ -4,6 +4,8 @@ title: Memfault CLI tool
 sidebar_label: Memfault CLI tool
 ---
 
+import AuthTokenRequiredCallout from "../partials/auth-token-required-callout.mdx";
+
 The Memfault CLI tool is a simple command-line program which purpose is to make
 integrations with the Memfault cloud from other systems, like continuous
 integration servers, as easy as possible.
@@ -52,16 +54,11 @@ Commands:
 
 ### Example Usage: Uploading Firmware Symbols
 
-:::caution
-
-Uploading symbols requires your "User API Key". To locate the token navigate to
-the "Settings" -> "General" page in the Memfault UI and copy/paste the token in
-the "User API Key" section.
-
-:::
+<AuthTokenRequiredCallout />
 
 ```bash
-$ memfault --email ${YOUR_EMAIL} --password ${YOUR_USER_API_KEY} \
+$ memfault
+  --password ${ORGANIZATION_AUTH_TOKEN} \
   --org acme-inc \
   --project smart-sink \
    upload-symbols \

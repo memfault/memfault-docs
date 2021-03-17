@@ -84,17 +84,15 @@ email address provided by your organization.
 After successfully authenticating, you'll be redirected back to the app
 automatically.
 
-### Using an API Key
+## SSO Enforcement
 
-Find out more about API Keys [here](api-keys).
+Please [contact us](mailto:hello@memfault.com) to enforce SSO usage for your
+organization.
 
-Organization-scoped and Project Keys will continue to work as usual if your
-organization has SSO enabled.
+When your organization enforces SSO,
+[User API keys](/docs/ci/authentication#user-api-key) will stop working, as they
+can't be re-authenticated interactively.
 
-However, [User API keys](api-keys#user-api-keys) are going to be rejected for
-SSO-enabled organizations if you haven't used that organization's SSO provider
-in more than two weeks. Note that the key will continue to work for a User's own
-resources or when accessing other organizations they have access to. To reenable
-access to an SSO-enabled organization's resources with your User API key, log in
-to that organization [using the application](#logging-into-the-app), with the
-SSO provider of the organization.
+In that case, your users will need to use
+[Organization Auth Tokens](/docs/ci/authentication#organization-auth-token)
+instead. Administrators can and have to revoke them as needed.

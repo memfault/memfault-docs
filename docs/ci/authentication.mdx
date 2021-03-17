@@ -1,0 +1,127 @@
+---
+id: authentication
+title: Authentication
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Accessing resources via the
+[Memfault API](https://api-docs.memfault.com/#authentication) or the
+[Memfault CLI](/docs/ci/install-memfault-cli) requires authentication. There are
+various mechanisms available for authentication, each with subtle differences in
+scope and limitations.
+
+The **recommended** authentication mechanism for automation is
+[Organization Auth Tokens](#organization-auth-token).
+
+### Organization Auth Token
+
+Requests authenticated via an Organization Auth Token can only access the
+resources of their respective organization. Admins can
+[create and delete](/docs/platform/organization-auth-tokens) Organization Auth
+Tokens.
+
+<Tabs
+  defaultValue="api"
+  values={[
+    {label: 'API', value: 'api'},
+    {label: 'CLI', value: 'cli'},
+  ]}>
+  <TabItem value="api">
+
+```bash
+curl -u ":$ORGANIZATION_AUTH_TOKEN" https://api.memfault.com/api/v0/organizations
+```
+
+:::note
+
+Don't forget the colon (`:`) in front of the token. It separates the empty
+username from the password.
+
+:::
+
+  </TabItem>
+  <TabItem value="cli">
+
+```bash
+memfault --password "$ORGANIZATION_AUTH_TOKEN" ...
+```
+
+  </TabItem>
+</Tabs>
+
+### User API Key
+
+Requests authenticated via an User API Key can access the resources of all the
+organizations a user has access to (except when
+[SSO is required](/docs/platform/sso#sso-enforcement)). However, they are not
+suitable for automation, as they will break when the user is removed from the
+organization.
+
+Users can create and cycle their User API Key via **Project Settings → User API
+Key**. Even though they appear there, they are not tied to a certain project.
+
+<Tabs
+  defaultValue="api"
+  values={[
+    {label: 'API', value: 'api'},
+    {label: 'CLI', value: 'cli'},
+  ]}>
+  <TabItem value="api">
+
+```bash
+curl -u "$USER_EMAIL:$USER_API_KEY" https://api.memfault.com/api/v0/organizations
+```
+
+  </TabItem>
+  <TabItem value="cli">
+
+```bash
+memfault --email "$USER_EMAIL" --password "$USER_API_KEY" ...
+```
+
+  </TabItem>
+</Tabs>
+
+:::note
+
+A user can use their actual password instead of an User API Key, but this is
+**not recommended**.
+
+:::
+
+### Project Key
+
+Requests authenticated via Project Keys (sometimes also referred to as "Project
+API Keys") have very limited access to a single project. They are meant to be
+used by devices that send data to Memfault and in contrast to the other
+mechanisms listed here not considered secrets. They can also be useful during
+initial development to send up coredumps from a developers machine.
+
+A Project Key is generated automatically upon project creation. Administrators
+can generate and cycle the API key via an
+[API endpoint](https://api-docs.memfault.com/#48c6c1eb-ae59-4841-92ee-e61d1d4b5a85).
+Every project member see the project's Project Key.
+
+<Tabs
+  defaultValue="api"
+  values={[
+    {label: 'API', value: 'api'},
+    {label: 'CLI', value: 'cli'},
+  ]}>
+  <TabItem value="api">
+
+```bash
+curl --header "Memfault-Project-Key: $PROJECT_KEY" ...
+```
+
+  </TabItem>
+  <TabItem value="cli">
+
+```bash
+memfault --project-key "$PROJECT_KEY" ...
+```
+
+  </TabItem>
+</Tabs>

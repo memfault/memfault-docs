@@ -1,0 +1,30 @@
+---
+title: Organization Auth Tokens
+---
+
+Organization Auth Tokens allow access of the organization's resources
+[for automation](/docs/ci/authentication#organization-auth-token). They can be
+accessed and managed by Administrators at **Admin → Organization Auth Tokens**.
+
+:::note
+
+If your organization enforces SSO, Organization Auth Tokens are the **only**
+mechanism that allow to access organization resources through the API. User API
+Keys will not work.
+
+:::
+
+![](/binary-assets/organization-auth-token-list.png)
+
+### Creation
+
+Administrators can create new tokens via the **Create Token** button. They will
+be prompted to enter an optional description. After that, they are shown the
+token and should store it somewhere safe.
+
+![](/binary-assets/organization-auth-token-new.png)
+
+### Deletion
+
+Administrators can delete tokens via the **Delete** button. Any automation (or
+user) that uses that token will lose access.
