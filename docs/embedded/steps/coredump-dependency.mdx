@@ -21,8 +21,9 @@ Add the following file to your build system:
 
 :::note
 
-The RAM region is placed in a special section ".noinit.mflt_coredump" which needs to be placed
-in a noinit memory region. This can be achieved by adding a "noinit" section to your linker script.
+The RAM region is placed in a special section ".noinit.mflt_coredump" which
+needs to be placed in a noinit memory region. This can be achieved by adding a
+"noinit" section to your linker script.
 
 For example, for GNU GCC, you can add the following to your `.ld` file:
 
@@ -31,7 +32,6 @@ For example, for GNU GCC, you can add the following to your `.ld` file:
 ```
 
 :::
-
 
 </details>
 
@@ -44,7 +44,9 @@ Add the following file to your build system:
   ${MEMFAULT_SDK_ROOT}/ports/emlib/msc_coredump_storage.c
 ```
 
-Follow instructions in [msc_coredump_storage.c](https://github.com/memfault/memfault-firmware-sdk/blob/master/ports/emlib/msc_coredump_storage.c#L9) to configure.
+Follow instructions in
+[msc_coredump_storage.c](https://github.com/memfault/memfault-firmware-sdk/blob/master/ports/emlib/msc_coredump_storage.c#L9)
+to configure.
 
 </details>
 
@@ -57,7 +59,9 @@ Add the following file to your build system:
   ${MEMFAULT_SDK_ROOT}/ports/stm32cube/f4/flash_coredump_storage.c
 ```
 
-Follow instructions in [flash_coredump_storage.c](https://github.com/memfault/memfault-firmware-sdk/blob/master/ports/stm32cube/f4/flash_coredump_storage.c#L9) to configure.
+Follow instructions in
+[flash_coredump_storage.c](https://github.com/memfault/memfault-firmware-sdk/blob/master/ports/stm32cube/f4/flash_coredump_storage.c#L9)
+to configure.
 
 </details>
 
@@ -70,7 +74,9 @@ Add the following file to your build system:
   ${MEMFAULT_SDK_ROOT}/ports/stm32cube/l4/flash_coredump_storage.c
 ```
 
-Follow instructions in [flash_coredump_storage.c](https://github.com/memfault/memfault-firmware-sdk/blob/master/ports/stm32cube/l4/flash_coredump_storage.c#L9) to configure.
+Follow instructions in
+[flash_coredump_storage.c](https://github.com/memfault/memfault-firmware-sdk/blob/master/ports/stm32cube/l4/flash_coredump_storage.c#L9)
+to configure.
 
 </details>
 
@@ -83,7 +89,9 @@ Add the following file to your build system:
   ${MEMFAULT_SDK_ROOT}/ports/stm32cube/wb/flash_coredump_storage.c
 ```
 
-Follow instructions in [flash_coredump_storage.c](https://github.com/memfault/memfault-firmware-sdk/blob/master/ports/stm32cube/wb/flash_coredump_storage.c#L9) to configure.
+Follow instructions in
+[flash_coredump_storage.c](https://github.com/memfault/memfault-firmware-sdk/blob/master/ports/stm32cube/wb/flash_coredump_storage.c#L9)
+to configure.
 
 </details>
 
@@ -96,7 +104,9 @@ Add the following file to your build system:
   ${MEMFAULT_SDK_ROOT}/ports/nrf5_sdk/nrf5_coredump_storage.c
 ```
 
-Follow instructions in [nrf5_coredump_storage.c](https://github.com/memfault/memfault-firmware-sdk/blob/master/ports/nrf5_sdk/nrf5_coredump_storage.c#L9) to configure.
+Follow instructions in
+[nrf5_coredump_storage.c](https://github.com/memfault/memfault-firmware-sdk/blob/master/ports/nrf5_sdk/nrf5_coredump_storage.c#L9)
+to configure.
 
 </details>
 
@@ -109,12 +119,11 @@ Add the following file to your build system:
   ${MEMFAULT_SDK_ROOT}/ports/s32sdk/ftfc_flash_coredump_storage.c
 ```
 
-
-Follow instructions in [ftfc_flash_coredump_storage.c](https://github.com/memfault/memfault-firmware-sdk/blob/master/ports/s32sdk/ftfc_flash_coredump_storage.c#L9) to configure.
+Follow instructions in
+[ftfc_flash_coredump_storage.c](https://github.com/memfault/memfault-firmware-sdk/blob/master/ports/s32sdk/ftfc_flash_coredump_storage.c#L9)
+to configure.
 
 </details>
-
-
 
 <details>
 
