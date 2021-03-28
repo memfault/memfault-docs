@@ -1,0 +1,67 @@
+### Prerequisites
+
+- You need to have a way to debug your product with GDB as part of your
+  development setup
+- The GDB version you are using needs to have the
+  [GDB Python API enabled](https://interrupt.memfault.com/blog/automate-debugging-with-gdb-python-api#getting-started-with-gdb-python).
+  (It's generally the default or there is a `-py` version of GDB which has it
+  included.)
+- You need to compile your firmware with debug symbol information (i.e `-g`
+  CFLAG)
+
+:::note
+
+Even if you are using other compilers such as ARMCC or IAR, you can load the ELF
+(.out, .elf) generated and debug it in GDB as well.
+
+:::
+
+### Launch GDB and connect debugger
+
+For example:
+
+```
+$ arm-none-eabi-gdb-py my_app.elf --ex="target remote :3333"
+(gdb)
+```
+
+### Load Memfault GDB script
+
+Copy and paste and run the following in gdb:
+
+```bash
+python exec('try:\n from urllib2 import urlopen\nexcept:\n from urllib.request import urlopen'); exec(urlopen('https://mflt.io/memfault-gdb-script').read())
+```
+
+:::tip
+
+Some GDB versions do not support Python scripting by default. If you see a
+message like "Python scripting is not supported in this copy of GDB", you might
+be able to run an alternative GDB binary with a -py suffix, for example
+arm-none-eabi-gdb-py.
+
+:::
+
+### Register Handler
+
+Copy the command below and paste it into GDB and hit enter. This will load a
+handler which automatically posts data to Memfault whenever
+`memfault_data_export_dump_chunks` is called.
+
+```bash
+memfault install_chunk_handler --verbose --project-key <YOUR_PROJECT_KEY>
+```
+
+### Try It Out!
+
+Now, every time `memfault_data_export_dump_chunks` is called, the data passed as
+a parameter to the function will automatically be posted to the Memfault cloud.
+You don't have to do anything else! You will see logs print in the gdb CLI as
+data is posted:
+
+```bash
+(gdb) Continuing.
+Successfully posted 45 bytes of chunk data
+Successfully posted 53 bytes of chunk data
+[...]
+```

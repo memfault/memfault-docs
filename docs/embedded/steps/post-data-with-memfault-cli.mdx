@@ -1,0 +1,52 @@
+### Install the Python Memfault CLI Tool
+
+The [Memfault Desktop CLI tool](/docs/ci/install-memfault-cli). tool is written
+in Python and published publicly in the
+[Python Package Index (pypi)](https://pypi.org/project/memfault-cli/).
+
+To install it, make sure you have a recent version of Python 3.x installed and
+run:
+
+```bash
+$ pip3 install memfault-cli
+$ memfault --help
+```
+
+### Save device logs to file
+
+Start your console with your favorite terminal client. Let the system run for a
+bit, periodically dumping data to the console by calling
+`memfault_data_export_dump_chunks`.
+
+You should see strings with the format: `MC:BASE64_ENCODED_CHUNK:` in the dump.
+
+:::note
+
+It's perfectly fine for other logs to be interleaved with the exported data.
+
+:::
+
+For example:
+
+```
+shell> reboot
+[00:00:01] INFO: System Booting!
+[00:00:02] INFO: Memfault Build ID: d8d6a047282f025fffa29fa767100f310bc40f80
+shell> trace
+# CLI command making a call to `memfault_data_export_dump_chunks`
+shell> export
+[00:00:10] INFO: MC:SFQCpwIBAwEHalRFU1RTRVJJQUwKbXRlc3Qtc29mdHdhcmUJajEuMC4wLXRlcw==:
+```
+
+Save the resulting logs to a file such as logs.txt
+
+### Post chunks from logs with Memfault CLI
+
+Run the desktop Memfault CLI tool on your saved log file. The utility will parse
+the logs, extract the Memfault data, and post it here for processing!
+
+```bash
+$ memfault --project-key ${YOUR_PROJECT_KEY} post-chunk --encoding sdk_data_export logs.txt
+Found 2 Chunks. Sending Data ...
+Success
+```

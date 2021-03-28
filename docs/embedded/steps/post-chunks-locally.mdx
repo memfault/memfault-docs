@@ -1,3 +1,6 @@
+import PostChunksWithMemfaultCli from "./post-data-with-memfault-cli.mdx";
+import PostChunksWithGdb from "./post-data-with-gdb.mdx";
+
 Prior to having an end-to-end transport in place, Memfault data can be exported
 over any serial connection or via GDB directly.
 
@@ -8,24 +11,31 @@ local QA testing or in CI/CD test automation setups.
 
 :::
 
-#### Export Data to Console
+#### Prerequisite: Project Key from Memfault UI
 
-To test it out, call the `test_export` command added to your CLI above:
+A Project key will be needed in order to communicate with Memfault's web
+services. Go to [https://app.memfault.com/](https://app.memfault.com/), navigate
+to the project you want to use and select 'Settings'→'General'. The 'Project
+Key' listed is what you will want to use.
 
-```
-shell> reboot
-[00:00:01] INFO: System Booting!
-[00:00:02] INFO: Memfault Build ID: d8d6a047282f025fffa29fa767100f310bc40f80
-shell> trace
-# CLI command making a call to `memfault_data_export_dump_chunks`
-shell> export
-[00:00:10] INFO: MC:SFQCpwIBAwEHalRFU1RTRVJJQUwKbXRlc3Qtc29mdHdhcmUJajEuMC4wLXRlcw==:
-//...
-```
+#### Post Chunks To Memfault
 
-#### Upload data using Memfault CLI tool
+All data collected by Memfault can be exported as opaque packets called
+"chunks". To trigger an export, call the `test_export` command added to your
+device CLI or add a periodic call to `memfault_data_export_dump_chunks` in your
+code.
 
-Data can be exported locally in two ways:
+<details>
+<summary> With Desktop CLI Tool </summary>
+<br/>
+<PostChunksWithMemfaultCli/>
 
-- [via Console](/docs/embedded/export-chunks-over-console)
-- [via GDB](/docs/embedded/test-data-collection-with-gdb)
+</details>
+
+<details>
+<summary> With GDB </summary>
+<br/>
+
+<PostChunksWithGdb />
+
+</details>
