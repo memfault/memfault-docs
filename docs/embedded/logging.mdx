@@ -20,7 +20,7 @@ coredump is uploaded:
 ## Integration Steps
 
 In this guide we will walk through how to save logs using the Memfault
-[core log utility](https://github.com/memfault/memfault-firmware-sdk/blob/master/components/core/include/memfault/core/log.h#L10)
+[core log utility](https://github.com/memfault/memfault-firmware-sdk/blob/master/components/include/memfault/core/log.h#L10)
 and how the module can be used to queue up logs to flush out to a slower storage
 medium.
 
@@ -78,9 +78,9 @@ Otherwise, you can wrap a preexisting implementation with a call to
 
 By default, only logs greater than the Debug level will be saved but you can
 change the level either by calling
-[`memfault_log_set_min_save_level()`](https://github.com/memfault/memfault-firmware-sdk/blob/master/components/core/include/memfault/core/log.h#L45-L48)
+[`memfault_log_set_min_save_level()`](https://github.com/memfault/memfault-firmware-sdk/blob/master/components/include/memfault/core/log.h#L45-L48)
 or by using the
-[`MEMFAULT_RAM_LOGGER_DEFAULT_MIN_LOG_LEVEL`](https://github.com/memfault/memfault-firmware-sdk/blob/master/components/core/src/memfault_log.c#L25-L27)
+[`MEMFAULT_RAM_LOGGER_DEFAULT_MIN_LOG_LEVEL`](https://github.com/memfault/memfault-firmware-sdk/blob/master/components/src/memfault_log.c#L25-L27)
 compile time define.
 
 :::

@@ -19,7 +19,7 @@ back to the internet.
 
 To make the integration as easy as possible while catering to as many different
 connectivity paths, the
-[Memfault Firmware SDK contains a "data packetizer"](https://github.com/memfault/memfault-firmware-sdk/blob/master/components/core/include/memfault/core/data_packetizer.h).
+[Memfault Firmware SDK contains a "data packetizer"](https://github.com/memfault/memfault-firmware-sdk/blob/master/components/include/memfault/core/data_packetizer.h).
 The data packetizer breaks up all data that the SDK needs to send out
 (heartbeats, coredumps, events, etc.) into smaller pieces called _chunks_. The
 chunks can be sized as large or small as required to match the capabilities and
@@ -41,7 +41,7 @@ HTTP API is the only integration work which needs to be done to get the data
   Memfault cloud, but those chunks will be discarded.
 - The device firmware is expected to periodically check whether there is data
   available and send the chunks out. See the
-  [data_packetizer.h](https://github.com/memfault/memfault-firmware-sdk/blob/master/components/core/include/memfault/core/data_packetizer.h)
+  [data_packetizer.h](https://github.com/memfault/memfault-firmware-sdk/blob/master/components/include/memfault/core/data_packetizer.h)
   header file for the C API.
 - The Memfault cloud buffers chunks, until the sequence of related chunks are
   received. However, if it takes a prolonged period of time to post the
@@ -60,7 +60,7 @@ HTTP API is the only integration work which needs to be done to get the data
   use the largest possible chunk size that your transport path allows. Smaller
   chunk sizes generally equate to slower transfers. The (maximum) chunk size can
   be changed from chunk to chunk (see the
-  [memfault_packetizer_get_next C API](https://github.com/memfault/memfault-firmware-sdk/blob/master/components/core/include/memfault/core/data_packetizer.h)).
+  [memfault_packetizer_get_next C API](https://github.com/memfault/memfault-firmware-sdk/blob/master/components/include/memfault/core/data_packetizer.h)).
 
 ## Firmware SDK Example Usage
 
@@ -197,7 +197,7 @@ achieving this behavior:
    than or equal to the size of the chunk requested.
 3. The Memfault SDK allows for different APIs to be used when saving data and
    when reading back data via the packetizer. For the "coredump" feature,
-   [`memfault_coredump_read()`](https://github.com/memfault/memfault-firmware-sdk/blob/master/components/panics/include/memfault/panics/platform/coredump.h#L106-L118)
+   [`memfault_coredump_read()`](https://github.com/memfault/memfault-firmware-sdk/blob/master/components/include/memfault/panics/platform/coredump.h#L106-L118)
    is the routine which is called when reading data from the packetizer.
 
 These features are all verified on each release as part of the Memfault Firmware

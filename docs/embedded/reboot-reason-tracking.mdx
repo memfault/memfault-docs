@@ -13,7 +13,7 @@ summarized in the main "Overview" dashboard:
 ![](/img/docs/embedded/reboot-reason-chart.png)
 
 In this guide we will walk through how to use the
-[reboot tracking](https://github.com/memfault/memfault-firmware-sdk/blob/master/components/core/include/memfault/core/reboot_tracking.h#L9-L21)
+[reboot tracking](https://github.com/memfault/memfault-firmware-sdk/blob/master/components/include/memfault/core/reboot_tracking.h#L9-L21)
 module from the memfault-firmware-sdk to collect this data.
 
 ### 1. Initialize reboot tracking module
@@ -153,7 +153,7 @@ void send_memfault_data(void) {
 
 It is often useful to save metadata about a reboot that is about to take place.
 For example, the Memfault panics component
-[will automatically store metadata](https://github.com/memfault/memfault-firmware-sdk/blob/master/components/panics/src/memfault_fault_handling_arm.c#L94-L98)
+[will automatically store metadata](https://github.com/memfault/memfault-firmware-sdk/blob/master/components/src/memfault_fault_handling_arm.c#L94-L98)
 about the type of fault and the instruction which caused it when a fault handler
 is invoked.
 
