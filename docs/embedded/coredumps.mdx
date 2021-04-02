@@ -1,94 +1,44 @@
 ---
 id: coredumps
-title: Coredump Integration Guide
+title: Coredump Collection
 sidebar_label: Coredumps
 ---
 
-This tutorial will cover integrating the **panics** component of the
-[Memfault Firmware SDK](https://github.com/memfault/memfault-firmware-sdk) into
-a system that is using the
-[GNU ARM Embedded Toolchain](https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm/downloads)
-(GCC) compiler.
+import IntegrationCompletePrerequisite from "./integration-complete-prerequisite.mdx";
 
-:::note Prerequisite
+This tutorial will cover integrating the coredump collection functionality of
+the [Memfault Firmware SDK](https://github.com/memfault/memfault-firmware-sdk)
+into your system.
 
-This guide assumes you have already completed the minimal integration of the
-Memfault SDK. If you have not, check out the
-[getting started section](/docs/embedded/introduction#getting-started).
+With coredumps integrated, variable, register, & task state can all be collected
+at the time a fault, assert, or unexpected error takes place.
 
-:::
+![](/img/docs/embedded/logs-with-coredump.png)
 
-## Integration Steps
+<IntegrationCompletePrerequisite />
 
-### 1. Add "panics" component to Build System
+### Platform specific storage region for crash data
 
-If you are using the `makefiles/MemfaultWorker.mk` or `cmake/Memfault.cmake` to
-automatically collect sources, all you have to do is add `panics` to your
-`MEMFAULT_COMPONENTS`
+When a crash takes place, a snapshot of the state needs to be stored in a
+storage area that persists across a device reboot.
 
-```
-MEMFAULT_COMPONENTS := core util panics
-// ...
-```
+We typically recommend starting with the RAM backed Coredump port from
+[`memfault_platform_ram_backed_coredump.c`](https://github.com/memfault/memfault-firmware-sdk/blob/master/ports/panics/src/memfault_platform_ram_backed_coredump.c#L7-L31)
 
-If you are using another build system, the `panics` component sources can also
-be added to the projects source list manually:
-
-<details>
-<summary> Details </summary>
-
-```
-MEMFAULT_PANICS_SRC_DIR = $(MEMFAULT_SDK_ROOT)/components/panics/src
-
-YOUR_SRC_FILES += \
-  $(MEMFAULT_PANICS_SRC_DIR)/memfault_coredump.c \
-  $(MEMFAULT_PANICS_SRC_DIR)/memfault_coredump_regions_armv7.c \
-  $(MEMFAULT_PANICS_SRC_DIR)/memfault_fault_handling_arm.c \
-
-YOUR_INC_PATHS += $(MEMFAULT_SDK_ROOT)/components/panics/include
-```
-
-</details>
-
-### 2. Implement platform specific storage region for crash data
-
-We typically recommend starting with the RAM based Coredump port. By default
-this will only save the top of the stack at the time of crash but it lets you
-quickly get coredumps up and running and get a feel for how things work. To do
-this:
-
-1.  Add
-    `$(MEMFAULT_SDK_ROOT)/ports/panics/src/memfault_platform_ram_backed_coredump.c`
-    to the build
-2.  Mark the section being used to hold the coredump as a `NOLOAD` region in
-    your linker script so it remains uninitialized when the device reboots
-    ```
-    /* your linker script (.ld file) */
-    .noinit (NOLOAD): { KEEP(*(*.mflt_coredump)) } > RAM
-    ```
+By default this will only save the top of the stack at the time of crash but it
+lets you quickly get coredumps up and running and get a feel for how things
+work.
 
 Coredump data can also be stored to any other backing storage (eMMC, external
-NOR flash, internal flash, etc) by implementing the required
+NOR flash, internal flash, etc). We have a number of ports available for
+different MCUs in the
+[`ports`](https://github.com/memfault/memfault-firmware-sdk/blob/master/ports)
+directory of the memfault-firmware-sdk or you can add your own port by
+implementing the required
 [dependencies](https://github.com/memfault/memfault-firmware-sdk/blob/master/components/include/memfault/panics/platform/coredump.h)
-instead of using `memfault_platform_ram_backed_coredump.c`.
 
-### 3. Implement other platform dependencies
+### Rebooting after a coredump
 
-In order to save coredumps, you will need to fill in the functions in the block
-below
-
-```c
-#include "memfault/core/platform/core.h"
-
-void memfault_platform_reboot(void) {
-  // Last function called before memfault after a crash
-  // expect the platform to reboot the system
-  __asm("bkpt 1");
-  while (1) { }
-}
-```
-
-### 4. Publish data to the Memfault cloud
-
-This step was already have been taken care of as part of the
-[initial minimal integration](/docs/embedded/arm-gcc-guide#publish-data-to-the-memfault-cloud)!
+At the very end of saving a coredump, the `memfault_platform_reboot()` function
+implemented as part of your initial port will be called. From here any final
+system cleanup can be performed before restarting the system

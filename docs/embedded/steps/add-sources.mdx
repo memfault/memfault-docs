@@ -45,7 +45,6 @@ memfault_library(${MEMFAULT_SDK_ROOT} MEMFAULT_COMPONENTS
 # Add the following to your target sources:
 #   ${MEMFAULT_COMPONENTS_SRCS}
 #   ${MEMFAULT_PORT_ROOT}/memfault_platform_port.c
-#   ${MEMFAULT_PORT_ROOT}/memfault_platform_coredump_regions.c
 #
 # Add the following to your target includes
 #   ${MEMFAULT_COMPONENTS_INC_FOLDERS}
@@ -72,9 +71,7 @@ accordingly
 3. add the sources under
    `$MEMFAULT_FIRMWARE_SDK/components/[core, util, panics, metrics]/src/**/*.c`
    to your project
-4. add `third_party/memfault/memfault_platform_port.c` &
-   `third_party/memfault/memfault_platform_coredump_regions.c` sources to
-   project
+4. add `third_party/memfault/memfault_platform_port.c` sources to project
 5. add `third_party/memfault/` to the include paths for your project
 
 :::info

@@ -180,14 +180,13 @@ crash and you can skip this step.
 :::
 
 If you are only collecting select RAM regions, collection of the regions needed
-to decode logs can be automatically collected by setting the compile time define
-`MEMFAULT_COREDUMP_COLLECT_LOG_REGIONS` to 1 in your build system:
+to decode logs can be automatically collected by adding the following to your
+memfault_platform_config.h.
 
 ```bash
-# Makefile
-# ...
-CFLAGS += -DMEMFAULT_COREDUMP_COLLECT_LOG_REGIONS=1
-# ...
+//! @file memfault_platform_config.h
+
+#define MEMFAULT_COREDUMP_COLLECT_LOG_REGIONS 1
 ```
 
 You'll also want to double check that you have a sufficient amount of space to

@@ -52,6 +52,27 @@ handler which automatically posts data to Memfault whenever
 memfault install_chunk_handler --verbose --project-key <YOUR_PROJECT_KEY>
 ```
 
+:::note
+
+`memfault_data_export_dump_chunks()` needs to be called by your port as part of
+a CLI command or periodic task in order for the data to be extracted. For
+example:
+
+```c
+#include "memfault/components.h"
+
+int export_data_cli_command(int argc, char *argv[]) {
+  memfault_data_export_dump_chunks();
+  return 0;
+}
+
+void some_periodic_task(void) {
+  memfault_data_export_dump_chunks();
+}
+```
+
+:::
+
 ### Try It Out!
 
 Now, every time `memfault_data_export_dump_chunks` is called, the data passed as

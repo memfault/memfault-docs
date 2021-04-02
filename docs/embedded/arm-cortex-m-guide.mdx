@@ -86,8 +86,20 @@ or TI ARM Compiler.
 At this point your project should compile and be able to boot. On startup you
 should see some messaging like:
 
+At this point your project should compile and be able to boot. On startup you
+should see some messaging like the following print when
+`memfault_platform_boot()` is called:
+
 ```
-[I] MFLT: Memfault Build ID: d8d6a047282f025fffa29fa767100f310bc40f80
+[I] Memfault Build ID: cefaeb9407ab0dac7a5efe9fd510618ee21e9df7
+[I] S/N: MFLT0123
+[I] SW type: app-fw
+[I] SW version: 1.0.0+cefaeb940
+[I] HW version: dvt1
+[I] Reset Reason, RESETREAS=0x4
+[I] Reset Causes:
+[I]  Software
+[I] Memfault Initialized!
 ```
 
 ## Verification & Tuning Steps

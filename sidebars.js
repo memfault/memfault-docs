@@ -38,7 +38,6 @@ module.exports = {
                 type: "category",
                 label: "Subsystem Guides",
                 items: [
-                    /* Order in which subsystems ideally get integrated */
                     "embedded/coredumps",
                     "embedded/reboot-reason-tracking",
                     "embedded/metrics-api",
