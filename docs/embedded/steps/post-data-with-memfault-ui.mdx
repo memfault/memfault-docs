@@ -1,0 +1,35 @@
+If data has been collected, you will see strings with the format:
+`MC:BASE64_ENCODED_CHUNK:` in the dump.
+
+:::note
+
+It's perfectly fine for other logs to be interleaved with the exported data.
+
+:::
+
+For example:
+
+```
+shell> reboot
+[00:00:01] INFO: System Booting!
+[00:00:02] INFO: Memfault Build ID: d8d6a047282f025fffa29fa767100f310bc40f80
+shell> trace
+# CLI command making a call to `memfault_data_export_dump_chunks`
+shell> export
+[00:00:10] INFO: MC:SFQCpwIBAwEHalRFU1RTRVJJQUwKbXRlc3Qtc29mdHdhcmUJajEuMC4wLXRlcw==:
+```
+
+Copy the logs from the console, navigate to the "Chunks Debug" view for your
+project, and paste the logs:
+
+![](/binary-assets/embedded/copy-paste-chunks-ui.png)
+
+Select "Next" to review the chunks that were identified and (optionally) update
+the "Device Serial" being used to report data:
+
+![](/binary-assets/embedded/post-chunks-ui.png)
+
+Select "Post" to submit the chunks to Memfault. The chunks will appear in the
+view directly below. Check and make sure there are no "Errors" to address.
+
+![](/binary-assets/embedded/chunks-debug-view.png)
