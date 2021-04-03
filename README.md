@@ -29,7 +29,7 @@ $ yarn start
 Code is linted with prettier. To fix up files to match format, run:
 
 ```
-$ ./node_modules/prettier/bin-prettier.js --write /path/to/file.mdx
+$ ./node_modules/.bin/prettier --write path/to/file.mdx
 ```
 
 ## Content
