@@ -9,6 +9,7 @@ on:
 jobs:
   prettier:
     runs-on: ubuntu-latest
+    if: github.event.pull_request.head.repo.full_name == github.repository
 
     steps:
       - name: Checkout
@@ -24,3 +25,20 @@ jobs:
           prettier_options: --write **/*.{js,md,mdx}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # For pull requests generated from a fork, we run the prettier linter
+  # but leave it up to the user to fix locally since we would need extra
+  # permissions to be able to push a auto-fix commit to the forked repo
+  prettier-fork:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.head.repo.full_name != github.repository
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Prettify code
+        uses: creyD/prettier_action@v3.1
+        with:
+          # This part is also where you can pass other options, for example:
+          prettier_options: --write **/*.{js,md,mdx}
+          dry: true
