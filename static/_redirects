@@ -1,2 +1,5 @@
 /api    https://api-docs.memfault.com/
 /api/*  https://api-docs.memfault.com/:splat
+
+# Renamed blog to changelog
+/blog   /changelog

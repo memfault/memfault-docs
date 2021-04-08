@@ -54,7 +54,7 @@ module.exports = {
                     target: "_blank",
                     rel: "noopener",
                 },
-                { to: "blog", label: "Changelog", position: "right" },
+                { to: "changelog", label: "Changelog", position: "right" },
             ],
         },
         footer: {
@@ -120,6 +120,13 @@ module.exports = {
                 theme: {
                     customCss: require.resolve("./src/css/custom.css"),
                 },
+                blog: {
+                    blogTitle: 'Memfault Changelog',
+                    blogDescription: 'The latest changes to the Memfault product and service',
+                    blogSidebarCount: 10,
+                    showReadingTime: false,
+                    routeBasePath: 'changelog',
+                }
             },
         ],
     ],
