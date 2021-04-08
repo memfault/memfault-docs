@@ -121,12 +121,13 @@ module.exports = {
                     customCss: require.resolve("./src/css/custom.css"),
                 },
                 blog: {
-                    blogTitle: 'Memfault Changelog',
-                    blogDescription: 'The latest changes to the Memfault product and service',
+                    blogTitle: "Memfault Changelog",
+                    blogDescription:
+                        "The latest changes to the Memfault product and service",
                     blogSidebarCount: 10,
                     showReadingTime: false,
-                    routeBasePath: 'changelog',
-                }
+                    routeBasePath: "changelog",
+                },
             },
         ],
     ],
