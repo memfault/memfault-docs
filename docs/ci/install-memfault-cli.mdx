@@ -90,11 +90,11 @@ $ memfault --email ${YOUR_EMAIL} --password ${YOUR_USER_API_KEY} ...
 
 #### Using Organization Auth Token
 
-To use an Organization auth token, pass `--password` with the contents of your
+To use an Organization auth token, pass `--org-token` with the contents of your
 Organization Auth token after the `memfault` command.
 
 ```
-$ memfault --password ${ORGANIZATION_AUTH_TOKEN} ...
+$ memfault --org-token ${ORGANIZATION_AUTH_TOKEN} ...
 ```
 
 #### Using Memfault Project Key
@@ -112,7 +112,7 @@ $ memfault --project-key ${PROJECT_KEY} ...
 
 ```bash
 $ memfault
-  --password ${ORGANIZATION_AUTH_TOKEN} \
+  --org-token ${ORGANIZATION_AUTH_TOKEN} \
   --org acme-inc \
   --project smart-sink \
    upload-symbols \
