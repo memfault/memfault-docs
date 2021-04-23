@@ -12,10 +12,24 @@ periodically flush the logs out to a slower medium (i.e UART, Flash). This way
 logging does not impact any real time behavior of the system.
 
 The Memfault SDK offers a simple RAM based logging buffer which can be used to
-accomplish both! Any logs present in the buffer get automatically decoded when a
-coredump is uploaded:
+accomplish both!
+
+### Logs in coredump
+
+Any logs present in the buffer get automatically decoded when a coredump is
+uploaded:
 
 ![](/img/docs/embedded/logs-with-coredump.png)
+
+### Independently collected logs
+
+Logs can also be uploaded independently, without being part of a coredump. These
+logs will appear on the Timeline of a Device. A tabular view of log files is
+also available under the Log Files tab:
+
+![](/img/docs/embedded/device-timeline-log.png)
+
+![](/img/docs/embedded/log-file.png)
 
 ## Integration Steps
 
@@ -162,7 +176,32 @@ void memfault_unlock(void) {
 }
 ```
 
-### 5. [Optional] Collect Logs as Part of Coredump
+### 5. [Optional] Collect Logs after Events of Interest
+
+By design, logs are not collected and uploaded automatically. To trigger
+collection of logs, your code will need to call the
+`memfault_log_trigger_collection()` API. This API "freezes" the current contents
+of the log buffer, marking those logs as pending upload to Memfault.
+
+Pending logs get uploaded just like any other type of data,
+[through the data packetizer](/docs/embedded/data-from-firmware-to-the-cloud).
+
+```c
+
+#include "memfault/core/log.h"
+
+void your_collect_logs(void) {
+    // Prepare all logs that are present in the log buffer for collection:
+    memfault_log_trigger_collection();
+
+    // When log collection is triggered, let's upload the data from the
+    // packetizer to get the logs to the Memfault cloud:
+    your_upload_packetizer_data();
+}
+
+```
+
+### 6. [Optional] Collect Logs as Part of Coredump
 
 :::caution
 
