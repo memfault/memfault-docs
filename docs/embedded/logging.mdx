@@ -45,7 +45,7 @@ size works but at least a couple hundred bytes is recommended so at least a few
 logs can be stored at any given time.
 
 ```c
-#include "memfault/core/log.h"
+#include "memfault/components.h"
 // [...]
 
 // static RAM storage where logs will be stored. Storage can be any size
@@ -163,7 +163,7 @@ Note that locks are only held while copying data into the backing circular
 buffers so the durations the lock is held will always be very short.
 
 ```c
-#include "memfault/core/platform/overrides.h"
+#include "memfault/components.h"
 
 static YourPlatformRecursiveMutexType s_memfault_lock;
 
@@ -181,14 +181,16 @@ void memfault_unlock(void) {
 By design, logs are not collected and uploaded automatically. To trigger
 collection of logs, your code will need to call the
 `memfault_log_trigger_collection()` API. This API "freezes" the current contents
-of the log buffer, marking those logs as pending upload to Memfault.
+of the log buffer, marking those logs as pending upload to Memfault. We
+recommend using this API to capture additional information when significant
+events or unexpected errors take place in your platform.
 
 Pending logs get uploaded just like any other type of data,
 [through the data packetizer](/docs/embedded/data-from-firmware-to-the-cloud).
 
 ```c
 
-#include "memfault/core/log.h"
+#include "memfault/components.h"
 
 void your_collect_logs(void) {
     // Prepare all logs that are present in the log buffer for collection:
