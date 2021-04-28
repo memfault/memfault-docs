@@ -54,7 +54,27 @@ module.exports = {
                     target: "_blank",
                     rel: "noopener",
                 },
-                { to: "changelog", label: "Changelog", position: "right" },
+                { to: "changelog", label: "Changelog", position: "left" },
+
+                {
+                    to: "https://app.memfault.com/",
+                    position: "left",
+                    target: "_blank",
+                    rel: "noopener",
+                    label: "Log In",
+                    position: "right",
+                },
+
+                {
+                    to:
+                        "https://memfault.com/register?utm_campaign=Self%20Serve%20Launch&utm_source=Docs",
+                    label: "API",
+                    position: "left",
+                    target: "_blank",
+                    rel: "noopener",
+                    label: "Sign Up",
+                    position: "right",
+                },
             ],
         },
         footer: {
@@ -64,13 +84,13 @@ module.exports = {
                     title: "Memfault",
                     items: [
                         {
-                            label: "Embedded SDK on GitHub",
+                            label: "Sign Up",
                             href:
-                                "https://github.com/memfault/memfault-firmware-sdk",
+                                "https://memfault.com/register?utm_campaign=Self%20Serve%20Launch&utm_source=Docs",
                         },
                         {
-                            label: "Try Memfault",
-                            href: "https://try.memfault.com/",
+                            label: "Log In",
+                            href: "https://app.memfault.com",
                         },
                         {
                             label: "Memfault Home",
@@ -79,28 +99,56 @@ module.exports = {
                     ],
                 },
                 {
+                    title: "Source Code",
+                    items: [
+                        {
+                            label: "Firmware SDK",
+                            href:
+                                "https://github.com/memfault/memfault-firmware-sdk",
+                        },
+                        {
+                            label: "Android Bort SDK",
+                            href: "https://github.com/memfault/bort",
+                        },
+                    ],
+                },
+
+                {
                     title: "Community",
                     items: [
                         {
                             label: "Interrupt Blog",
                             href: "https://interrupt.memfault.com/blog",
                         },
+                        {
+                            label: "Slack Group",
+                            href: "https://interrupt-slack.herokuapp.com/",
+                        },
+                        {
+                            label: "Forums",
+                            href: "https://community.memfault.com/",
+                        },
                     ],
                 },
                 {
-                    title: "Social",
+                    title: "Connect",
                     items: [
                         {
-                            label: "Twitter",
-                            href: "https://twitter.com/memfaulthq",
+                            label: "Contact Us",
+                            href: "https://memfault.com/contact/",
                         },
                         {
                             label: "LinkedIn",
                             href: "https://www.linkedin.com/company/memfault/",
                         },
                         {
-                            label: "Contact Us",
-                            href: "mailto:hello@memfault.com",
+                            label: "Twitter",
+                            href: "https://twitter.com/memfaulthq",
+                        },
+                        {
+                            label: "YouTube",
+                            href:
+                                "https://www.youtube.com/channel/UCGHAOw3JpB6zOnwA27dlYcQ",
                         },
                     ],
                 },
