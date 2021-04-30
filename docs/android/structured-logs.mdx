@@ -10,14 +10,14 @@ poor. On top of that, logcat prunes logs from chatty sources, causing important
 logs to get lost.
 
 The Structured Logging feature is a complementary mechanism to log events of
-interest for device-level debugging. You application code can leverage this to
-log crucial information and get it surfaced in the Memfault UI. The Bort SDK
-itself also provides built-in sources that log events of interest for common
+interest for debugging purposes. Your application code can leverage this to log
+crucial information and get it surfaced in the Memfault UI. The Bort SDK itself
+also provides built-in sources that log events of interest from common Android
 subsystems, such as WiFi.
 
 Structured Logs appear on the Device Timeline, under "Structured Logs". For each
 type of log, a dedicated swimlane is created automatically. Each log is
-represented with a dot. Clicking or hovering over it will reveal the logged
+represented with a dot. Clicking or hovering over it will reveal the logged JSON
 data:
 
 ![](/img/docs/android/android-structured-logs.png)
@@ -26,23 +26,27 @@ data:
 
 Structured Logs are collected by the MemfaultStructuredLogd daemon that is built
 & installed automatically as part of the Memfault Bort SDK. The daemon exposes a
-Binder service that producers can use to send Structured Logs to the daemon. For
-ease of use, the SDK also includes a small, Java library that exposes a simple
-API (see [Logging API](#logging-api) below). The MemfaultStructuredLogd daemon
-buffers received logs to disk until it is required to flush all pending logs to
-the Bort app (MemfaultBort.apk). This flushing happens periodically, when the
-buffer reached a certain size limit or when requested explicitely (see
-[Testing & Debugging](#testing--debugging)). Finally, the Bort app is
+Binder service that log producers can use to send Structured Logs to the daemon.
+For ease of use, the SDK also includes a small, Java library that exposes a
+simple API (see [Logging API](#logging-api) below). The MemfaultStructuredLogd
+daemon buffers received logs to disk until it is required to flush all pending
+logs to the Bort app (MemfaultBort.apk). This flushing happens periodically,
+when the buffer has reached a certain size limit or when requested explicitely
+(see [Testing & Debugging](#testing--debugging)). Finally, the Bort app is
 responsible for batch-uploading the collected logs to the Memfault web service.
 
 <!-- Source: https://www.figma.com/file/GQIimU8iOtCrxGrdE6RxL3/Memfault-Android-Architecture?node-id=111%3A2 -->
 
 ![](/img/docs/android/android-structured-logs-diagram.svg)
 
+:::tip
+
 Each Structured Log has a "type" (string) and contains structured data in the
 form of a JSON payload. The schema of the JSON payload is up to you. That said,
 we recommend using the same schema for a given type. Future aggregation features
 may require this.
+
+:::
 
 ### Structured Logs vs Logcat
 
@@ -53,7 +57,6 @@ may require this.
 | Log Producers                | Only subsystems you care about                                     | Everything                                                        |
 | Intended Log Frequency       | Low-Medium (10s per hour)                                          | High (1000s per hour)                                             |
 | Rate Limiting                | Logs get dropped if the rate exceeds mis/abuse threshold (1000/hr) | Logs from "chatty" sources get dropped to make space for new logs |
-| Log Levels                   | ❌                                                                 | ✅                                                                |
 | Maximum Payload Size per Log | 4KB                                                                | 4KB                                                               |
 | Backing Storage              | Disk                                                               | RAM, lost upon reboot (Disk is optional)                          |
 
@@ -77,8 +80,8 @@ Tapping into the Structured Logs feature, boils down to these steps:
 Both the "type" and JSON data payload are free-form in principle. That said, we
 recommend the following to get the most out of Structured Logs:
 
-- We recommend keeping the "schema" of a JSON data payload the same for all logs
-  of a given type. Future aggregation features may require this.
+- Keep the "schema" of a JSON data payload the same for all logs of a given
+  type. Future aggregation features may require this.
 - Group different but related types together by prefixing the type string with
   the name of the group. We recommend using a period as separator. For example,
   `"motor.start"` and `"motor.stop"`.
@@ -127,10 +130,33 @@ Or if you are using an Android.bp file, add `memfault-structured-log-lib` to a
  ]
 ```
 
-#### Add structured-log-lib to Gradle-built, Java or Kotlin apps
+#### Add `structured-log-lib` to Gradle-built, Java or Kotlin apps
 
-For apps that are build outside of the AOSP build system using Gradle, you will
-need.. TODO
+For apps that are build outside of the AOSP build system using Gradle, the
+easiest way to include `structured-log-lib` in your project is using Gradle's
+`includeBuild` API.
+
+In your project's `settings.gradle` file, add:
+
+```
+includeBuild('/path/to/bort/MemfaultPackages') {
+    dependencySubstitution {
+        substitute module('com.memfault:structured-log-lib') with project(':structured-log-lib')
+    }
+}
+```
+
+Then in your app's `build.gradle` file, add:
+
+```
+dependencies {
+    implementation 'com.memfault:structured-log-lib'
+    ...
+}
+```
+
+When you build your project, the `structured-log-lib` library will be built as
+well and can now be used from your app's Java or Kotlin source files.
 
 ### Logging API
 
