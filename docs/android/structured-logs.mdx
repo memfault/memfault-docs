@@ -1,0 +1,189 @@
+---
+id: structured-logs
+title: Android Structured Logs
+sidebar_label: Structured Logs
+---
+
+When diagnosing Android device issues, logcat logs are one of the most common
+sources of information to use. Unfortunately, the signal-to-noise ratio can be
+poor. On top of that, logcat prunes logs from chatty sources, causing important
+logs to get lost.
+
+The Structured Logging feature is a complementary mechanism to log events of
+interest for device-level debugging. You application code can leverage this to
+log crucial information and get it surfaced in the Memfault UI. The Bort SDK
+itself also provides built-in sources that log events of interest for common
+subsystems, such as WiFi.
+
+Structured Logs appear on the Device Timeline, under "Structured Logs". For each
+type of log, a dedicated swimlane is created automatically. Each log is
+represented with a dot. Clicking or hovering over it will reveal the logged
+data:
+
+![](/img/docs/android/android-structured-logs.png)
+
+## Overview
+
+Structured Logs are collected by the MemfaultStructuredLogd daemon that is built
+& installed automatically as part of the Memfault Bort SDK. The daemon exposes a
+Binder service that producers can use to send Structured Logs to the daemon. For
+ease of use, the SDK also includes a small, Java library that exposes a simple
+API (see [Logging API](#logging-api) below). The MemfaultStructuredLogd daemon
+buffers received logs to disk until it is required to flush all pending logs to
+the Bort app (MemfaultBort.apk). This flushing happens periodically, when the
+buffer reached a certain size limit or when requested explicitely (see
+[Testing & Debugging](#testing--debugging)). Finally, the Bort app is
+responsible for batch-uploading the collected logs to the Memfault web service.
+
+<!-- Source: https://www.figma.com/file/GQIimU8iOtCrxGrdE6RxL3/Memfault-Android-Architecture?node-id=111%3A2 -->
+
+![](/img/docs/android/android-structured-logs-diagram.svg)
+
+Each Structured Log has a "type" (string) and contains structured data in the
+form of a JSON payload. The schema of the JSON payload is up to you. That said,
+we recommend using the same schema for a given type. Future aggregation features
+may require this.
+
+### Structured Logs vs Logcat
+
+|                              | Structured Logs                                                    | Logcat                                                            |
+| ---------------------------- | :----------------------------------------------------------------- | :---------------------------------------------------------------- |
+| Log Payload                  | JSON                                                               | Text                                                              |
+| Log Metadata                 | Timestamp, type                                                    | Timestamp, log level, tag, user, PID, TID                         |
+| Log Producers                | Only subsystems you care about                                     | Everything                                                        |
+| Intended Log Frequency       | Low-Medium (10s per hour)                                          | High (1000s per hour)                                             |
+| Rate Limiting                | Logs get dropped if the rate exceeds mis/abuse threshold (1000/hr) | Logs from "chatty" sources get dropped to make space for new logs |
+| Log Levels                   | ❌                                                                 | ✅                                                                |
+| Maximum Payload Size per Log | 4KB                                                                | 4KB                                                               |
+| Backing Storage              | Disk                                                               | RAM, lost upon reboot (Disk is optional)                          |
+
+## Built-in Structured Log Sources
+
+At this moment, built-in Structured Log sources are still under development.
+
+## Adding Custom Structured Logs
+
+Tapping into the Structured Logs feature, boils down to these steps:
+
+- Defining the log types and data payloads your applications and services need
+  to log
+- Add the `structured-log-lib` library to the component from which you want to
+  log
+- Call the `StructuredLog.log(...)` API
+- Test & Debug
+
+### Defining Structured Log types and data payloads
+
+Both the "type" and JSON data payload are free-form in principle. That said, we
+recommend the following to get the most out of Structured Logs:
+
+- We recommend keeping the "schema" of a JSON data payload the same for all logs
+  of a given type. Future aggregation features may require this.
+- Group different but related types together by prefixing the type string with
+  the name of the group. We recommend using a period as separator. For example,
+  `"motor.start"` and `"motor.stop"`.
+- Each type of log is visualized in a swimlane of its own. Keep this in mind
+  when structuring your log types.
+- Only log for important events, errors, etc. Logs are visualized on the Device
+  Timeline. When logging too much, all the time, the visualization breaks down
+  quickly.
+- Type strings should be statically defined in your code. Do not create type
+  strings dynamically at run-time.
+
+### Add the `structured-log-lib` library
+
+The `structured-log-lib` library is a small Java library that wraps the Binder
+service that is published by MemfaultStructuredLogd. The next two sections
+describe how to add this library to an AOSP-built Java app and how to add it to
+a Gradle-built Java or Kotlin app.
+
+Note it is possible to log from native C/C++ programs, but we do not have a
+C/C++ helper library at the moment.
+
+#### Add `structured-log-lib` to AOSP-built Java apps
+
+Make sure the
+[Bort SDK has been integrated](https://mflt.io/android-getting-started) with
+your AOSP build first.
+
+Once integrated, a target called `memfault-structured-log-lib` will be
+available. This is a static Java library that will need to be linked to your
+app's build target.
+
+If you are using an Android.mk file, add this to the
+`LOCAL_STATIC_JAVA_LIBRARIES` variable in your app's Android.mk file:
+
+```makefile
+LOCAL_STATIC_JAVA_LIBRARIES := \
+    memfault-structured-log-lib \
+```
+
+Or if you are using an Android.bp file, add `memfault-structured-log-lib` to a
+`static_libs` clause of your build target:
+
+```
+ static_libs: [
+    "memfault-structured-log-lib"
+ ]
+```
+
+#### Add structured-log-lib to Gradle-built, Java or Kotlin apps
+
+For apps that are build outside of the AOSP build system using Gradle, you will
+need.. TODO
+
+### Logging API
+
+```java
+import com.memfault.bort.structuredlog.StructuredLog;
+
+// Create a Structured Log
+// with type "door.open" and JSON payload: { "foo": 123, "bar": true }
+StructuredLog.log("door.open", "{\"foo\": 123, \"bar\": true}");
+```
+
+As you can see from the snippet above, the API is extremely simple. The first
+argument is the type of the Structured Log and is a string.
+
+The second argument is the data payload and must be a string containing valid
+JSON, of up to 4KB in size.
+
+For the sake of simplicty of this example, we hand-coded the JSON string. In
+real projects, we recommend using a JSON serialization library.
+
+In case the data was invalid JSON or exceeded the 4KB limit, "Invalid Data" and
+respectively "Oversized Data" swimlanes will appear in the Device Timeline,
+containing information to help debug these issues.
+
+### Testing & Debugging
+
+By default, the MemfaultStructuredLogd daemon only flushes out received logs
+periodically or when the configured maximum log count has been reached. During
+development, this is not very practical. Therefore, on debug builds of AOSP, you
+can also programatically trigger it to flush out received logs:
+
+```java
+import com.memfault.bort.structuredlog.StructuredLog;
+
+// Asks MemfaultStructuredLogd to flush out pending logs:
+StructuredLog.dump();
+```
+
+MemfaultStructuredLogd writes the pending logs to a file and passes it to
+Android's DropBoxManager subsystem. The MemfaultBort.apk app then picks it up
+from the DropBoxManager and uploads it to Memfault's web service.
+
+During debugging, it can also be useful to inspect the files in Android's
+DropBoxManager subsystem directly. You can do this through a root adb shell:
+
+```shell
+$ adb root
+$ adb shell
+# ls /data/system/dropbox/ | grep memfault
+memfault_structured@1619774084281.dat
+memfault_structured@1619774633397.dat
+memfault_structured@1619774689613.dat
+memfault_structured@1619775481075.dat
+# cat /data/system/dropbox/memfault_structured@1619775481075.dat
+... JSON dump of the file ...
+```

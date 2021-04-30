@@ -76,6 +76,7 @@ module.exports = {
             "android/android-bort",
             "android/uploading-android-bugreports",
             "android/android-reboot-events",
+            "android/structured-logs",
             "android/android-eventlog-metrics",
             "android/android-releases-integration-guide",
             "android/android-data-scrubbing",
