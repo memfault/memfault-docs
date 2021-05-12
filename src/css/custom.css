@@ -20,6 +20,7 @@
     --ifm-color-primary-light: rgb(70, 203, 174);
     --ifm-color-primary-lighter: rgb(102, 212, 189);
     --ifm-color-primary-lightest: rgb(146, 224, 208);
+    --ifm-color-warning: #ff8100;  /* white text on yellow background is hard to read */
 }
 
 .docusaurus-highlight-code-line {
@@ -72,4 +73,9 @@ section.features_src-pages- {
 .embed-mode .container {
     margin: 0;
     max-width: 100%;
+}
+
+.admonition code {
+    color: var(--ifm-alert-color);
+    background-color: rgba(0, 0, 0, 0.25)
 }
