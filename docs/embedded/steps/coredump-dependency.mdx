@@ -1,3 +1,6 @@
+import ProjectAwareTabs from "@site/src/components/ProjectAwareTabs";
+import TabItem from "@theme/TabItem";
+
 When the system faults or asserts crash information can be recorded and sent to
 Memfault after the device reboots. In order for this information to be saved, it
 must be persisted to a storage area that persists across a device reset.
@@ -8,10 +11,26 @@ Coredumps can be saved in a `.noinit` region of SRAM, internal flash, external
 flash, or even streamed out over a peripheral to another MCU when a coredump
 takes place.
 
-Available options can be found below:
-
-<details>
-  <summary>RAM Backed Coredump Storage</summary>
+<ProjectAwareTabs
+  groupId="platform"
+  defaultValueFn={details => {
+    if (!details || !details.primaryChip) return "Other";
+    const { primaryChip } = details;
+    if (primaryChip.startsWith("nRF5")) return "nRF5";
+    if (primaryChip === "STM32") return "STM32";
+    if (primaryChip === "EFR32/EFM32") return "EFR32/EFM32";
+    return "Other";
+  }}
+  values={[
+    { label: "RAM-backed", value: "RAM" },
+    { label: "EFM/EFR (Gecko SDK)", value: "EFR32/EFM32" },
+    { label: "STM32", value: "STM32" },
+    { label: "nRF5 SDK", value: "nRF5" },
+    { label: "NXP S32 SDK", value: "NXP" },
+    { label: "Other", value: "Other" },
+  ]}
+>
+  <TabItem value="RAM">
 
 Add the following file to your build system:
 
@@ -33,10 +52,8 @@ For example, for GNU GCC, you can add the following to your `.ld` file:
 
 :::
 
-</details>
-
-<details>
-  <summary>EFM/EFR Internal Flash (Using Gecko SDK)</summary>
+  </TabItem>
+  <TabItem value="EFR32/EFM32">
 
 Add the following file to your build system:
 
@@ -48,10 +65,10 @@ Follow instructions in
 [msc_coredump_storage.c](https://github.com/memfault/memfault-firmware-sdk/blob/master/ports/emlib/msc_coredump_storage.c#L9)
 to configure.
 
-</details>
+  </TabItem>
+  <TabItem value="STM32">
 
-<details>
-  <summary>STM32F4 internal flash using STM32CubeF4</summary>
+#### STM32F4 internal flash using STM32CubeF4
 
 Add the following file to your build system:
 
@@ -63,10 +80,7 @@ Follow instructions in
 [flash_coredump_storage.c](https://github.com/memfault/memfault-firmware-sdk/blob/master/ports/stm32cube/f4/flash_coredump_storage.c#L9)
 to configure.
 
-</details>
-
-<details>
-  <summary>STM32L4 internal flash using STM32CubeL4</summary>
+#### STM32L4 internal flash using STM32CubeL4
 
 Add the following file to your build system:
 
@@ -78,10 +92,7 @@ Follow instructions in
 [flash_coredump_storage.c](https://github.com/memfault/memfault-firmware-sdk/blob/master/ports/stm32cube/l4/flash_coredump_storage.c#L9)
 to configure.
 
-</details>
-
-<details>
-  <summary>STM32WB internal flash using STM32CubeWB</summary>
+#### STM32WB internal flash using STM32CubeWB
 
 Add the following file to your build system:
 
@@ -93,10 +104,10 @@ Follow instructions in
 [flash_coredump_storage.c](https://github.com/memfault/memfault-firmware-sdk/blob/master/ports/stm32cube/wb/flash_coredump_storage.c#L9)
 to configure.
 
-</details>
+  </TabItem>
+  <TabItem value="nRF5">
 
-<details>
-  <summary>nRF5xx internal flash using nRF5 SDK</summary>
+#### nRF5xx internal flash using nRF5 SDK
 
 Add the following file to your build system:
 
@@ -108,10 +119,10 @@ Follow instructions in
 [nrf5_coredump_storage.c](https://github.com/memfault/memfault-firmware-sdk/blob/master/ports/nrf5_sdk/nrf5_coredump_storage.c#L9)
 to configure.
 
-</details>
+  </TabItem>
+  <TabItem value="NXP">
 
-<details>
-  <summary>NXP S32 SDK</summary>
+#### NXP S32 SDK
 
 Add the following file to your build system:
 
@@ -123,11 +134,10 @@ Follow instructions in
 [ftfc_flash_coredump_storage.c](https://github.com/memfault/memfault-firmware-sdk/blob/master/ports/s32sdk/ftfc_flash_coredump_storage.c#L9)
 to configure.
 
-</details>
+  </TabItem>
+  <TabItem value="Other">
 
-<details>
-
-<summary>Custom Port Template</summary>
+#### Custom Port Template
 
 ```c
 //! @file memfault_platform_port.c
@@ -153,4 +163,5 @@ void memfault_platform_coredump_storage_clear(void) {
 }
 ```
 
-</details>
+  </TabItem>
+</ProjectAwareTabs>

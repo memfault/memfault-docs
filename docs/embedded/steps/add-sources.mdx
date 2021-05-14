@@ -1,8 +1,19 @@
+import ProjectAwareTabs from "@site/src/components/ProjectAwareTabs";
+import TabItem from "@theme/TabItem";
+
 Based on the build system you are using, expand the appropriate tab below and
 follow the steps to add the sources to your target
 
-<details>
-  <summary>Make</summary>
+<ProjectAwareTabs
+  groupId="buildToolchain"
+  defaultValueFn={details => details.buildToolchain || "Make" }
+  values={[
+    { label: "Make", value: "Make" },
+    { label: "CMake", value: "CMake" },
+    { label: "Other", value: "Other" },
+  ]}
+>
+  <TabItem value="Make">
 
 ```
 MEMFAULT_PORT_ROOT := <YOUR_PROJECT_ROOT>/third_party/memfault
@@ -28,10 +39,8 @@ Be sure to update `YOUR_SRC_FILES`, `YOUR_INCLUDE_PATHS`, and
 
 :::
 
-</details>
-
-<details>
-  <summary>CMake</summary>
+  </TabItem>
+  <TabItem value="CMake">
 
 ```
 set(MEMFAULT_PORT_ROOT <YOUR_PROJECT_ROOT>/third_party/memfault)
@@ -59,10 +68,8 @@ accordingly
 
 :::
 
-</details>
-
-<details>
-  <summary>Other</summary>
+  </TabItem>
+  <TabItem value="Other">
 
 1. add `$MEMFAULT_FIRMWARE_SDK/components/include` to the include paths for your
    project
@@ -82,4 +89,5 @@ by right clicking on the folder and selecting "Resource Configuration" ->
 
 :::
 
-</details>
+  </TabItem>
+</ProjectAwareTabs>

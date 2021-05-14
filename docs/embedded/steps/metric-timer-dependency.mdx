@@ -1,9 +1,23 @@
+import ProjectAwareTabs from "@site/src/components/ProjectAwareTabs";
+import TabItem from "@theme/TabItem";
+
 The memfault metric subsystem requires a repeating timer in order to collect
 "heartbeats" and a time since boot
 
-<details>
-
-<summary> FreeRTOS </summary>
+<ProjectAwareTabs
+  groupId="platform"
+  defaultValueFn={details => {
+    if (details?.primaryChip?.startsWith("nRF5")) return "nRF5";
+    if (details?.operatingSystem === "FreeRTOS") return "FreeRTOS";
+    return "Other";
+  }}
+  values={[
+    { label: "nRF5 SDK", value: "nRF5" },
+    { label: "FreeRTOS", value: "FreeRTOS" },
+    { label: "Other", value: "Other" },
+  ]}
+>
+  <TabItem value="FreeRTOS">
 
 Add the following file to your build system:
 
@@ -11,11 +25,8 @@ Add the following file to your build system:
   ${MEMFAULT_SDK_ROOT}/ports/freertos/src/memfault_metrics_freertos.c
 ```
 
-</details>
-
-<details>
-
-<summary> nRF5 SDK </summary>
+  </TabItem>
+  <TabItem value="nRF5">
 
 Add the following file to your build system:
 
@@ -23,11 +34,11 @@ Add the following file to your build system:
   ${MEMFAULT_SDK_ROOT}/ports/nrf5_sdk/memfault_platform_metrics.c
 ```
 
-</details>
+  </TabItem>
+  <TabItem value="Other">
 
-<details>
-
-<summary> Template </summary>
+Implement the following function for your MCU. The ports listed in other tabs
+serve as a good reference.
 
 ```c
 //! @file memfault_platform_port.c
@@ -43,4 +54,5 @@ uint64_t memfault_platform_get_time_since_boot_ms(void) {
 }
 ```
 
-</details>
+  </TabItem>
+</ProjectAwareTabs>
