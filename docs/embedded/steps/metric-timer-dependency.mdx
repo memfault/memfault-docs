@@ -5,7 +5,6 @@ The memfault metric subsystem requires a repeating timer in order to collect
 "heartbeats" and a time since boot
 
 <ProjectAwareTabs
-  groupId="platform"
   defaultValueFn={details => {
     if (details?.primaryChip?.startsWith("nRF5")) return "nRF5";
     if (details?.operatingSystem === "FreeRTOS") return "FreeRTOS";

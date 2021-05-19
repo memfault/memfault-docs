@@ -8,7 +8,6 @@ Memfault has a module for tracking and reporting what resets are taking place on
 your platform.
 
 <ProjectAwareTabs
-  groupId="platform"
   defaultValueFn={details => {
     if (!details || !details.primaryChip) return "Other";
     const { primaryChip } = details;

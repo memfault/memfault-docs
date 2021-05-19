@@ -12,7 +12,6 @@ flash, or even streamed out over a peripheral to another MCU when a coredump
 takes place.
 
 <ProjectAwareTabs
-  groupId="platform"
   defaultValueFn={details => {
     if (!details || !details.primaryChip) return "Other";
     const { primaryChip } = details;
