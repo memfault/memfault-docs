@@ -10,10 +10,8 @@ poor. On top of that, logcat prunes logs from chatty sources, causing important
 logs to get lost.
 
 The Structured Logging feature is a complementary mechanism to log events of
-interest for debugging purposes. Your application code can leverage this to log
-crucial information and get it surfaced in the Memfault UI. The Bort SDK itself
-also provides built-in sources that log events of interest from common Android
-subsystems, such as WiFi.
+interest for debugging purposes. Your application and systems code can leverage
+this to log crucial information and get it surfaced in the Memfault UI.
 
 Structured Logs appear on the Device Timeline, under "Structured Logs". For each
 type of log, a dedicated swimlane is created automatically. Each log is
@@ -31,7 +29,7 @@ For ease of use, the SDK also includes a small, Java library that exposes a
 simple API (see [Logging API](#logging-api) below). The MemfaultStructuredLogd
 daemon buffers received logs to disk until it is required to flush all pending
 logs to the Bort app (MemfaultBort.apk). This flushing happens periodically,
-when the buffer has reached a certain size limit or when requested explicitely
+when the buffer has reached a certain size limit or when requested explicitly
 (see [Testing & Debugging](#testing--debugging)). Finally, the Bort app is
 responsible for batch-uploading the collected logs to the Memfault web service.
 
@@ -50,19 +48,16 @@ may require this.
 
 ### Structured Logs vs Logcat
 
-|                              | Structured Logs                                                    | Logcat                                                            |
-| ---------------------------- | :----------------------------------------------------------------- | :---------------------------------------------------------------- |
-| Log Payload                  | JSON                                                               | Text                                                              |
-| Log Metadata                 | Timestamp, type                                                    | Timestamp, log level, tag, user, PID, TID                         |
-| Log Producers                | Only subsystems you care about                                     | Everything                                                        |
-| Intended Log Frequency       | Low-Medium (10s per hour)                                          | High (1000s per hour)                                             |
-| Rate Limiting                | Logs get dropped if the rate exceeds mis/abuse threshold (1000/hr) | Logs from "chatty" sources get dropped to make space for new logs |
-| Maximum Payload Size per Log | 4KB                                                                | 4KB                                                               |
-| Backing Storage              | Disk                                                               | RAM, lost upon reboot (Disk is optional)                          |
-
-## Built-in Structured Log Sources
-
-At this moment, built-in Structured Log sources are still under development.
+|                              | Structured Logs                                          | Logcat                                                            |
+| ---------------------------- | :------------------------------------------------------- | :---------------------------------------------------------------- |
+| Log Viewing UX               | Each log appears individually on the Device Timeline     | Logs are viewed in a view separate from the Device Timeline       |
+| Log Payload                  | JSON                                                     | Text                                                              |
+| Log Metadata                 | Timestamp, type                                          | Timestamp, log level, tag, user, PID, TID                         |
+| Log Producers                | Only subsystems you care about                           | Everything                                                        |
+| Intended Log Frequency       | Low-Medium (10s per hour)                                | High (1000s per hour)                                             |
+| Rate Limiting                | Logs get dropped if the rate exceeds threshold (1000/hr) | Logs from "chatty" sources get dropped to make space for new logs |
+| Maximum Payload Size per Log | 4KB                                                      | 4KB                                                               |
+| Backing Storage              | Disk                                                     | RAM, lost upon reboot (Disk is optional)                          |
 
 ## Adding Custom Structured Logs
 
@@ -194,6 +189,9 @@ import com.memfault.bort.structuredlog.StructuredLog;
 // Asks MemfaultStructuredLogd to flush out pending logs:
 StructuredLog.dump();
 ```
+
+Note that the `StructuredLog.dump()` API is only available on debug builds of
+AOSP and it is a no-op in user builds.
 
 MemfaultStructuredLogd writes the pending logs to a file and passes it to
 Android's DropBoxManager subsystem. The MemfaultBort.apk app then picks it up
