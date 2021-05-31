@@ -26,6 +26,9 @@ export function ProjectSetupDetailsContextProvider({ children }) {
         operatingSystemOther: parsed.operating_system_other,
         primaryChip: parsed.primary_chip,
         primaryChipOther: parsed.primary_chip_other,
+
+        // Keys outside `ProjecSetupDetails`
+        projectKey: parsed.projectKey,
     });
 
     return (
