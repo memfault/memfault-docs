@@ -4,3 +4,7 @@
 # Renamed blog to changelog
 /blog   /changelog
 /blog/* /changelog/:splat
+
+# Added namespacing to embed mode
+/embed/android-getting-started-guide /embed/android/android-getting-started-guide
+/embed/* /embed/embedded/:splat
