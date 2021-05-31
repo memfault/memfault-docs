@@ -66,8 +66,7 @@ module.exports = {
                 },
 
                 {
-                    to:
-                        "https://memfault.com/register?utm_campaign=Self%20Serve%20Launch&utm_source=Docs",
+                    to: "https://memfault.com/register?utm_campaign=Self%20Serve%20Launch&utm_source=Docs",
                     label: "API",
                     position: "left",
                     target: "_blank",
@@ -85,8 +84,7 @@ module.exports = {
                     items: [
                         {
                             label: "Sign Up",
-                            href:
-                                "https://memfault.com/register?utm_campaign=Self%20Serve%20Launch&utm_source=Docs",
+                            href: "https://memfault.com/register?utm_campaign=Self%20Serve%20Launch&utm_source=Docs",
                         },
                         {
                             label: "Log In",
@@ -103,8 +101,7 @@ module.exports = {
                     items: [
                         {
                             label: "Firmware SDK",
-                            href:
-                                "https://github.com/memfault/memfault-firmware-sdk",
+                            href: "https://github.com/memfault/memfault-firmware-sdk",
                         },
                         {
                             label: "Android Bort SDK",
@@ -147,8 +144,7 @@ module.exports = {
                         },
                         {
                             label: "YouTube",
-                            href:
-                                "https://www.youtube.com/channel/UCGHAOw3JpB6zOnwA27dlYcQ",
+                            href: "https://www.youtube.com/channel/UCGHAOw3JpB6zOnwA27dlYcQ",
                         },
                     ],
                 },
