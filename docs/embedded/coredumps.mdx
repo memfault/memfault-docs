@@ -45,66 +45,63 @@ system cleanup can be performed before restarting the system
 
 ### Choosing what to store in a coredump
 
-For the best debugging experience it is best to store all of RAM to
-backing storage. However, this is not always possible or desirable.
-For one, there simply may not be enough storage to preserve all of
-RAM. In other cases there may be sensitive data on the device that
-should not be sent off device. In this section you will learn how to
-choose what to save and how to make this easier for unrelated sections
-of RAM in the case where you cannot or should not preserve all of RAM.
+For the best debugging experience it is best to store all of RAM to backing
+storage. However, this is not always possible or desirable. For one, there
+simply may not be enough storage to preserve all of RAM. In other cases there
+may be sensitive data on the device that should not be sent off device. In this
+section you will learn how to choose what to save and how to make this easier
+for unrelated sections of RAM in the case where you cannot or should not
+preserve all of RAM.
 
 :::note
 
-This tutorial assumes a `gcc` toolchain but the concepts are similar
-with other toolchains.
+This tutorial assumes a `gcc` toolchain but the concepts are similar with other
+toolchains.
 
 :::
 
-Memfault coredumps are designed to be flexible allowing the user to
-choose only what they want or what they can fit into the coredump data
-storage. Memfault uses *coredump regions* to describe what regions of
-memory are to be gathered up and preserved when a fault exception or
-user trace occurs.
+Memfault coredumps are designed to be flexible allowing the user to choose only
+what they want or what they can fit into the coredump data storage. Memfault
+uses _coredump regions_ to describe what regions of memory are to be gathered up
+and preserved when a fault exception or user trace occurs.
 
-For supported RTOSs like FreeRTOS or Zephyr Memfault automatically
-collects task information if you use the Memfault port. But what if
-you have a special block of data or set of structures in your
-application that you would like to capture as part of a coredump? What
-if you want to store all of RAM except a particular set of structures?
+For supported RTOSs like FreeRTOS or Zephyr Memfault automatically collects task
+information if you use the Memfault port. But what if you have a special block
+of data or set of structures in your application that you would like to capture
+as part of a coredump? What if you want to store all of RAM except a particular
+set of structures?
 
-To achieve this control we will use the linker to locate named
-sections within the memory map of your application. Using those
-section names and special compiler attributes we can assign any object
-to a given section.
+To achieve this control we will use the linker to locate named sections within
+the memory map of your application. Using those section names and special
+compiler attributes we can assign any object to a given section.
 
-Once the objects are located in named sections we will add those
-sections as regions to the coredump saving logic. This last part will
-require modifying an existing version of
-`memfault_platform_coredump_get_regions()` or writing your own
-implementation to override the default if you prefer.
+Once the objects are located in named sections we will add those sections as
+regions to the coredump saving logic. This last part will require modifying an
+existing version of `memfault_platform_coredump_get_regions()` or writing your
+own implementation to override the default if you prefer.
 
 #### The Linker Script File
 
 Locate the linker script file used to layout the memory map for your
-application. Sometimes this file is generated from a master file so
-you will need to modify the master file to prevent losing your changes
-after a clean rebuild.
+application. Sometimes this file is generated from a master file so you will
+need to modify the master file to prevent losing your changes after a clean
+rebuild.
 
-The linker script file conventionally has an extension of `.ld` but that
-is not required. You may need to look for the script file callout in the
-link line of your applications, e.g. `gcc <object files> -Wl,-T<script-file>`.
-The `-T` flag may be written out in long form as `--script=<script-file>`.
+The linker script file conventionally has an extension of `.ld` but that is not
+required. You may need to look for the script file callout in the link line of
+your applications, e.g. `gcc <object files> -Wl,-T<script-file>`. The `-T` flag
+may be written out in long form as `--script=<script-file>`.
 
-Within the linker script file there is a section called `SECTIONS`.
-This is where the linker is told where to place zero-initialized data
-(`.bss`), initialized data (`.data`), and code (`.text`) and read-only
-constants (`.rodata`). There are other sections like stack and heap
-but we don't allocate objects to those sections at build time.
+Within the linker script file there is a section called `SECTIONS`. This is
+where the linker is told where to place zero-initialized data (`.bss`),
+initialized data (`.data`), and code (`.text`) and read-only constants
+(`.rodata`). There are other sections like stack and heap but we don't allocate
+objects to those sections at build time.
 
-For simplicity, allocate your important objects in one file, for example,
-in an `important_allocations.c` source file. These objects must either
-be declared static or be defined at file-scope (global). This example assumes
-you are not saving all of RAM as part of a coredump.
+For simplicity, allocate your important objects in one file, for example, in an
+`important_allocations.c` source file. These objects must either be declared
+static or be defined at file-scope (global). This example assumes you are not
+saving all of RAM as part of a coredump.
 
 ```c
 // important_allocations.c
@@ -120,12 +117,11 @@ In the linker script specifically call out the resultant object file
 
 :::note
 
-Be sure to add the highlighted lines between the vendor supplied
-`__xxx_start` and `__xxx_end` labels. If your compiler emits `.obj`
-instead of `.o` suffixed object files then be sure to change the
-extension, or wildcard it, in the linker script. The leading wildcard
-symbol removes any path information that may be prepended by the
-toolchain.
+Be sure to add the highlighted lines between the vendor supplied `__xxx_start`
+and `__xxx_end` labels. If your compiler emits `.obj` instead of `.o` suffixed
+object files then be sure to change the extension, or wildcard it, in the linker
+script. The leading wildcard symbol removes any path information that may be
+prepended by the toolchain.
 
 :::
 
@@ -161,9 +157,8 @@ SECTIONS {
 ```
 
 This modification tells the linker to ensure that the every static and
-file-scoped variable allocated in `important_allocations.c` will be
-located between the respective symbols `memfault_xxx_start` and
-`memfault_xxx_end`.
+file-scoped variable allocated in `important_allocations.c` will be located
+between the respective symbols `memfault_xxx_start` and `memfault_xxx_end`.
 
 Next, add these two regions to your `memfault_platform_coredump_get_regions()`
 implementation with entries like this.
@@ -191,31 +186,30 @@ implementation with entries like this.
   [...]
 ```
 
-With these changes in place you should now see these two objects as part
-of the _Globals & Statics_ display of the Memfault _Issues->Coredump_ page.
+With these changes in place you should now see these two objects as part of the
+_Globals & Statics_ display of the Memfault _Issues->Coredump_ page.
 
 #### Saving Specific Variables in a Coredump
 
-This scenario is slightly different from the previous example in that
-we wish to capture particular variables, possibly from many different
-source files, in the coredump. For this we need to create a new
-section in the linker file and use compiler directives to place these
-important variables in the new section. Memfault provides a convenience
-macro, `MEMFAULT_PUT_IN_SECTION()`, to help with this.
+This scenario is slightly different from the previous example in that we wish to
+capture particular variables, possibly from many different source files, in the
+coredump. For this we need to create a new section in the linker file and use
+compiler directives to place these important variables in the new section.
+Memfault provides a convenience macro, `MEMFAULT_PUT_IN_SECTION()`, to help with
+this.
 
 :::note
 
-This has implications for your startup code. For zero initialized
-variables you need to explicitly zero them before use and for value
-initialized variables you will need to copy the initial values into
-the variables before use. This is because the default C run-time will
-not be aware of your special section. See the call to `initialize_memfault_sections()`
-in the example below.
+This has implications for your startup code. For zero initialized variables you
+need to explicitly zero them before use and for value initialized variables you
+will need to copy the initial values into the variables before use. This is
+because the default C run-time will not be aware of your special section. See
+the call to `initialize_memfault_sections()` in the example below.
 
 :::
 
-Create sections in the linker script as shown below (highlighted) and
-be sure to include the load memory address (LMA) label too.
+Create sections in the linker script as shown below (highlighted) and be sure to
+include the load memory address (LMA) label too.
 
 ```c {14-19,29-34,41}
 /* linker-script.ld
@@ -262,15 +256,13 @@ PROVIDE(memfault_data_lma_start = LOADADDR(.memfault_data))
 ```
 
 Like before, add these two regions to your
-`memfault_platform_coredump_get_regions()`. Because we have used the
-same label names, `memfault_xxx_yyy`, as in the previous example
-please refer back to the previous code snippet as it is valid for this
-example as well.
+`memfault_platform_coredump_get_regions()`. Because we have used the same label
+names, `memfault_xxx_yyy`, as in the previous example please refer back to the
+previous code snippet as it is valid for this example as well.
 
-Now allocate some variables to these sections. It is up to you to
-allocate variables appropriately as zero initialized (.bss) or value
-initialized (.data). For this example place variables from two source
-files into the new sections.
+Now allocate some variables to these sections. It is up to you to allocate
+variables appropriately as zero initialized (.bss) or value initialized (.data).
+For this example place variables from two source files into the new sections.
 
 ```c
 // --- file1.c ---
@@ -294,12 +286,11 @@ int bar(void) {
 }
 ```
 
-If you do nothing more you will find that these variables have
-indeterminate values when you run the program. You need to initialize
-them in order for them to have the correct values. The simple function
-shown below will ensure that the variables are properly initialized.
-Be sure no accesses are made to these variables until after this
-function is called.
+If you do nothing more you will find that these variables have indeterminate
+values when you run the program. You need to initialize them in order for them
+to have the correct values. The simple function shown below will ensure that the
+variables are properly initialized. Be sure no accesses are made to these
+variables until after this function is called.
 
 ```c
 // --- main.c ---
@@ -338,20 +329,19 @@ int main(void) {
 
 #### Locating Sections at a Specific Location
 
-Another benefit working with linker scripts is the ability to place
-objects or files' data at specific locations or addresses. Often times
-microcontrollers (MCUs) have special memory regions that have some
-unique characteristic you may wish to take advantage of. Also, it is
-common to share regions of memory between separate applications on one
-MCU like a bootloader and the production application. Lastly, is often
-the case that you need to persist information across reboots.
+Another benefit working with linker scripts is the ability to place objects or
+files' data at specific locations or addresses. Often times microcontrollers
+(MCUs) have special memory regions that have some unique characteristic you may
+wish to take advantage of. Also, it is common to share regions of memory between
+separate applications on one MCU like a bootloader and the production
+application. Lastly, is often the case that you need to persist information
+across reboots.
 
-In these instances the linker script allows control over the placement
-and allocation of objects in the MCU's address space. The following
-example demonstrates how to locate DMA buffers in on-chip "fast" RAM
-and allocate a shared memory area between a bootloader and an
-application. The linker script below shows the section layout with the
-addition of memory regions.
+In these instances the linker script allows control over the placement and
+allocation of objects in the MCU's address space. The following example
+demonstrates how to locate DMA buffers in on-chip "fast" RAM and allocate a
+shared memory area between a bootloader and an application. The linker script
+below shows the section layout with the addition of memory regions.
 
 ```c {7-8,15-20,22-27}
 /* linker-script.ld
@@ -403,8 +393,8 @@ SECTIONS {
 }
 ```
 
-By using the location macro you can allocate DMA buffers and ensure they
-are in the correct memory range.
+By using the location macro you can allocate DMA buffers and ensure they are in
+the correct memory range.
 
 ```c
 [...]
@@ -415,8 +405,8 @@ static uin8_t s_uart_dma_buffer[NUM_UARTS][256];
 To share a structure between your bootloader and production application the boot
 loader would need to ensure that its linker script file had a matching entry for
 the `SHAREDRAM` memory region and the `.shared` section. After that, the two
-separate applications could exchange information in common data structures
-by having a shared allocation file linked into both applications.
+separate applications could exchange information in common data structures by
+having a shared allocation file linked into both applications.
 
 ```c
 // --- shared_allocations.c ---
@@ -440,7 +430,7 @@ static struct Version s_application_version;
 
 :::note
 
-This last example assumes that you will initialize the values
-appropriately. The values will persist across MCU resets.
+This last example assumes that you will initialize the values appropriately. The
+values will persist across MCU resets.
 
 :::
