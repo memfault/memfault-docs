@@ -75,16 +75,6 @@ Initialized empty Git repository in modules/memfault-firmware-sdk/.git/
 --- memfault-firmware-sdk: fetching, need revision master
 ```
 
-### Add Memfault to Project's CMakeLists.txt
-
-Add the following **before the `find_package(...)`** line in your project's
-CMakeLists.txt
-
-```c
-list(APPEND ZEPHYR_EXTRA_MODULES $ENV{ZEPHYR_BASE}/../modules/memfault-firmware-sdk/ports/nrf-connect-sdk)
-# Note: A line like "find_package(Zephyr HINTS $ENV{ZEPHYR_BASE})" should be below
-```
-
 ### Update Kconfig selections in prj.con
 
 Add the appropriate options to your systems `prj.conf`:
@@ -97,7 +87,7 @@ CONFIG_MEMFAULT=y
 # Add to pick up support for sending Memfault data over HTTP
 CONFIG_MEMFAULT_HTTP_ENABLE=y
 
-# NRF9160 only, uses modem to store root CA's
+# nRF9160 only, uses modem to store root CA's
 CONFIG_MEMFAULT_ROOT_CERT_STORAGE_NRF9160_MODEM=y
 ```
 
@@ -127,7 +117,7 @@ which will be used to communicate with Memfault's web services.
 
 In order to save traces, you will need to implement a dependency function that
 tells memfault version information. You can add this to the `main.c` for the app
-being built or a file of it's own.
+being built or a file of its own.
 
 ```c
 #include "memfault/core/platform/device_info.h"
@@ -143,7 +133,7 @@ void memfault_platform_get_device_info(sMemfaultDeviceInfo *info) {
 }
 ```
 
-### Implement NRF9160 Platform Dependencies
+### Implement nRF9160 Platform Dependencies
 
 Add the Project Key and install the Root CA's used by Memfault:
 
