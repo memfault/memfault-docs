@@ -105,10 +105,14 @@ $ pip3 install memfault-cli
 
 ### User API Key
 
-This is an auth token that can be used to make Memfault API requests which
-require user authentication. To locate the token navigate to the "Settings" ->
-"General" page in the Memfault UI and copy/paste the token in the "User API Key"
-section.
+This is an auth token that can be used as the "password" to make Memfault API
+requests which require Basic Authentication.
+
+To locate the token, hover over your name in the top right of the dashboard and
+select "My Profile". Copy/paste the token in the "User API Key" section.
+
+This API key should be passed in as the `--password` parameter when using the
+Memfault CLI.
 
 #### Project & Organization Slug
 
