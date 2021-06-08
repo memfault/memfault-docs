@@ -4,7 +4,7 @@ title: nRF Connect SDK Integration Guide
 sidebar_label: nRF Connect SDK
 ---
 
-import ProjectAwareCreateAProject from "@site/src/components/ProjectAwareCreateAProject"
+import ProjectAwareCreateAProject from "@site/src/components/ProjectAwareCreateAProject";
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
@@ -88,7 +88,9 @@ Initialized empty Git repository in modules/memfault-firmware-sdk/.git/
   </TabItem>
   <TabItem value="^1.6.0">
 
-The SDK is part of the West manifest in NCS and is automatically downloaded when running `west update`. By default, it is downloaded to `<nRF Connect SDK path>/modules/memfault-firmware-sdk/`.
+The SDK is part of the West manifest in NCS and is automatically downloaded when
+running `west update`. By default, it is downloaded to
+`<nRF Connect SDK path>/modules/memfault-firmware-sdk/`.
 
   </TabItem>
 </Tabs>
@@ -133,11 +135,12 @@ CONFIG_MEMFAULT=y
 CONFIG_MEMFAULT_NCS_PROJECT_KEY=<YOUR_PROJECT_KEY>
 ```
 
-You can find more details on the available options using `menuconfig`, `guiconfig`, and in the Kconfig sources in [`modules/memfault-firmware-sdk/ports/zephyr/Kconfig`](https://github.com/memfault/memfault-firmware-sdk/blob/master/ports/zephyr/Kconfig).
+You can find more details on the available options using `menuconfig`,
+`guiconfig`, and in the Kconfig sources in
+[`modules/memfault-firmware-sdk/ports/zephyr/Kconfig`](https://github.com/memfault/memfault-firmware-sdk/blob/master/ports/zephyr/Kconfig).
 
   </TabItem>
 </Tabs>
-
 
 <Tabs
   groupId="nRF_Connect_SDK_version"
@@ -217,7 +220,6 @@ You can skip this section.
 
 </TabItem>
 </Tabs>
-
 
 ### Create trace reasons definition file
 
