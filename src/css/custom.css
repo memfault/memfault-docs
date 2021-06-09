@@ -60,7 +60,7 @@ section.features_src-pages- {
 .embed-mode .navbar,
 .embed-mode .footer,
 .embed-mode .pagination-nav,
-.embed-mode article header,
+.embed-mode article header > *:not(h1),
 .embed-mode .hash-link,
 .embed-mode .container > .row > .col {
     display: none;
