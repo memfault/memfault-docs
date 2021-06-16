@@ -52,19 +52,19 @@ Once the
 [memfault-firmware-sdk](https://github.com/memfault/memfault-firmware-sdk) is in
 place, a number of modules can easily be integrated into the system:
 
-- [Coredumps](/docs/embedded/coredumps) - Allows one to collect the system state
-  when the device hangs, crashes or asserts unexpectedly.
-- [Reboot Reason Tracking](/docs/embedded/reboot-reason-tracking) - allows one
-  to collect why devices are rebooting in the field (whether it be due to a
-  crash, brown out, crash or a firmware update). Summaries and aggregates and
-  then be viewed from the Memfault web application.
-- [Device Metrics](/docs/embedded/metrics-api) - A flexible way to collect
-  system health vitals that are important to your application (whether it be
-  battery life, connectivity statistics, performance measurements or something
-  else!). From the Memfault web application, metrics are plotted over time for
-  any device and fleet wide summaries can be viewed via dashboards.
-- [Error Tracking with Trace Events](/docs/embedded/trace-events) - allows one
-  to collect lightweight events (<40 bytes) when error conditions occur. These
+- [Coredumps](/docs/mcu/coredumps) - Allows one to collect the system state when
+  the device hangs, crashes or asserts unexpectedly.
+- [Reboot Reason Tracking](/docs/mcu/reboot-reason-tracking) - allows one to
+  collect why devices are rebooting in the field (whether it be due to a crash,
+  brown out, crash or a firmware update). Summaries and aggregates and then be
+  viewed from the Memfault web application.
+- [Device Metrics](/docs/mcu/metrics-api) - A flexible way to collect system
+  health vitals that are important to your application (whether it be battery
+  life, connectivity statistics, performance measurements or something else!).
+  From the Memfault web application, metrics are plotted over time for any
+  device and fleet wide summaries can be viewed via dashboards.
+- [Error Tracking with Trace Events](/docs/mcu/trace-events) - allows one to
+  collect lightweight events (<40 bytes) when error conditions occur. These
   events can be collected while the system is running and can be used to
   discover how often unexpected errors are occuring (flash write failures, I2C
   bus timeouts, etc).
@@ -75,8 +75,8 @@ The Memfault data collection system was designed from the ground up with
 embedded devices in mind. Deeper explorations into the designs of the subsytems
 can be found below:
 
-- [Event Serialization](/docs/embedded/event-serialization-overview) - Describes
-  how Memfault event serialization was optimized for embedded applications and
-  how it compares against other serialization strategies.
-- [Data Transport](/docs/embedded/data-from-firmware-to-the-cloud) - Examines
-  how data is shuttled from the device to the cloud
+- [Event Serialization](/docs/mcu/event-serialization-overview) - Describes how
+  Memfault event serialization was optimized for embedded applications and how
+  it compares against other serialization strategies.
+- [Data Transport](/docs/mcu/data-from-firmware-to-the-cloud) - Examines how
+  data is shuttled from the device to the cloud

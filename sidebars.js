@@ -12,7 +12,7 @@ module.exports = {
             "platform/create-new-project",
             "platform/software-version-hardware-version",
             "platform/alerts",
-            "embedded/uploading-software-versions",
+            "mcu/uploading-software-versions",
             "platform/jira-integration",
             "platform/fleet-wide-metrics",
             "platform/user-management",
@@ -22,55 +22,55 @@ module.exports = {
             /* Draft: "platform/releasing-firmware", */
             /* Note: releasing-firmware is linked from centegix impl readme */
         ],
-        "Bare Metal & RTOS": [
-            "embedded/introduction",
+        "MCU Guides": [
+            "mcu/introduction",
             {
                 type: "category",
                 label: "Getting Started Guides",
                 items: [
-                    "embedded/arm-cortex-m-guide",
-                    "embedded/nrf-connect-sdk-guide",
-                    "embedded/esp32-guide",
-                    "embedded/esp8266-rtos-sdk-guide",
+                    "mcu/arm-cortex-m-guide",
+                    "mcu/nrf-connect-sdk-guide",
+                    "mcu/esp32-guide",
+                    "mcu/esp8266-rtos-sdk-guide",
                 ],
             },
             {
                 type: "category",
                 label: "Subsystem Guides",
                 items: [
-                    "embedded/coredumps",
-                    "embedded/reboot-reason-tracking",
-                    "embedded/metrics-api",
-                    "embedded/trace-events",
-                    "embedded/logging",
-                    "embedded/releases-integration-guide",
+                    "mcu/coredumps",
+                    "mcu/reboot-reason-tracking",
+                    "mcu/metrics-api",
+                    "mcu/trace-events",
+                    "mcu/logging",
+                    "mcu/releases-integration-guide",
                 ],
             },
             {
                 type: "category",
                 label: "User Guides",
-                items: ["embedded/coredump-elf-with-gdb"],
+                items: ["mcu/coredump-elf-with-gdb"],
             },
             {
                 type: "category",
                 label: "Design Docs",
                 items: [
-                    "embedded/data-from-firmware-to-the-cloud",
-                    "embedded/event-serialization-overview",
+                    "mcu/data-from-firmware-to-the-cloud",
+                    "mcu/event-serialization-overview",
                 ],
             },
             {
                 type: "category",
                 label: "Test Utilities",
                 items: [
-                    "embedded/test-patterns-for-chunks-endpoint",
-                    "embedded/test-data-collection-with-gdb",
-                    "embedded/export-chunks-over-console",
-                    "embedded/demo-cli",
+                    "mcu/test-patterns-for-chunks-endpoint",
+                    "mcu/test-data-collection-with-gdb",
+                    "mcu/export-chunks-over-console",
+                    "mcu/demo-cli",
                 ],
             },
         ],
-        Android: [
+        "Android Guides": [
             "android/introduction",
             "android/android-getting-started-guide",
             "android/android-bort",

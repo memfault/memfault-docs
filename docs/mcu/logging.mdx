@@ -19,7 +19,7 @@ accomplish both!
 Any logs present in the buffer get automatically decoded when a coredump is
 uploaded:
 
-![](/img/docs/embedded/logs-with-coredump.png)
+![](/img/docs/mcu/logs-with-coredump.png)
 
 ### Independently collected logs
 
@@ -27,9 +27,9 @@ Logs can also be uploaded independently, without being part of a coredump. These
 logs will appear on the Timeline of a Device. A tabular view of log files is
 also available under the Log Files tab:
 
-![](/img/docs/embedded/device-timeline-log.png)
+![](/img/docs/mcu/device-timeline-log.png)
 
-![](/img/docs/embedded/log-file.png)
+![](/img/docs/mcu/log-file.png)
 
 ## Integration Steps
 
@@ -186,7 +186,7 @@ recommend using this API to capture additional information when significant
 events or unexpected errors take place in your platform.
 
 Pending logs get uploaded just like any other type of data,
-[through the data packetizer](/docs/embedded/data-from-firmware-to-the-cloud).
+[through the data packetizer](/docs/mcu/data-from-firmware-to-the-cloud).
 
 ```c
 
@@ -207,8 +207,8 @@ void your_collect_logs(void) {
 
 :::caution
 
-This step assumes you have integrated
-[coredump collection](/docs/embedded/coredumps) in your project.
+This step assumes you have integrated [coredump collection](/docs/mcu/coredumps)
+in your project.
 
 :::
 

@@ -8,7 +8,7 @@
         "swizzle": "docusaurus swizzle",
         "deploy": "docusaurus deploy",
         "serve": "docusaurus serve",
-        "lint:prettier:base": "prettier '**/*.{js,jsx,ts,tsx,md,mdx}'",
+        "lint:prettier:base": "prettier '**/*.{js,jsx,ts,tsx,md,mdx}' --ignore-path=.gitignore",
         "lint:prettier:fix": "yarn lint:prettier:base --write",
         "lint:prettier": "yarn lint:prettier:base --check"
     },

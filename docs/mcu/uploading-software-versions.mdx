@@ -31,12 +31,12 @@ firmware binary. Let's create a Software Type for this piece of software called
 2. Select **Software** in the left sidebar
 3. Click **New Software Type** in the top right corner
 
-   ![/img/docs/embedded/software-versions-create-type.png](/img/docs/embedded/software-versions-create-type.png)
+   ![/img/docs/mcu/software-versions-create-type.png](/img/docs/mcu/software-versions-create-type.png)
 
 4. Input the name of the **Software Type**, assuring that it only contains
    alphanumeric characters, spaces, hyphens, dots, plus signs and underscores
 
-   ![/img/docs/embedded/software-versions-input-name.png](/img/docs/embedded/software-versions-input-name.png)
+   ![/img/docs/mcu/software-versions-input-name.png](/img/docs/mcu/software-versions-input-name.png)
 
 5. Click **Create** You've now created a new Software Type. Now we're ready to
    move on and create a Software Version "under" this Software Type:
@@ -52,11 +52,11 @@ Let's assume we'll want to create Software Version `1.0.0` for Software Type
 2. In `mcu-main-fw`'s row, click `... versions` in the **Versions** column
    table.
 
-   ![/img/docs/embedded/software-versions-versions-column.png](/img/docs/embedded/software-versions-versions-column.png)
+   ![/img/docs/mcu/software-versions-versions-column.png](/img/docs/mcu/software-versions-versions-column.png)
 
 3. Click **New Version**
 
-   ![/img/docs/embedded/software-versions-new-version.png](/img/docs/embedded/software-versions-new-version.png)
+   ![/img/docs/mcu/software-versions-new-version.png](/img/docs/mcu/software-versions-new-version.png)
 
 4. Select **symbols** from the **Type** dropdown.
 
@@ -66,7 +66,7 @@ Let's assume we'll want to create Software Version `1.0.0` for Software Type
 
    Click **Add**
 
-   ![/img/docs/embedded/software-versions-symbols-add.png](/img/docs/embedded/software-versions-symbols-add.png)
+   ![/img/docs/mcu/software-versions-symbols-add.png](/img/docs/mcu/software-versions-symbols-add.png)
 
 5. In the table of versions for `mcu-main-fw`, you will now see the newly
    created `1.0.0` version:
@@ -74,7 +74,7 @@ Let's assume we'll want to create Software Version `1.0.0` for Software Type
    Traces (coredumps or events) that refer to `mcu-main-fw/1.0.0` can now be
    symbolized correctly by Memfault!
 
-   ![/img/docs/embedded/software-versions-newly-created.png](/img/docs/embedded/software-versions-newly-created.png)
+   ![/img/docs/mcu/software-versions-newly-created.png](/img/docs/mcu/software-versions-newly-created.png)
 
 You can also use the HTTP API to create Software Types and Versions and upload
 symbols files, which is useful if you want to automatically upload them from a

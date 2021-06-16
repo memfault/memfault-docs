@@ -17,21 +17,21 @@ the
 Upon completion of the integration, the following subcomponents will be added to
 your system!
 
-- [Reboot Reason Tracking](/docs/embedded/reboot-reason-tracking)
+- [Reboot Reason Tracking](/docs/mcu/reboot-reason-tracking)
 
-![](/img/docs/embedded/reboot-reason-chart.png)
+![](/img/docs/mcu/reboot-reason-chart.png)
 
-- [Error Tracking with Trace Events](/docs/embedded/trace-events)
+- [Error Tracking with Trace Events](/docs/mcu/trace-events)
 
-![](/img/docs/embedded/trace-reason-example.png)
+![](/img/docs/mcu/trace-reason-example.png)
 
-- [Flash-backed Coredump Collection](/docs/embedded/coredumps)
+- [Flash-backed Coredump Collection](/docs/mcu/coredumps)
 
-![](/img/docs/embedded/logs-with-coredump.png)
+![](/img/docs/mcu/logs-with-coredump.png)
 
-- [Device Metrics](/docs/embedded/metrics-api)
+- [Device Metrics](/docs/mcu/metrics-api)
 
-![](/img/docs/embedded/metrics-api.png)
+![](/img/docs/mcu/metrics-api.png)
 
 ## Integration Steps
 
@@ -293,7 +293,7 @@ At this point you should be able to generate a test trace event and push it to
 the Memfault UI. You can confirm the issue has arrived succesfully by navigating
 to the "Issues" page. Follow the link pointed to below and upload a symbol file.
 
-![](/img/docs/embedded/first-trace.png)
+![](/img/docs/mcu/first-trace.png)
 
 After this step you will see the trace in the list of issues!
 
@@ -310,10 +310,10 @@ If you run into any issues with your data transfer implementation, we have tools
 to help!
 
 - A UI you can use to
-  [view the raw "Chunk" data payloads](/docs/embedded/test-patterns-for-chunks-endpoint#troubleshooting)
+  [view the raw "Chunk" data payloads](/docs/mcu/test-patterns-for-chunks-endpoint#troubleshooting)
   that have arrived for your project.
-- [Precanned Data Payloads](/docs/embedded/test-patterns-for-chunks-endpoint)
-  you can pass through your `user_transport_send_chunk_data()` implementation to
-  test data transfer in isolation.
-- A [GDB Script](/docs/embedded/test-data-collection-with-gdb) which can be
-  installed to send chunks programatically every time a breakpoint is hit.
+- [Precanned Data Payloads](/docs/mcu/test-patterns-for-chunks-endpoint) you can
+  pass through your `user_transport_send_chunk_data()` implementation to test
+  data transfer in isolation.
+- A [GDB Script](/docs/mcu/test-data-collection-with-gdb) which can be installed
+  to send chunks programatically every time a breakpoint is hit.
