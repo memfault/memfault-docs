@@ -5,9 +5,6 @@
 /blog   /changelog
 /blog/* /changelog/:splat
 
-# Added namespacing to embed mode
-/embed/android-getting-started-guide /embed/android/android-getting-started-guide
-/embed/* /embed/mcu/:splat
-
 # Renamed embedded to mcu
-/docs/embedded/* /docs/mcu/*
+/embed/embedded/* /embed/mcu/:splat
+/docs/embedded/* /docs/mcu/:splat
