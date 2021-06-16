@@ -33,7 +33,7 @@ const features = [
         // imageUrl: "img/undraw_docusaurus_mountain.svg",
         description: (
             <>
-                Memfault's <a href="docs/embedded/introduction">Embedded SDK</a>{" "}
+                Memfault's <a href="docs/mcu/introduction">Embedded SDK</a>{" "}
                 packages send data and events from embedded hardware devices.
                 Example code is available for several platforms.
             </>
@@ -99,7 +99,7 @@ function Home() {
                                 "button button--outline button--secondary button--lg",
                                 styles.getStarted
                             )}
-                            to={useBaseUrl("docs/embedded/introduction")}
+                            to={useBaseUrl("docs/mcu/introduction")}
                         >
                             Get Started
                         </Link>
