@@ -4,6 +4,8 @@ title: ESP32 ESP-IDF Integration Guide
 sidebar_label: ESP32 ESP-IDF
 ---
 
+import ProjectAwareCreateAProject from "@site/src/components/ProjectAwareCreateAProject"
+
 This tutorial will go over integrating the
 [Memfault Firmware SDK](https://github.com/memfault/memfault-firmware-sdk) into
 a system that is using the
@@ -192,6 +194,8 @@ partition CSV file". Optionally, you can edit the sdkconfig file directly
 
 :::
 
+<ProjectAwareCreateAProject />
+
 ### Implement Changes for Your Project to Incorporate Memfault
 
 #### _Metrics and Trace Definitions_
@@ -233,18 +237,14 @@ void memfault_platform_get_device_info(sMemfaultDeviceInfo *info) {
 
 #### _g_mflt_http_client_config_
 
-An API key will need to be included in order to communicate with Memfault's web
-services. Go to https://app.memfault.com/, navigate to the project you want to
-use and select 'Settings'. Copy the 'Project Key' and replace
-`<YOUR API KEY HERE>` below and then add the following to
-`memfault_platform_port.c`.
+Copy your Project Key and add the following to `memfault_platform_port.c`:
 
 ```c
 // memfault_platform_port.c
 // [...]
 
 sMfltHttpClientConfig g_mflt_http_client_config = {
-  .api_key = "<YOUR API KEY HERE>",
+  .api_key = "<YOUR_PROJECT_KEY>",
 };
 ```
 
