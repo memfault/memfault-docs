@@ -155,8 +155,7 @@ The complete Memfault CLI invocation to upload the OTA payload:
 
 ```bash
 $ cd /dev/smartfridge/
-$ memfault --email ${YOUR_EMAIL} \
-  --password ${YOUR_USER_API_KEY} \
+$ memfault --org-token ${YOUR_ORG_TOKEN} \
   --org ${YOUR_ORG_SLUG} \
   --project ${YOUR_PROJECT_SLUG} \
   upload-ota-payload \
@@ -177,8 +176,7 @@ arguments as environment variables to your shell init file or via the command
 line:
 
 ```bash
-$ export MEMFAULT_EMAIL=<email address associated with your account>
-$ export MEMFAULT_PASSWORD=<User Api Key for account>
+$ export MEMFAULT_ORG_TOKEN=<Organization Token>
 $ export MEMFAULT_ORG=<Organization slug>
 $ export MEMFAULT_PROJECT=<Project slug>
 ```

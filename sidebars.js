@@ -12,15 +12,12 @@ module.exports = {
             "platform/create-new-project",
             "platform/software-version-hardware-version",
             "platform/alerts",
-            "mcu/uploading-software-versions",
             "platform/jira-integration",
             "platform/fleet-wide-metrics",
             "platform/user-management",
             "platform/organization-auth-tokens",
             /* "platform/bulk-device-upload", */
             /* Mentions features to be released: "platform/sso", */
-            /* Draft: "platform/releasing-firmware", */
-            /* Note: releasing-firmware is linked from centegix impl readme */
         ],
         "MCU Guides": [
             "mcu/introduction",
@@ -44,6 +41,7 @@ module.exports = {
                     "mcu/trace-events",
                     "mcu/logging",
                     "mcu/releases-integration-guide",
+                    "mcu/symbol-file-build-ids",
                 ],
             },
             {
@@ -85,8 +83,6 @@ module.exports = {
             "ci/authentication",
             "ci/install-memfault-cli",
             "ci/add-device-to-cohort-api",
-            /* Note: Out of date so hiding for the moment */
-            /* "ci/uploading-artifacts-api", */
         ],
         Troubleshooting: ["troubleshooting/uploading-symbol-file-is-invalid"],
     },

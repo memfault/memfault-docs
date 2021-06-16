@@ -1,0 +1,92 @@
+---
+id: symbol-file-build-ids
+title: Symbol Files & Build Ids
+sidebar_label: Symbol Files & Build Ids
+---
+
+import AddBuildId from "@site/src/pages/_partials/_steps/_add-build-id.mdx";
+
+## Introduction
+
+In order to process uploaded data, such as coredumps, Memfault needs to be able
+to find the Symbol File (ELF) that corresponds to the software that produced the
+uploaded data. Without an exact match, Memfault will not be able to decode the
+uploaded data.
+
+To that end, the SDK adds metadata to the uploaded data to identify the software
+that produced the data. Likewise, any Symbol File that is uploaded to Memfault,
+must have that same identifying metadata.
+
+## Identifier Types
+
+There are 3 types of identifiers:
+
+|                                                    | Memfault Build Id | GNU Build Id | Software Type & Version |
+| -------------------------------------------------- | ----------------- | ------------ | ----------------------- |
+| Example                                            | `a1e688...`       | `a1e688...`  | `wifi-fw`/`1.0.0`       |
+| Automatically generated hash                       | ✅                | ✅           |
+| Manually chosen                                    |                   |              | ✅                      |
+| Compiler requirement                               |                   | GNU/gcc      |                         |
+| ID embedded inside ELF                             | ✅                | ✅           |
+| ID passed manually upon Symbol File upload         |                   |              | ✅                      |
+| Requires running Python script to post-process ELF | ✅                |              |
+
+We recommend using either the Memfault Build Id or GNU Build Id option. The
+Build Ids are automatically generated based on the contents of the ELF file.
+
+Software Type & Version identifiers are manually assigned and therefore
+error-prone.
+
+:::tip
+
+When uploading a Symbol File (ELF) that has a Build Id embedded, it is possible
+to add a Software Type & Version based identifier, _in addition to the embedded
+Build Id_. This will link the Symbol File with the Software Version. That way,
+you can later look up and download the Symbol File by Software Version through
+the Software Versions UI in Memfault.
+
+Note that for the purpose of finding a Symbol File to match uploaded data, the
+Build Id always takes precedence over Software Type & Version.
+
+:::
+
+## Adding Build Ids
+
+<AddBuildId />
+
+## Uploading Symbol Files using Memfault CLI {#upload-symbol-files-cli}
+
+Please follow
+[the instructions to install the Memfault CLI tool](/docs/ci/install-memfault-cli)
+first.
+
+### Uploading Symbol File with Build Id
+
+Because the Build Id is embedded inside the ELF file, the Build Id is
+automatically recognized and extracted and does not need to be passed as an
+argument to the `memfault` tool:
+
+```bash
+memfault --org-token $ORG_TOKEN --org acme-inc --project smart-sink \
+  upload-mcu-symbols \
+  build/symbols.elf
+```
+
+### Uploading Symbol File with Software Type & Version
+
+To associate a Software Type & Software Version with a Symbol File, the
+`--software-type` and `--software-version` arguments need to be passed to the
+`memfault` tool.
+
+Optionally, a `--revision` (Git commit hash, SVN revision, etc) can be passed as
+well to store the version control revision in the newly created Software
+Version.
+
+```bash
+memfault --org-token $ORG_TOKEN --org acme-inc --project smart-sink \
+  upload-mcu-symbols \
+  --software-type stm32-fw \
+  --software-version 1.0.0-alpha \
+  --revision 89335ffade90ff7697e2ce5238bd4c68978b6d6e \
+  build/symbols.elf
+```

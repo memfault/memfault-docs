@@ -71,10 +71,14 @@ change._
   `evt` and `dvt` and now the `main-fw` between the two differ, "software_type"s
   like `main-fw-evt` & `main-fw-dvt` could be used.
 - `Software Version` / `software_version` - Each build of a "software_type" is
-  uniquely identified by its "software_version" (i.e "1.0.0"). Together the
-  "software_type" and "software_version" uniquely identify a "Symbol File".
+  expected to be uniquely identified by its "software_version" (i.e "1.0.0").
+  Together the "software_type" and "software_version" uniquely identify a
+  "Symbol File".
+- `Build Id` - An automatically generated identifier that is based on the
+  contents of the ELF file. See
+  [this section for more information](/docs/mcu/symbol-file-build-ids).
 
-### Identifying Firmware Binaries
+### Identifying OTA Payload Binaries
 
 - `OTA Payload` - This is the binary that you deliver to your device when
   performing an over-the-air update. Unlike a "Symbol File", the binary may
@@ -147,8 +151,7 @@ Release contains. For example, in case we're releasing our first cut of our
 
 ```bash
 $ cd /dev/smartfridge/
-$ memfault --email ${YOUR_EMAIL} \
-  --password ${YOUR_USER_API_KEY} \
+$ memfault --org-token ${YOUR_ORG_TOKEN} \
   --org ${YOUR_ORG_SLUG} \
   --project ${YOUR_PROJECT_SLUG} \
   upload-ota-payload \
@@ -169,8 +172,7 @@ arguments as environment variables to your shell init file or via the command
 line:
 
 ```bash
-$ export MEMFAULT_EMAIL=<email address associated with your account>
-$ export MEMFAULT_PASSWORD=<User Api Key for account>
+$ export MEMFAULT_ORG_TOKEN=<Organization Token>
 $ export MEMFAULT_ORG=<Organization slug>
 $ export MEMFAULT_PROJECT=<Project slug>
 ```
