@@ -11,8 +11,19 @@ import TabItem from "@theme/TabItem";
 In this guide we will walk through the steps for integrating the
 [Memfault Firmware SDK](https://github.com/memfault/memfault-firmware-sdk) into
 a project using the nRF Connect SDK. The integration has been tested against the
-[v1.4.0 nRF Connect SDK](https://github.com/nrfconnect/sdk-nrf/tree/v1.4.0)
-release.
+releases ranging from v1.4.0 up to v1.6.0.
+
+:::tip
+
+nRF Connect SDK v1.6.0 has built-in support for the Memfault Firmware SDK on
+nRF9160-based targets. Nordic Semiconductor has released some
+[excellent documentation](https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrf/include/memfault_ncs.html)
+on how to integrate Memfault in your existing nRF Connect SDK project, together
+with a
+[sample integration project](https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrf/samples/nrf9160/memfault/README.html#memfault-sample).
+We recommend following both this documentation page as well as Nordic's.
+
+:::
 
 Upon completion of the integration, the following subcomponents will be added to
 your system!
@@ -45,10 +56,10 @@ etc)
 <Tabs
   groupId="nRF_Connect_SDK_version"
   values={[
-   // { label: 'nRF Connect SDK 1.6.0', value: '^1.6.0'},
+   { label: 'nRF Connect SDK 1.6.0', value: '^1.6.0'},
    { label: 'nRF Connect SDK <=1.5.0', value: '<1.6.0'},
   ]}
-  defaultValue="<1.6.0"
+  defaultValue="^1.6.0"
 >
   <TabItem value="<1.6.0">
 
@@ -102,10 +113,10 @@ running `west update`. By default, it is downloaded to
 <Tabs
   groupId="nRF_Connect_SDK_version"
   values={[
-   // { label: 'nRF Connect SDK 1.6.0', value: '^1.6.0'},
+   { label: 'nRF Connect SDK 1.6.0', value: '^1.6.0'},
    { label: 'nRF Connect SDK <=1.5.0', value: '<1.6.0'},
   ]}
-  defaultValue="<1.6.0"
+  defaultValue="^1.6.0"
 >
   <TabItem value="<1.6.0">
 
@@ -145,10 +156,10 @@ You can find more details on the available options using `menuconfig`,
 <Tabs
   groupId="nRF_Connect_SDK_version"
   values={[
-   // { label: 'nRF Connect SDK 1.6.0', value: '^1.6.0'},
+   { label: 'nRF Connect SDK 1.6.0', value: '^1.6.0'},
    { label: 'nRF Connect SDK <=1.5.0', value: '<1.6.0'},
   ]}
-  defaultValue="<1.6.0"
+  defaultValue="^1.6.0"
 >
 <TabItem value="<1.6.0">
 
@@ -431,3 +442,9 @@ to help!
   test data transfer in isolation.
 - A [GDB Script](/docs/embedded/test-data-collection-with-gdb) which can be
   installed to send chunks programatically every time a breakpoint is hit.
+
+## Useful links
+
+- [nRF Connect SDK documentation on built-in Memfault Firmware SDK integration](https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrf/include/memfault_ncs.html)
+  (starting from v.1.6.0).
+- [Nordic's sample Memfault Firmware SDK integration project](https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrf/samples/nrf9160/memfault/README.html#memfault-sample).
