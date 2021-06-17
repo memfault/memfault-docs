@@ -30,6 +30,7 @@ There are 3 types of identifiers:
 | ID embedded inside ELF                             | ✅                | ✅           |
 | ID passed manually upon Symbol File upload         |                   |              | ✅                      |
 | Requires running Python script to post-process ELF | ✅                |              |
+| Minimum SDK version                                | 0.20.0            | 0.20.0       |                         |
 
 We recommend using either the Memfault Build Id or GNU Build Id option. The
 Build Ids are automatically generated based on the contents of the ELF file.
@@ -51,6 +52,13 @@ Build Id always takes precedence over Software Type & Version.
 :::
 
 ## Adding Build Ids
+
+:::note
+
+In order to use Build Ids for identification of Symbol Files & uploaded data,
+SDK version 0.20.0 or newer is required.
+
+:::
 
 <AddBuildId />
 
