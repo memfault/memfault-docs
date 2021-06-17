@@ -26,12 +26,12 @@ This guide explains how to use this feature.
 ## Export coredump to an ELF core file
 
 Navigate to the Issue and specific (coredump) trace that you would like to
-export and click the "Download .elf" button:
+export and expand the "Download" drop down menu. If the menu is not present, it
+most likely means that the trace was not a coredump trace.
+
+Click "Coredump .elf" to export and download the coredump to an ELF core file:
 
 ![](/img/docs/mcu/download-coredump-elf.png)
-
-If the button is not present, it most likely means that the trace was not a
-coredump trace.
 
 ## Download the symbol ELF file
 
@@ -40,14 +40,8 @@ that generated the coredump, in order to make sense of the data in the core
 file. This debug information is present in the symbol ELF file. Note that the
 symbol file _MUST_ match the software that generated the coredump.
 
-To download the symbol file, look for "Software [VERSION]" on the Issue detail
-page and click the version:
-
-![](/img/docs/mcu/issue-detail-software-link.png)
-
-Then click "Download":
-
-![](/img/docs/mcu/software-download-symbols-link.png)
+To download the symbol file, expand the "Download" drop down menu again. Click
+"Symbols .elf" to download the symbol file.
 
 ## Load the core & symbol ELF files into GDB
 
