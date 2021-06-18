@@ -1,0 +1,20 @@
+Memfault servers do not accept UDP transfers. To transfer data from a device
+that can send UDP datagrams (such as the
+[nRF9160](https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrf/samples/nrf9160/udp/README.html)),
+an additional server is necessary to act as a relay between the device and
+Memfault servers.
+
+A
+[working sample of a complete set-up can be found here](https://github.com/memfault/memfault-nRF9160-relay).
+It features a Python UDP server that relays data to Memfault, and a firmware
+implementation that includes a UDP client. The device and the Python server use
+a simple binary encoding format that includes the following sections, separated
+by a `NULL` byte:
+
+- A version section identifying the encoding format for forward compatibility.
+- A Project Key.
+- The device serial.
+- The Memfault chunk.
+
+This configuration allows for a simple, stateless UDP server that just passes
+data over to Memfault.
