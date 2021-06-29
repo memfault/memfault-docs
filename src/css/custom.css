@@ -91,3 +91,25 @@ section.features_src-pages- {
     color: var(--ifm-alert-color);
     background-color: rgba(0, 0, 0, 0.25);
 }
+
+/**
+ * Hide the "See all ## results" link at the bottom of the search widget. See
+ * the issue linked below for more context.
+ *
+ * The nested class selector is merely here for specificity. Unfortunately,
+ * Docusaurus outputs its own CSS after ours.
+ *
+ * Remove this once https://github.com/facebook/docusaurus/issues/5084 is resolved.
+ */
+.DocSearch-Dropdown-Container .DocSearch-HitsFooter {
+    display: none;
+}
+
+/**
+ * Restore some of the space lost from the removal of .DocSearch-HitsFooter.
+ *
+ * Remove this once https://github.com/facebook/docusaurus/issues/5084 is resolved.
+ */
+.DocSearch-Dropdown-Container {
+    padding-bottom: var(--docsearch-spacing);
+}
