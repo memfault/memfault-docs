@@ -93,8 +93,8 @@ section.features_src-pages- {
 }
 
 /**
- * Hide the "See all ## results" link at the bottom of the search widget. See
- * the issue linked below for more context.
+ * Hide the "See all ## results" link at the bottom of the search widget.
+ * See the issue linked below for more context.
  *
  * The nested class selector is merely here for specificity. Unfortunately,
  * Docusaurus outputs its own CSS after ours.
