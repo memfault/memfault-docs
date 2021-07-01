@@ -25,7 +25,7 @@
         Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, BlinkMacSystemFont,
         "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji",
         "Segoe UI Emoji", "Segoe UI Symbol";
-    --ifm-color-primary: #25c8d4;
+    --ifm-color-primary: #49b4a7;
     --ifm-color-primary-dark: rgb(33, 175, 144);
     --ifm-color-primary-darker: rgb(31, 165, 136);
     --ifm-color-primary-darkest: rgb(26, 136, 112);
@@ -33,6 +33,7 @@
     --ifm-color-primary-lighter: rgb(102, 212, 189);
     --ifm-color-primary-lightest: rgb(146, 224, 208);
     --ifm-color-warning: #ff8100; /* white text on yellow background is hard to read */
+    --ifm-footer-background-color: #131e32;
 }
 
 .docusaurus-highlight-code-line {
@@ -42,14 +43,18 @@
     padding: 0 var(--ifm-pre-padding);
 }
 
-.hero
-    .button.button--secondary.button--outline:not(.button--active):not(:hover) {
-    color: var(--ifm-hero-text-color);
+html[data-theme="dark"] .footer--dark {
+    --ifm-footer-background-color: #131e32;
 }
 
-.footer.footer--dark {
-    background-color: #011246;
-    color: #677190;
+html[data-theme="dark"] .hero--primary {
+    background-color: var(--ifm-background-color);
+    color: #ffffff;
+}
+
+html[data-theme="light"]
+    .button.hero__get-started-button:not(.button--active):not(:hover) {
+    color: #ffffff;
 }
 
 /* TODO remove this margin when the home page images are inserted */
@@ -57,18 +62,7 @@ section.features_src-pages- {
     margin-top: 20px;
 }
 
-/* TODO these rules hide the dark mode flipper.  remove them when styling
-   of the /api pages is fixed for dark mode. */
-.navbar .react-toggle-track,
-.navbar .react-toggle-thumb,
-.navbar .input {
-    display: none;
-}
-.navbar .navbar__items--right .navbar__link {
-    padding-right: 5px;
-}
-/* end of rules to hide dark mode flippper */
-
+/* Begin embed mode rules: hide stuff that doesn't need to be in iframes */
 .embed-mode .navbar,
 .embed-mode .footer,
 .embed-mode .pagination-nav,
