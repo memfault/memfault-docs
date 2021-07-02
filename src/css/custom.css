@@ -33,18 +33,14 @@
     --ifm-color-primary-lighter: rgb(102, 212, 189);
     --ifm-color-primary-lightest: rgb(146, 224, 208);
     --ifm-color-warning: #ff8100; /* white text on yellow background is hard to read */
-    --ifm-footer-background-color: #131e32;
 }
 
 .docusaurus-highlight-code-line {
-    background-color: rgb(72, 77, 91);
-    display: block;
+    /* A translucent white background on top of the background works with any background */
+    background-color: rgba(255, 255, 255, 0.07);
+    /* Make the line highlight reach the end of the container */
     margin: 0 calc(-1 * var(--ifm-pre-padding));
     padding: 0 var(--ifm-pre-padding);
-}
-
-html[data-theme="dark"] .footer--dark {
-    --ifm-footer-background-color: #131e32;
 }
 
 html[data-theme="dark"] .hero--primary {
@@ -55,6 +51,11 @@ html[data-theme="dark"] .hero--primary {
 html[data-theme="light"]
     .button.hero__get-started-button:not(.button--active):not(:hover) {
     color: #ffffff;
+}
+
+.admonition code {
+    color: var(--ifm-alert-color);
+    background-color: rgba(0, 0, 0, 0.25);
 }
 
 /* TODO remove this margin when the home page images are inserted */
@@ -80,8 +81,4 @@ section.features_src-pages- {
     margin: 0;
     max-width: 100%;
 }
-
-.admonition code {
-    color: var(--ifm-alert-color);
-    background-color: rgba(0, 0, 0, 0.25);
-}
+/* End embed mode rules */

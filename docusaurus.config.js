@@ -23,6 +23,9 @@ module.exports = {
             trackingID: "G-R5JYJ06TDJ",
             anonymizeIP: true,
         },
+        prism: {
+            theme: require("prism-react-renderer/themes/oceanicNext"),
+        },
         navbar: {
             title: "Memfault Docs",
             logo: {
