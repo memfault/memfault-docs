@@ -1,30 +1,41 @@
 ---
-id: structured-logs
-title: Android Structured Logs
-sidebar_label: Structured Logs
+id: custom-events
+title: Android Custom Events
+sidebar_label: Custom Events
 ---
+
+:::info
+
+Custom Events were previously called Structured Logs. This API was changed in
+Bort 3.6.0.
+
+Any code using the `StructuredLog` API from the `structured-log-lib`
+library (now removed) must be changed to call the equivalent methods in the
+`CustomEvent` API from the `custom-event-lib` library, as described below.
+
+:::
 
 When diagnosing Android device issues, logcat logs are one of the most common
 sources of information to use. Unfortunately, the signal-to-noise ratio can be
 poor. On top of that, logcat prunes logs from chatty sources, causing important
 logs to get lost.
 
-The Structured Logging feature is a complementary mechanism to log events of
-interest for debugging purposes. Your application and systems code can leverage
-this to log crucial information and get it surfaced in the Memfault UI.
+The Custom Events feature is a complementary mechanism to log events of interest
+for debugging purposes. Your application and systems code can leverage this to
+log crucial information and get it surfaced in the Memfault UI.
 
-Structured Logs appear on the Device Timeline, under "Structured Logs". For each
+Custom Events appear on the Device Timeline, under "Custom Events". For each
 type of log, a dedicated swimlane is created automatically. Each log is
 represented with a dot. Clicking or hovering over it will reveal the logged JSON
 data:
 
-![](/img/docs/android/android-structured-logs.png)
+![](/img/docs/android/android-custom-events.png)
 
 ## Overview
 
-Structured Logs are collected by the MemfaultStructuredLogd daemon that is built
-& installed automatically as part of the Memfault Bort SDK. The daemon exposes a
-Binder service that log producers can use to send Structured Logs to the daemon.
+Custom Events are collected by the MemfaultStructuredLogd daemon that is built &
+installed automatically as part of the Memfault Bort SDK. The daemon exposes a
+Binder service that log producers can use to send Custom Events to the daemon.
 For ease of use, the SDK also includes a small, Java library that exposes a
 simple API (see [Logging API](#logging-api) below). The MemfaultStructuredLogd
 daemon buffers received logs to disk until it is required to flush all pending
@@ -39,16 +50,16 @@ responsible for batch-uploading the collected logs to the Memfault web service.
 
 :::tip
 
-Each Structured Log has a "type" (string) and contains structured data in the
-form of a JSON payload. The schema of the JSON payload is up to you. That said,
-we recommend using the same schema for a given type. Future aggregation features
+Each Custom Event has a "type" (string) and contains structured data in the form
+of a JSON payload. The schema of the JSON payload is up to you. That said, we
+recommend using the same schema for a given type. Future aggregation features
 may require this.
 
 :::
 
-### Structured Logs vs Logcat
+### Custom Events vs Logcat
 
-|                              | Structured Logs                                          | Logcat                                                            |
+|                              | Custom Events                                            | Logcat                                                            |
 | ---------------------------- | :------------------------------------------------------- | :---------------------------------------------------------------- |
 | Log Viewing UX               | Each log appears individually on the Device Timeline     | Logs are viewed in a view separate from the Device Timeline       |
 | Log Payload                  | JSON                                                     | Text                                                              |
@@ -59,21 +70,20 @@ may require this.
 | Maximum Payload Size per Log | 4KB                                                      | 4KB                                                               |
 | Backing Storage              | Disk                                                     | RAM, lost upon reboot (Disk is optional)                          |
 
-## Adding Custom Structured Logs
+## Adding Custom Custom Events
 
-Tapping into the Structured Logs feature, boils down to these steps:
+Tapping into the Custom Events feature, boils down to these steps:
 
 - Defining the log types and data payloads your applications and services need
   to log
-- Add the `structured-log-lib` library to the component from which you want to
-  log
-- Call the `StructuredLog.log(...)` API
+- Add the `custom-event-lib` library to the component from which you want to log
+- Call the `CustomEvent.log(...)` API
 - Test & Debug
 
-### Defining Structured Log types and data payloads
+### Defining Custom Event types and data payloads
 
 Both the "type" and JSON data payload are free-form in principle. That said, we
-recommend the following to get the most out of Structured Logs:
+recommend the following to get the most out of Custom Events:
 
 - Keep the "schema" of a JSON data payload the same for all logs of a given
   type. Future aggregation features may require this.
@@ -88,9 +98,9 @@ recommend the following to get the most out of Structured Logs:
 - Type strings should be statically defined in your code. Do not create type
   strings dynamically at run-time.
 
-### Add the `structured-log-lib` library
+### Add the `custom-event-lib` library
 
-The `structured-log-lib` library is a small Java library that wraps the Binder
+The `custom-event-lib` library is a small Java library that wraps the Binder
 service that is published by MemfaultStructuredLogd. The next two sections
 describe how to add this library to an AOSP-built Java app and how to add it to
 a Gradle-built Java or Kotlin app.
@@ -98,37 +108,37 @@ a Gradle-built Java or Kotlin app.
 Note it is possible to log from native C/C++ programs, but we do not have a
 C/C++ helper library at the moment.
 
-#### Add `structured-log-lib` to AOSP-built Java apps
+#### Add `custom-event-lib` to AOSP-built Java apps
 
 Make sure the
 [Bort SDK has been integrated](https://mflt.io/android-getting-started) with
 your AOSP build first.
 
-Once integrated, a target called `memfault-structured-log-lib` will be
-available. This is a static Java library that will need to be linked to your
-app's build target.
+Once integrated, a target called `memfault-custom-event-lib` will be available.
+This is a static Java library that will need to be linked to your app's build
+target.
 
 If you are using an Android.mk file, add this to the
 `LOCAL_STATIC_JAVA_LIBRARIES` variable in your app's Android.mk file:
 
 ```makefile
 LOCAL_STATIC_JAVA_LIBRARIES := \
-    memfault-structured-log-lib \
+    memfault-custom-event-lib \
 ```
 
-Or if you are using an Android.bp file, add `memfault-structured-log-lib` to a
+Or if you are using an Android.bp file, add `memfault-custom-event-lib` to a
 `static_libs` clause of your build target:
 
 ```
  static_libs: [
-    "memfault-structured-log-lib"
+    "memfault-custom-event-lib"
  ]
 ```
 
-#### Add `structured-log-lib` to Gradle-built, Java or Kotlin apps
+#### Add `custom-event-lib` to Gradle-built, Java or Kotlin apps
 
 For apps that are build outside of the AOSP build system using Gradle, the
-easiest way to include `structured-log-lib` in your project is using Gradle's
+easiest way to include `custom-event-lib` in your project is using Gradle's
 `includeBuild` API.
 
 In your project's `settings.gradle` file, add:
@@ -136,7 +146,7 @@ In your project's `settings.gradle` file, add:
 ```
 includeBuild('/path/to/bort/MemfaultPackages') {
     dependencySubstitution {
-        substitute module('com.memfault:structured-log-lib') with project(':structured-log-lib')
+        substitute module('com.memfault:custom-event-lib') with project(':custom-event-lib')
     }
 }
 ```
@@ -145,26 +155,26 @@ Then in your app's `build.gradle` file, add:
 
 ```
 dependencies {
-    implementation 'com.memfault:structured-log-lib'
+    implementation 'com.memfault:custom-event-lib'
     ...
 }
 ```
 
-When you build your project, the `structured-log-lib` library will be built as
+When you build your project, the `custom-event-lib` library will be built as
 well and can now be used from your app's Java or Kotlin source files.
 
 ### Logging API
 
 ```java
-import com.memfault.bort.structuredlog.StructuredLog;
+import com.memfault.bort.customevent.CustomEvent;
 
-// Create a Structured Log
+// Create a Custom Event
 // with type "door.open" and JSON payload: { "foo": 123, "bar": true }
-StructuredLog.log("door.open", "{\"foo\": 123, \"bar\": true}");
+CustomEvent.log("door.open", "{\"foo\": 123, \"bar\": true}");
 ```
 
 As you can see from the snippet above, the API is extremely simple. The first
-argument is the type of the Structured Log and is a string.
+argument is the type of the Custom Event and is a string.
 
 The second argument is the data payload and must be a string containing valid
 JSON, of up to 4KB in size.
@@ -184,14 +194,14 @@ development, this is not very practical. Therefore, on debug builds of AOSP, you
 can also programatically trigger it to flush out received logs:
 
 ```java
-import com.memfault.bort.structuredlog.StructuredLog;
+import com.memfault.bort.customevent.CustomEvent;
 
 // Asks MemfaultStructuredLogd to flush out pending logs:
-StructuredLog.dump();
+CustomEvent.dump();
 ```
 
-Note that the `StructuredLog.dump()` API is only available on debug builds of
-AOSP and it is a no-op in user builds.
+Note that the `CustomEvent.dump()` API is only available on debug builds of AOSP
+and it is a no-op in user builds.
 
 MemfaultStructuredLogd writes the pending logs to a file and passes it to
 Android's DropBoxManager subsystem. The MemfaultBort.apk app then picks it up

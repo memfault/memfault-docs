@@ -8,3 +8,6 @@
 # Renamed embedded to mcu
 /embed/embedded/* /embed/mcu/:splat
 /docs/embedded/* /docs/mcu/:splat
+
+# Android Structured Logs to Custom Events
+/docs/android/structured-logs /docs/android/custom-events
